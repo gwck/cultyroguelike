@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
-{   
+{
     private Rigidbody2D rb;
     private Animator anim;
 
     private float movementInputdirection;
-  
+
 
     private int amountofJumpsLeft;
 
@@ -19,22 +19,24 @@ public class PlayerController : MonoBehaviour
     private bool isWallSliding;
     private bool canJump;
     private bool isDashing;
-    
+
 
     public int amountOfJumps;
+    public int fallBoundary;
 
-    public float movementSpeed; 
+    public float movementSpeed;
     public float jumpVelocity;
     public float groundCheckRadius;
     public float wallCheckDistance;
     public float wallSlideSpeed;
     public float movementForceInAir;
- //   public float airDragMultiplier;
- //   public float wallHopForce;
- //   public float wallJumpForce;
 
- //   public Vector2 wallHopDirection;
- //   public Vector2 wallJumpDirection;
+    //   public float airDragMultiplier;
+    //   public float wallHopForce;
+    //   public float wallJumpForce;
+
+    //   public Vector2 wallHopDirection;
+    //   public Vector2 wallJumpDirection;
 
     public Transform groundCheck;
     public Transform wallCheck;
@@ -43,15 +45,35 @@ public class PlayerController : MonoBehaviour
 
     public LayerMask whatIsGround;
 
+    public PlayerStats playerStats = new PlayerStats();
+
+    [System.Serializable]
+    public class PlayerStats
+    {
+        public int maxHealth = 10;
+
+        private int _curHealth;
+        public int curHealth
+        {
+            get { return _curHealth; }
+            set { _curHealth = Mathf.Clamp(value, 0, maxHealth); } //clamps the value between specified min and max values
+        }
+
+        //Sets current health equal to max health
+        public void Init()
+        {
+            curHealth = maxHealth;
+        }
+    }
+
 
     // Start is called before the first frame update
     private void Start()
     {
+        playerStats.Init();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         amountofJumpsLeft = amountOfJumps;
-       
-
     }
 
     private void Update()
@@ -61,10 +83,11 @@ public class PlayerController : MonoBehaviour
         UpdateAnimations();
         CheckIfCanJump();
         CheckIfWallSliding();
-      
+        PlayerFalling();
+
     }
 
-    private void FixedUpdate() 
+    private void FixedUpdate()
     {
         ApplyMovement();
         CheckSurroundings();
@@ -94,7 +117,7 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
         isTouchingWall = Physics2D.Raycast(wallCheck.position, transform.right, wallCheckDistance, whatIsGround);
-      
+
     }
 
     //EFFECTS: Checks if object is sliding down the wall
@@ -103,12 +126,12 @@ public class PlayerController : MonoBehaviour
         if (isTouchingWall && !isGrounded && rb.velocity.y < 0)
         {
             isWallSliding = true;
-            
+
         }
         else
         {
             isWallSliding = false;
-            
+
         }
     }
 
@@ -120,7 +143,7 @@ public class PlayerController : MonoBehaviour
         {
             amountofJumpsLeft = amountOfJumps;
         }
-        
+
         if (amountofJumpsLeft <= 0)
         {
             canJump = false;
@@ -145,7 +168,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (rb.velocity.x != 0) 
+        if (rb.velocity.x != 0)
         {
             ghost.makeGhost = true;
             isRunning = true;
@@ -184,7 +207,7 @@ public class PlayerController : MonoBehaviour
         }*/
 
         rb.velocity = new Vector2(movementInputdirection * movementSpeed, rb.velocity.y);
-       
+
         if (isWallSliding)
         {
             if (rb.velocity.y < -wallSlideSpeed)
@@ -217,7 +240,7 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
             amountofJumpsLeft--;
-      
+
         }
     }
 
@@ -232,7 +255,28 @@ public class PlayerController : MonoBehaviour
     {
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
-        
+
     }
+
+    public void DamagePlayer(int damage)
+    {
+        playerStats.curHealth -= damage;
+
+        if (playerStats.curHealth <= 0)
+        {
+            GameMaster.KillPlayer(this);
+        }
+
+    }
+
+    public void PlayerFalling()
+    {
+        if (transform.position.y <= fallBoundary)
+        {
+            DamagePlayer(9999);
+        }
+    }
+
+
 
 }
