@@ -1,4 +1,5 @@
 ﻿
+using System.Collections;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
@@ -10,6 +11,7 @@ public class EnemyController : MonoBehaviour
     private bool isGrounded;
     private bool isTouchingWall;
     private bool isFollowing;
+    private bool enemyDead = false;
     private bool isInRange;
 
     private int followCooldown;
@@ -21,14 +23,20 @@ public class EnemyController : MonoBehaviour
     public float groundCheckRadius;
     public float wallCheckDistance;
 
-
+    public ParticleSystem effect;
     private BoxCollider2D bc;
-    private Transform player;
+    private PlayerController playerController;
+    private Transform playerMovement;
+
 
     public Transform groundCheck;
     public Transform wallCheck;
 
     public LayerMask whatIsGround;
+
+    public TimeManager timeManager;
+
+    public GameObject bloodSplash;
 
     public EnemyStats stats = new EnemyStats();
 
@@ -36,6 +44,7 @@ public class EnemyController : MonoBehaviour
     public class EnemyStats
     {
         public int enemyDamage;
+        public int health;
     }
 
     
@@ -44,18 +53,20 @@ public class EnemyController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         bc = GetComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (player == null)
+        if (playerMovement == null)
         {
-            player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+            playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         }
 
+        KillEnemy();
         UpdateAnimations();
         OntheGround();
         CanFollowPlayer();
@@ -66,9 +77,9 @@ public class EnemyController : MonoBehaviour
         if (followCooldown > 0) followCooldown--;
         Debug.Log(followCooldown);
 
-        if (player == null)
+        if (playerMovement == null)
         {
-            player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+            playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         } 
         
         CheckSurroundings();
@@ -114,7 +125,7 @@ public class EnemyController : MonoBehaviour
     //Checks to see if enemy is close enough to chase player!
     private void CanFollowPlayer()
     {
-        float distanceToTarget = Vector3.Distance(transform.position, player.position);
+        float distanceToTarget = Vector3.Distance(transform.position, playerMovement.position);
         Debug.Log(distanceToTarget);
         if (distanceToTarget <= chaseRange)
         {
@@ -158,7 +169,7 @@ public class EnemyController : MonoBehaviour
     //Starts chasing the target
     private void ChasePlayerHorizontally()
     {
-        if (player.position.x > transform.position.x)
+        if (playerMovement.position.x > transform.position.x)
         {
             rb.velocity = new Vector2(movementSpeed * chaseSpeed, rb.velocity.y);
 
@@ -179,5 +190,35 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    public void KillEnemy()
+    {
+        if (Input.GetKeyDown("t"))
+        {
+            stats.health = 0;
+        }
+
+        if (stats.health <= 0 && !enemyDead)
+        {
+           // Instantiate(bloodSplash, transform.position, Quaternion.identity);
+            Instantiate(effect, transform.position, Quaternion.identity);
+            timeManager.SlowMo();
+            GetComponent<MeshRenderer>().enabled = false;
+            GetComponent<BoxCollider2D>().enabled = false;
+            StartCoroutine(GhostEffect());
+            enemyDead = true;
+        }
+    }
+
+    public IEnumerator GhostEffect()
+    {
+        Ghost playerGhost = GameObject.FindGameObjectWithTag("Player").GetComponent<Ghost>();
+        playerGhost.enabled = true;
+
+        yield return new WaitForSeconds(2f);
+
+        playerGhost.enabled = false;
+        Destroy(gameObject);
+
+    }
 
 }
