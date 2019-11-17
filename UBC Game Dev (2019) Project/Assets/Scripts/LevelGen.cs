@@ -6,31 +6,41 @@ using UnityEngine.Tilemaps;
 
 public class LevelGen : MonoBehaviour
 {
-
     [SerializeField] private Tilemap baseMap;
     [SerializeField] private Tile tileA;
     [SerializeField] private Tile tileB;
 
-    // chance for a walker to create another walker at each step
+    // Chance for a walker to create another walker at each step.
     [SerializeField] [Range (0,1)] private float branchChance = 0.02f;
-    // chance that a walker will turn after moving
-    [SerializeField] [Range(0, 1)] private float turnChance = 0.3f;
-    // degree to which the map spreads horizontally rather than vertically
-    [SerializeField] [Range(0, 1)] private float horizontality = 0.5f;
-    // chance that a walker will be deleted after each move
+
+    // Chance that a walker will turn at each step.   
+    // Making horizontalTurnChance greater than verticalTurnChance will cause the
+    // map to spread out horizontally more than vertically.
+    [SerializeField] [Range(0, 1)] private float horizontalTurnChance = 0.3f;
+    [SerializeField] [Range(0, 1)] private float verticalTurnChance = 0.3f;
+
+    // Chance that a walker will be deleted after each move.
     [SerializeField] [Range(0, 1)] private float stopChance = 0.1f;
-    // minimum number of rooms allowed
+
+    // Minimum number of rooms allowed.
     [SerializeField] private int roomMin = 10;
-    // maximum number of rooms allowed
+
+    // Mximum number of rooms allowed.
     [SerializeField] private int roomCap = 25;
-    // maximum number of walkers allowable at a time
+
+    // Number of walkers to start with. This can exceed maximum walkers.
+    [SerializeField] private int initialWalkers = 1;
+
+    // Maximum number of walkers allowable at a time.
     [SerializeField] private int walkerCap = 3;
 
-    // determine probabilities of moving up/down or left/right
-    [SerializeField] [Range(-1, 1)] private float verticalBalance = 0f;
-    [SerializeField] [Range(-1, 1)] private float horizontalBalance = 0f;
+    // Cause the map to grow in a particular direction.
+    // Values of 0 cause no skew; a 1 or -1 would only allow growth in one direction.
+    [SerializeField] [Range(-1, 1)] private float verticalSkew = 0f;
+    [SerializeField] [Range(-1, 1)] private float horizontalSkew = 0f;
 
-    // represents a walker for the random walk algorithm
+    // Represents a walker for the random walk algorithm.
+    // A walker has X,Y coordinates and a direction.
     private class Walker
     {
         public enum Direction { RIGHT,DOWN,LEFT,UP }
@@ -47,7 +57,8 @@ public class LevelGen : MonoBehaviour
         }
     }
 
-    private int[,] map =
+    // A simple coordinate array to represent a room for testing purposes.
+    private int[,] room =
         {   {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
             {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
             {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
@@ -59,13 +70,14 @@ public class LevelGen : MonoBehaviour
             {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
             {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}};
 
-    // Start is called before the first frame update
+    // Start is called before the first frame update.
     void Start()
     {
-        Walk();
+
     }
 
-    // place a rectangle in the tilemap
+    // Place a rectangle in the tilemap.
+    // If filled is false, only the border is printed.
     void Rectangle(Tile tile, int xOffset, int yOffset, int width, int height, bool filled)
     {
         for (int y = 0; y < height; y++)
@@ -80,68 +92,67 @@ public class LevelGen : MonoBehaviour
         }
     }
 
-    void Walk()
+    // Run the random walk algorithm and return an array containing the results.
+    // 0 in the array is an empty space, 1 is a filled space.
+    int[,] Walk()
     {
         int[,] rooms = new int[roomCap * 4, roomCap * 4];
+        int center = roomCap * 2;
 
-        // instantiate the lists
+        // Instantiate the lists.
         List<Walker> walkers = new List<Walker>();
         List<Walker> toAdd = new List<Walker>();
         List<Walker> toRemove = new List<Walker>();
 
-        // create the first walker
-        int center = roomCap * 2;
-        walkers.Add(new Walker(center, center, Walker.Direction.RIGHT));
+        // Color the origin point for the initial walkers, for testing purposes.
+        //baseMap.SetTile(new Vector3Int(0, 0, 0), tileB);
         rooms[center, center] = 1;
-        baseMap.SetTile(new Vector3Int(0, 0, 0), tileB);
         int roomCount = 1;
 
-        // guard against infinite loops
-        // each loop call represents each walker taking a step
+        // Create the initial walkers with random directions.
+        for (int i = 0; i < initialWalkers; i++)
+        {
+            var direction = Walker.Direction.RIGHT;
+            switch (Random.Range(0,4))
+            {
+                case 1: direction = Walker.Direction.DOWN;  break;
+                case 2: direction = Walker.Direction.LEFT;  break;
+                case 3: direction = Walker.Direction.UP;    break;
+            }
+            walkers.Add(new Walker(center, center, direction));
+        }
+        
+        // Each loop call represents each walker taking a step.
         while (roomCount < roomCap && walkers.Count > 0)
         {
             foreach (Walker walker in walkers)
             {
-                // move the walker
                 MoveWalker(walker);
 
-                // update the grid
+                // Update the grid.
                 if (rooms[walker.X, walker.Y] != 1)
                 {
                     rooms[walker.X, walker.Y] = 1;
                     roomCount++;
 
-                    // add the output to the tilemap
-                    // this will become more complicated later
-                    baseMap.SetTile(new Vector3Int(walker.X - center, walker.Y - center, 0), tileA);
+                    // Add the output to the tilemap.
+                    //baseMap.SetTile(new Vector3Int(walker.X - center, walker.Y - center, 0), tileA);
                 }
 
-                // queue walkers to be added
+                // Queue walkers to be added.
                 if (Random.Range(0f, 1f) < branchChance)
                 {
                     toAdd.Add(new Walker(walker.X, walker.Y, walker.direction));
                 }
 
-                // queue walkers to be deleted
+                // Queue walkers to be deleted.
                 if (Random.Range(0f, 1f) < stopChance)
                 {
                     toRemove.Add(walker);
                 }
             }
 
-            // resolve walkers being removed
-            foreach (Walker walker in toRemove)
-            {
-                if (walkers.Count > 1 || roomCount >= roomMin)
-                {
-                    walkers.Remove(walker);
-                }
-            }
-
-            toRemove.Clear();
-            toRemove.TrimExcess();
-
-            // resolve new walkers
+            // Resolve walkers being added.
             foreach (Walker walker in toAdd)
             {
                 if (walkers.Count < walkerCap)
@@ -151,24 +162,38 @@ public class LevelGen : MonoBehaviour
             }
 
             toAdd.Clear();
-            toRemove.TrimExcess();
+
+            // Resolve walkers being deleted.
+            foreach (Walker walker in toRemove)
+            {
+                if (walkers.Count > 1 || roomCount >= roomMin)
+                {
+                    walkers.Remove(walker);
+                }
+            }
+
+            toRemove.Clear();
         }
+
+        return rooms;
     }
 
     // move a walker one space
     void MoveWalker(Walker walker)
     {
-        // decide whether the walker should change directions
-        float rand = Random.Range(0f, 1f);
+        bool isMovingVertically = (walker.direction == Walker.Direction.UP) || (walker.direction == Walker.Direction.DOWN);
 
-        if (Random.Range(0f,1f) < turnChance)
+        if (isMovingVertically)
         {
-            if (rand <= horizontality && walker.direction == Walker.Direction.DOWN || walker.direction == Walker.Direction.UP)
+            if (Random.Range(0f, 1f) < horizontalTurnChance)
             {
-                walker.direction = (Random.Range(-1f, 1f) > horizontalBalance) ? Walker.Direction.LEFT : Walker.Direction.RIGHT;
-            } else if (rand > horizontality)
+                walker.direction = (Random.Range(-1f, 1f) > horizontalSkew) ? Walker.Direction.LEFT : Walker.Direction.RIGHT;
+            }
+        } else
+        {
+            if (Random.Range(0f, 1f) < verticalTurnChance)
             {
-                walker.direction = (Random.Range(-1f, 1f) > verticalBalance) ? Walker.Direction.UP : Walker.Direction.DOWN;
+                walker.direction = (Random.Range(-1f, 1f) > verticalSkew) ? Walker.Direction.UP : Walker.Direction.DOWN;
             }
         }
 
@@ -185,10 +210,26 @@ public class LevelGen : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Print a new test map.
         if (Input.GetKeyDown("g"))
         {
             baseMap.ClearAllTiles();
-            Walk();
+            // Run the algorithm.
+            int[,] map = Walk();
+            int roomWidth = 8;
+            int roomHeight = 6;
+
+            // Place a rectangle to represent each room.
+            for (int y = 0; y < map.GetLength(1); y++)
+            {
+                for (int x = 0; x < map.GetLength(0); x++)
+                {
+                    if (map[x, y] == 1)
+                    {
+                        Rectangle(tileA, (x - roomCap * 2) * roomWidth, (y - roomCap * 2) * roomHeight, roomWidth, roomHeight, false);
+                    }
+                }
+            }
         }
     }
 }

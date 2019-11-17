@@ -152,15 +152,16 @@ MonoBehaviour:
   baseMap: {fileID: 1856353382}
   tileA: {fileID: 11400000, guid: 2b98181a7c8b0c9478fbd32287f8533b, type: 2}
   tileB: {fileID: 11400000, guid: 851d2eb18a712704c813a39ffd15190c, type: 2}
-  branchChance: 0
-  turnChance: 0.2
-  horizontality: 0.8
-  stopChance: 0.3
+  branchChance: 0.3
+  horizontalTurnChance: 1
+  verticalTurnChance: 0.5
+  stopChance: 0.2
   roomMin: 8
   roomCap: 8
-  walkerCap: 3
-  verticalBalance: 0.6
-  horizontalBalance: 0
+  initialWalkers: 2
+  walkerCap: 4
+  verticalSkew: 0.9
+  horizontalSkew: 0.5
 --- !u!4 &191040887
 Transform:
   m_ObjectHideFlags: 0
@@ -402,7 +403,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &519420029
 AudioListener:
   m_ObjectHideFlags: 0
@@ -568,7 +569,7 @@ Camera:
   far clip plane: 1000
   field of view: 80
   orthographic: 1
-  orthographic size: 24
+  orthographic size: 48
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
