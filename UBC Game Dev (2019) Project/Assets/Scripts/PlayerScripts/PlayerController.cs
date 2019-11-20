@@ -3,69 +3,116 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
-{   
+{
     private Rigidbody2D rb;
     private Animator anim;
 
-    private float movementInputdirection;
-  
 
     private int amountofJumpsLeft;
 
+    public int amountOfJumps;
+    public int fallBoundary;
+
     private bool isFacingRight = true;
     private bool isRunning;
+    private bool isJumping;
+    private bool isFalling;
     private bool isGrounded;
     private bool isTouchingWall;
     private bool isWallSliding;
+    private bool shouldWallFlip;
     private bool canJump;
-    private bool isDashing;
-    
+    private bool isTouchingEnemy;
 
-    public int amountOfJumps;
+    private float movementInputdirection;
+    private float storedInputdirection;
+    private float accelRatePerSec;
+    private float decelRatePerSec;
 
-    public float movementSpeed; 
+    [SerializeField]
+    public float forwardVelocity;
+
+ //   public float movementSpeed;
+    public float maxSpeed;
+    public float timeZeroToMax;
+    public float timeMaxToZero;
     public float jumpVelocity;
     public float groundCheckRadius;
     public float wallCheckDistance;
     public float wallSlideSpeed;
     public float movementForceInAir;
- //   public float airDragMultiplier;
- //   public float wallHopForce;
- //   public float wallJumpForce;
 
- //   public Vector2 wallHopDirection;
- //   public Vector2 wallJumpDirection;
+    //   public float airDragMultiplier;
+    //   public float wallHopForce;
+    //   public float wallJumpForce;
+
+    //   public Vector2 wallHopDirection;
+    //   public Vector2 wallJumpDirection;
 
     public Transform groundCheck;
     public Transform wallCheck;
+    public Transform wallCheckChild;
+
+    public ParticleSystem dust;
+
+    public BoxCollider2D bc;
+
+    public TimeManager timeManager;
 
     public Ghost ghost; //reference to ghost script
 
     public LayerMask whatIsGround;
 
+    public PlayerStats playerStats = new PlayerStats();
+
+    [System.Serializable]
+    public class PlayerStats
+    {
+        public int maxHealth = 10;
+
+        private int _curHealth;
+        public int curHealth
+        {
+            get { return _curHealth; }
+            set { _curHealth = Mathf.Clamp(value, 0, maxHealth); } //clamps the value between specified min and max values
+        }
+
+        //Sets current health equal to max health
+        public void Init()
+        {
+            curHealth = maxHealth;
+        }
+    }
+
 
     // Start is called before the first frame update
     private void Start()
     {
+        playerStats.Init();
+        accelRatePerSec = maxSpeed / timeZeroToMax;
+        decelRatePerSec = -maxSpeed / timeMaxToZero;
+        forwardVelocity = 0f;
+        bc = GetComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
+        wallCheckChild = transform.GetChild(1);
         anim = GetComponent<Animator>();
         amountofJumpsLeft = amountOfJumps;
-       
-
     }
 
     private void Update()
     {
+        
         CheckInput();
+        CheckIfMoving();
         CheckMovementDirection();
         UpdateAnimations();
         CheckIfCanJump();
         CheckIfWallSliding();
-      
     }
 
-    private void FixedUpdate() 
+    private void FixedUpdate()
     {
+        PlayerFalling();
         ApplyMovement();
         CheckSurroundings();
     }
@@ -73,7 +120,11 @@ public class PlayerController : MonoBehaviour
     //EFFECTS: Updates the animation of the character
     private void UpdateAnimations()
     {
+        anim.SetBool("isFalling", isFalling);
         anim.SetBool("isRunning", isRunning);
+        anim.SetBool("isJumping", isJumping);
+        anim.SetBool("isWallSliding", isWallSliding);
+        
     }
 
     //MODIFIES: this
@@ -82,6 +133,11 @@ public class PlayerController : MonoBehaviour
     private void CheckInput()
     {
         movementInputdirection = Input.GetAxisRaw("Horizontal");
+
+        if (movementInputdirection != 0)
+        {
+            storedInputdirection = movementInputdirection;
+        }
 
         if (Input.GetButtonDown("Jump"))
         {
@@ -94,7 +150,7 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
         isTouchingWall = Physics2D.Raycast(wallCheck.position, transform.right, wallCheckDistance, whatIsGround);
-      
+
     }
 
     //EFFECTS: Checks if object is sliding down the wall
@@ -103,12 +159,12 @@ public class PlayerController : MonoBehaviour
         if (isTouchingWall && !isGrounded && rb.velocity.y < 0)
         {
             isWallSliding = true;
-            
+
         }
         else
         {
             isWallSliding = false;
-            
+
         }
     }
 
@@ -116,11 +172,13 @@ public class PlayerController : MonoBehaviour
     //EFFECTS: Checks if object can jump with amountofJumpsLeft
     private void CheckIfCanJump()
     {
-        if (isGrounded && rb.velocity.y <= 0) // || isWallSliding)
+
+        if (isGrounded && rb.velocity.y <= 0 || isTouchingEnemy && rb.velocity.y <= 0 && !isGrounded) // || isWallSliding)
         {
             amountofJumpsLeft = amountOfJumps;
+            isJumping = false;
         }
-        
+
         if (amountofJumpsLeft <= 0)
         {
             canJump = false;
@@ -135,17 +193,21 @@ public class PlayerController : MonoBehaviour
     {
         if (isFacingRight && movementInputdirection < 0)
         {
-            Flip();
+            if (!isWallSliding)
+               Flip();
+           
         }
         else
         {
             if (!isFacingRight && movementInputdirection > 0)
             {
-                Flip();
+                if (!isWallSliding)
+                    Flip();
+               
             }
         }
 
-        if (rb.velocity.x != 0) 
+        if (rb.velocity.x != 0)
         {
             ghost.makeGhost = true;
             isRunning = true;
@@ -183,8 +245,38 @@ public class PlayerController : MonoBehaviour
             }
         }*/
 
-        rb.velocity = new Vector2(movementInputdirection * movementSpeed, rb.velocity.y);
-       
+
+        if (movementInputdirection == 1)
+        {
+            if (forwardVelocity < 0)
+            {
+                forwardVelocity = 0;
+            }
+            forwardVelocity += accelRatePerSec * Time.unscaledDeltaTime;
+            rb.velocity = new Vector2(forwardVelocity, rb.velocity.y);
+            if (forwardVelocity >= maxSpeed)
+            {
+                forwardVelocity = maxSpeed;
+            }
+        }
+
+        if (movementInputdirection == -1)
+        {
+            if (forwardVelocity > 0)
+            {
+                forwardVelocity = 0;
+            }
+            forwardVelocity += -accelRatePerSec * Time.unscaledDeltaTime;
+            rb.velocity = new Vector2(forwardVelocity, rb.velocity.y);
+            if (forwardVelocity <= -maxSpeed)
+            {
+                forwardVelocity = -maxSpeed;
+            }
+        }
+
+
+        // rb.velocity = new Vector2(movementInputdirection * movementSpeed, rb.velocity.y);
+
         if (isWallSliding)
         {
             if (rb.velocity.y < -wallSlideSpeed)
@@ -215,9 +307,12 @@ public class PlayerController : MonoBehaviour
     {
         if (canJump)
         {
+            isJumping = true;
+            anim.SetBool("isJumping", isJumping);
             rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
+            CreateDust();
             amountofJumpsLeft--;
-      
+
         }
     }
 
@@ -232,7 +327,72 @@ public class PlayerController : MonoBehaviour
     {
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
-        
+
+    }
+
+    public void DamagePlayer(int damage)
+    {
+        playerStats.curHealth -= damage;
+
+        if (playerStats.curHealth <= 0)
+        {
+            GameMaster.KillPlayer(this);
+        }
+
+    }
+
+    public void PlayerFalling()
+    {
+        if (!isGrounded && rb.velocity.y < 0 && !isTouchingEnemy)
+        {
+            isFalling = true;
+        } else
+        {
+            isFalling = false;
+        }
+
+
+        if (transform.position.y <= fallBoundary)
+        {
+            DamagePlayer(9999);
+        }
+    }
+
+    public void CheckIfMoving()
+    {
+        if (movementInputdirection == 0)
+        {
+            switch (storedInputdirection)
+            {
+                case 1:
+                    forwardVelocity += decelRatePerSec * Time.unscaledDeltaTime;
+                    if (forwardVelocity < 0)
+                    {
+                        forwardVelocity = 0;
+                    }
+                    break;
+                case -1:
+                    forwardVelocity -= decelRatePerSec * Time.unscaledDeltaTime;
+                    if (forwardVelocity > 0)
+                    {
+                        forwardVelocity = 0;
+                    }
+                    break;
+                    
+            }
+
+            rb.velocity = new Vector2(forwardVelocity, rb.velocity.y);
+        }
+    }
+
+    void CreateDust()
+    {
+        dust.Play();
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        isTouchingEnemy = collision.collider.gameObject.tag == "Enemy";
     }
 
 }
