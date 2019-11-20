@@ -73,7 +73,7 @@ public class LevelGen : MonoBehaviour
     // Start is called before the first frame update.
     void Start()
     {
-
+        Generate();
     }
 
     // Place a rectangle in the tilemap.
@@ -207,29 +207,34 @@ public class LevelGen : MonoBehaviour
         }
     }
 
+    void Generate()
+    {
+        baseMap.ClearAllTiles();
+        // Run the algorithm.
+        int[,] map = Walk();
+        int roomWidth = 24;
+        int roomHeight = 16;
+
+        // Place a rectangle to represent each room.
+        for (int y = 0; y < map.GetLength(1); y++)
+        {
+            for (int x = 0; x < map.GetLength(0); x++)
+            {
+                if (map[x, y] == 1)
+                {
+                    Rectangle(tileA, (x - roomCap * 2) * roomWidth, (y - roomCap * 2) * roomHeight, roomWidth, roomHeight, false);
+                }
+            }
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
         // Print a new test map.
         if (Input.GetKeyDown("g"))
         {
-            baseMap.ClearAllTiles();
-            // Run the algorithm.
-            int[,] map = Walk();
-            int roomWidth = 8;
-            int roomHeight = 6;
-
-            // Place a rectangle to represent each room.
-            for (int y = 0; y < map.GetLength(1); y++)
-            {
-                for (int x = 0; x < map.GetLength(0); x++)
-                {
-                    if (map[x, y] == 1)
-                    {
-                        Rectangle(tileA, (x - roomCap * 2) * roomWidth, (y - roomCap * 2) * roomHeight, roomWidth, roomHeight, false);
-                    }
-                }
-            }
+            Generate();
         }
     }
 }
