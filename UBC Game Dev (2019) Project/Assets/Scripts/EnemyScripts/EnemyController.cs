@@ -187,22 +187,29 @@ public class EnemyController : MonoBehaviour
         if (_player != null)
         {
             _player.DamagePlayer(stats.enemyDamage);
+
+            var _playerController = _player.GetComponent<PlayerController>();
+            _playerController.knockbackCount = _playerController.knockbackLength;
+
+            if (_player.transform.position.x < transform.position.x)
+            {
+                _playerController.knockFromRight = true;
+            } else
+            {
+                _playerController.knockFromRight = false;
+            }
         }
     }
 
     public void KillEnemy()
     {
-        if (Input.GetKeyDown("t"))
-        {
-            stats.health = 0;
-        }
 
         if (stats.health <= 0 && !enemyDead)
         {
            // Instantiate(bloodSplash, transform.position, Quaternion.identity);
             Instantiate(effect, transform.position, Quaternion.identity);
             timeManager.SlowMo();
-            GetComponent<MeshRenderer>().enabled = false;
+            GetComponent<SpriteRenderer>().enabled = false;
             GetComponent<BoxCollider2D>().enabled = false;
             StartCoroutine(GhostEffect());
             enemyDead = true;
@@ -219,6 +226,15 @@ public class EnemyController : MonoBehaviour
         playerGhost.enabled = false;
         Destroy(gameObject);
 
+    }
+
+    public void DamageEnemy(int damage)
+    {
+        stats.health -= damage;
+        if (stats.health <= 0 && !enemyDead)
+        {
+            KillEnemy();
+        }
     }
 
 }
