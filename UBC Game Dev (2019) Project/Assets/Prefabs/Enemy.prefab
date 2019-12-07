@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 5222675206195777745}
   - component: {fileID: 5222675206195777750}
   - component: {fileID: 5222675206195777751}
+  - component: {fileID: 2004044153}
   m_Layer: 11
   m_Name: Enemy
   m_TagString: Enemy
@@ -196,17 +197,12 @@ MonoBehaviour:
   chaseRange: 8
   groundCheckRadius: 1
   wallCheckDistance: 0.6
-  effect: {fileID: 6619407764865432, guid: 86dc2d9b5a94a304fbad429490a96c65, type: 3}
   groundCheck: {fileID: 5222675205251515467}
   wallCheck: {fileID: 5222675205437415237}
   whatIsGround:
     serializedVersion: 2
     m_Bits: 1280
-  timeManager: {fileID: 0}
   bloodSplash: {fileID: 0}
-  stats:
-    enemyDamage: 5
-    health: 10
 --- !u!61 &5222675206195777745
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -273,3 +269,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2004044153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5222675206195777748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c8d2da8e46371b4b9faad98018b8517, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyDamage: 5
+  health: 10
+  timeManager: {fileID: 0}
+  effect: {fileID: 6619407764865432, guid: 86dc2d9b5a94a304fbad429490a96c65, type: 3}

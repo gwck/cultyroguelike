@@ -32,7 +32,7 @@ public class PlayerAttack : MonoBehaviour
             Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackCheck.position, attackRange, whatIsEnemies); //casts a circle that kills all enemies in it
             for (int i = 0; i < enemiesToDamage.Length; i++)
             {
-                enemiesToDamage[i].GetComponent<EnemyController>().DamageEnemy(attackDamage);
+                enemiesToDamage[i].GetComponent<EnemyStats>().DamageEnemy(attackDamage);
                // enemiesToDamage[i].GetComponent<EnemyShooter>().DamageEnemy(attackDamage); NOTE TO SELF: Put EnemyStats in a NEW script!!!
             }
         }

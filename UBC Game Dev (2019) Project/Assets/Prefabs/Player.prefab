@@ -4984,7 +4984,7 @@ Rigidbody2D:
   m_Material: {fileID: 6200000, guid: 482a531688ca1254e9a3cf34bea0b64d, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &3460904179580232045
 BoxCollider2D:
@@ -5039,6 +5039,7 @@ MonoBehaviour:
   movementForceInAir: 0
   knockback: 15
   knockbackLength: 0.4
+  minknockback: 5
   knockbackCount: 0
   groundCheck: {fileID: 3460904179841973099}
   wallCheck: {fileID: 3460904179748201047}

@@ -21,7 +21,6 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private bool isTouchingWall;
     private bool isWallSliding;
-    private bool shouldWallFlip;
     private bool canJump;
     private bool isTouchingEnemy;
     private bool canGroundSlam;
@@ -33,6 +32,7 @@ public class PlayerController : MonoBehaviour
     private float storedInputdirection;
     private float accelRatePerSec;
     private float decelRatePerSec;
+    private float actualknockback;
 
     [SerializeField]
     public float forwardVelocity;
@@ -50,6 +50,7 @@ public class PlayerController : MonoBehaviour
     public float movementForceInAir;
     public float knockback;
     public float knockbackLength;
+    public float minknockback;
 
     [SerializeField]
     public float knockbackCount = 0;
@@ -110,11 +111,12 @@ public class PlayerController : MonoBehaviour
         wallCheckChild = transform.GetChild(1);
         anim = GetComponent<Animator>();
         amountofJumpsLeft = amountOfJumps;
+        actualknockback = knockback;
     }
 
     private void Update()
     {
-        
+
         CheckInput();
         CheckIfMoving();
         CheckMovementDirection();
@@ -138,7 +140,7 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("isRunning", isRunning);
         anim.SetBool("isJumping", isJumping);
         anim.SetBool("isWallSliding", isWallSliding);
-        
+
     }
 
     //MODIFIES: this
@@ -208,8 +210,8 @@ public class PlayerController : MonoBehaviour
         if (isFacingRight && movementInputdirection < 0)
         {
             if (!isWallSliding)
-               Flip();
-           
+                Flip();
+
         }
         else
         {
@@ -217,7 +219,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (!isWallSliding)
                     Flip();
-               
+
             }
         }
 
@@ -261,6 +263,7 @@ public class PlayerController : MonoBehaviour
 
         if (knockbackCount <= 0)
         {
+            actualknockback = knockback;
             if (movementInputdirection == 1)
             {
                 if (forwardVelocity < 0)
@@ -288,19 +291,96 @@ public class PlayerController : MonoBehaviour
                     forwardVelocity = -maxSpeed;
                 }
             }
-        } else
+        }
+        else
         {
-            if (knockFromRight)
+            actualknockback = knockback;
+            /*if (knockFromRight)
             {
-                rb.velocity = new Vector2(-knockback, knockback);
+                if (forwardVelocity != 0)
+                {
+                    actualknockback = actualknockback - forwardVelocity;
+                    if (actualknockback <= maxKnockback)
+                    {
+                        rb.velocity = new Vector2(-actualknockback, actualknockback);
+                    } else
+                    {
+                        rb.velocity = new Vector2(-maxKnockback, maxKnockback);
+                    }
+                } else
+                {
+                    rb.velocity = new Vector2(actualknockback, actualknockback);
+                }
+                //rb.AddForce(transform.right * -knockback);
             } 
             if (!knockFromRight)
             {
-                rb.velocity = new Vector2(knockback, knockback);
+                if (forwardVelocity != 0)
+                {
+                    actualknockback = actualknockback - forwardVelocity;
+                    if (actualknockback >= -maxKnockback)
+                    {
+                        rb.velocity = new Vector2(actualknockback, actualknockback);
+                    }
+                    else
+                    {
+                        rb.velocity = new Vector2(maxKnockback, maxKnockback);
+                    }
+                } else
+                {
+                    rb.velocity = new Vector2(actualknockback, actualknockback);
+                }
+               // rb.AddForce(transform.right * knockback);
+            }*/
+            if (knockFromRight)
+            {
+                if (isRunning)
+                {
+                    if (isFacingRight)
+                    {
+                        actualknockback = actualknockback - forwardVelocity;
+                    } else
+                    {
+                        actualknockback = actualknockback + forwardVelocity;
+                    }
+                    if (actualknockback <= minknockback)
+                    {
+                        actualknockback = minknockback;
+                    }
+                    rb.velocity = new Vector2(-actualknockback, actualknockback);
+
+                }
+                else
+                {
+                    rb.velocity = new Vector2(knockback, knockback);
+                }
+            }
+            if (!knockFromRight)
+            {
+                if (isRunning)
+                {
+                    if (isFacingRight)
+                    {
+                        actualknockback = actualknockback - forwardVelocity;
+                    } else
+                    {
+                        actualknockback = actualknockback + forwardVelocity;
+                    }
+                    if (actualknockback <= minknockback)
+                    {
+                        actualknockback = minknockback;
+                    }
+                    rb.velocity = new Vector2(actualknockback, actualknockback);
+                }
+                else
+                {
+                    rb.velocity = new Vector2(knockback, knockback);
+                }
             }
             knockbackCount -= Time.deltaTime;
+            isTouchingEnemy = false;
         }
-
+        // knockbackCount -= Time.deltaTime;
 
         // rb.velocity = new Vector2(movementInputdirection * movementSpeed, rb.velocity.y);
 

@@ -41,9 +41,9 @@ GameObject:
   - component: {fileID: 5092516536627802645}
   - component: {fileID: 5092516536627802644}
   - component: {fileID: 5092516536627802646}
-  - component: {fileID: 5092516536627802641}
   - component: {fileID: 5092516536627802640}
   - component: {fileID: 5222675206531076221}
+  - component: {fileID: 1032500138}
   m_Layer: 11
   m_Name: EnemyShooter
   m_TagString: Enemy
@@ -145,27 +145,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.52, y: 2.55}
   m_EdgeRadius: 0
---- !u!50 &5092516536627802641
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5092516536627802643}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
 --- !u!95 &5092516536627802640
 Animator:
   serializedVersion: 3
@@ -207,6 +186,22 @@ MonoBehaviour:
   stats:
     enemyDamage: 5
     health: 10
+--- !u!114 &1032500138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5092516536627802643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c8d2da8e46371b4b9faad98018b8517, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyDamage: 5
+  health: 10
+  timeManager: {fileID: 0}
+  effect: {fileID: 6619407764865432, guid: 86dc2d9b5a94a304fbad429490a96c65, type: 3}
 --- !u!1 &5092516538276421840
 GameObject:
   m_ObjectHideFlags: 0
