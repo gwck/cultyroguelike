@@ -193,7 +193,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cooldownTime: 60
   chaseSpeed: 2
-  movementSpeed: 4
+  movementSpeed: 2
   chaseRange: 8
   groundCheckRadius: 1
   wallCheckDistance: 0.6
