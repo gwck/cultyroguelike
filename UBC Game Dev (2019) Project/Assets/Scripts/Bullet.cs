@@ -5,18 +5,21 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     private float flyTime = 0;
-
+    private Animator anim;
     public float maxFlyTime = 7;
     public float bulletSpeed = 20f;
-
+   public bool isDamaged;
     public int bulletDamage = 5;
 
     public Rigidbody2D rb;
 
-    // Start is called before the first frame update
+
+
+  
     void Start()
     {
         rb.velocity = transform.right * bulletSpeed;
+       
     }
 
     private void Update()
@@ -28,12 +31,16 @@ public class Bullet : MonoBehaviour
         }
     }
 
+  
+
     private void OnTriggerEnter2D(Collider2D collisionInfo)
     {
         if (collisionInfo.tag == "Player")
         {
             collisionInfo.GetComponent<PlayerController>().DamagePlayer(bulletDamage);
             Destroy(gameObject);
+            
         }
+       
     }
 }
