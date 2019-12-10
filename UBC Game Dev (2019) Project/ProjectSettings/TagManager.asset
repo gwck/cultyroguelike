@@ -26,8 +26,8 @@ TagManager:
   - EnemyLayer
   - PlayerLayer
   - Ground
-  - Enemy
-  - PostProcessing
+  - 
+  - 
   - 
   - 
   - 

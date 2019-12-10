@@ -16,30 +16,23 @@ public class PlayerController : MonoBehaviour
     private bool isFacingRight = true;
     private bool isRunning;
     private bool isJumping;
-    private bool isGroundSlamming;
     private bool isFalling;
     private bool isGrounded;
     private bool isTouchingWall;
     private bool isWallSliding;
+    private bool shouldWallFlip;
     private bool canJump;
     private bool isTouchingEnemy;
-    private bool canGroundSlam;
-
-    [SerializeField]
-    public bool knockFromRight;
 
     private float movementInputdirection;
     private float storedInputdirection;
     private float accelRatePerSec;
     private float decelRatePerSec;
-    private float actualknockback;
 
     [SerializeField]
     public float forwardVelocity;
 
-    //   public float movementSpeed;
-
-    public float groundSlamSpeed;
+ //   public float movementSpeed;
     public float maxSpeed;
     public float timeZeroToMax;
     public float timeMaxToZero;
@@ -48,12 +41,6 @@ public class PlayerController : MonoBehaviour
     public float wallCheckDistance;
     public float wallSlideSpeed;
     public float movementForceInAir;
-    public float knockback;
-    public float knockbackLength;
-    public float minknockback;
-
-    [SerializeField]
-    public float knockbackCount = 0;
 
     //   public float airDragMultiplier;
     //   public float wallHopForce;
@@ -67,7 +54,6 @@ public class PlayerController : MonoBehaviour
     public Transform wallCheckChild;
 
     public ParticleSystem dust;
-    public ParticleSystem groundSlamEffect;
 
     public BoxCollider2D bc;
 
@@ -111,12 +97,11 @@ public class PlayerController : MonoBehaviour
         wallCheckChild = transform.GetChild(1);
         anim = GetComponent<Animator>();
         amountofJumpsLeft = amountOfJumps;
-        actualknockback = knockback;
     }
 
     private void Update()
     {
-
+        
         CheckInput();
         CheckIfMoving();
         CheckMovementDirection();
@@ -127,7 +112,6 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        GroundSlam();
         PlayerFalling();
         ApplyMovement();
         CheckSurroundings();
@@ -140,7 +124,7 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("isRunning", isRunning);
         anim.SetBool("isJumping", isJumping);
         anim.SetBool("isWallSliding", isWallSliding);
-
+        
     }
 
     //MODIFIES: this
@@ -210,8 +194,8 @@ public class PlayerController : MonoBehaviour
         if (isFacingRight && movementInputdirection < 0)
         {
             if (!isWallSliding)
-                Flip();
-
+               Flip();
+           
         }
         else
         {
@@ -219,7 +203,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (!isWallSliding)
                     Flip();
-
+               
             }
         }
 
@@ -261,89 +245,35 @@ public class PlayerController : MonoBehaviour
             }
         }*/
 
-        if (knockbackCount <= 0)
-        {
-            //actualknockback = knockback;
-            if (movementInputdirection == 1)
-            {
-                if (forwardVelocity < 0)
-                {
-                    forwardVelocity = 0;
-                }
-                forwardVelocity += accelRatePerSec * Time.unscaledDeltaTime;
-                rb.velocity = new Vector2(forwardVelocity, rb.velocity.y);
-                if (forwardVelocity >= maxSpeed)
-                {
-                    forwardVelocity = maxSpeed;
-                }
-            }
 
-            if (movementInputdirection == -1)
+        if (movementInputdirection == 1)
+        {
+            if (forwardVelocity < 0)
             {
-                if (forwardVelocity > 0)
-                {
-                    forwardVelocity = 0;
-                }
-                forwardVelocity += -accelRatePerSec * Time.unscaledDeltaTime;
-                rb.velocity = new Vector2(forwardVelocity, rb.velocity.y);
-                if (forwardVelocity <= -maxSpeed)
-                {
-                    forwardVelocity = -maxSpeed;
-                }
+                forwardVelocity = 0;
+            }
+            forwardVelocity += accelRatePerSec * Time.unscaledDeltaTime;
+            rb.velocity = new Vector2(forwardVelocity, rb.velocity.y);
+            if (forwardVelocity >= maxSpeed)
+            {
+                forwardVelocity = maxSpeed;
             }
         }
-        else
-        {
-            //actualknockback = knockback;
-            if (knockFromRight)
-            {
-                if (isRunning)
-                {
-                    if (isFacingRight)
-                    {
-                       // actualknockback = actualknockback - forwardVelocity;
-                    } else
-                    {
-                       // actualknockback = actualknockback + forwardVelocity;
-                    }
-                    if (actualknockback <= minknockback)
-                    {
-                       // actualknockback = minknockback;
-                    }
-                    rb.velocity = new Vector2(-knockback, knockback);
 
-                }
-                else
-                {
-                   rb.velocity = new Vector2(-knockback, knockback);
-                }
+        if (movementInputdirection == -1)
+        {
+            if (forwardVelocity > 0)
+            {
+                forwardVelocity = 0;
             }
-            if (!knockFromRight)
-            { 
-                if (isRunning)
-                {
-                    if (isFacingRight)
-                    {
-                       // actualknockback = actualknockback - forwardVelocity;
-                    } else
-                    {
-                       // actualknockback = actualknockback + forwardVelocity;
-                    }
-                    if (actualknockback <= minknockback)
-                    {
-                       // actualknockback = minknockback;
-                    }
-                    rb.velocity = new Vector2(knockback, knockback);
-                }
-                else
-                {
-                    rb.velocity = new Vector2(knockback, knockback);
-                }
+            forwardVelocity += -accelRatePerSec * Time.unscaledDeltaTime;
+            rb.velocity = new Vector2(forwardVelocity, rb.velocity.y);
+            if (forwardVelocity <= -maxSpeed)
+            {
+                forwardVelocity = -maxSpeed;
             }
-            knockbackCount -= Time.deltaTime;
-            isTouchingEnemy = false;
         }
-        // knockbackCount -= Time.deltaTime;
+
 
         // rb.velocity = new Vector2(movementInputdirection * movementSpeed, rb.velocity.y);
 
@@ -465,30 +395,4 @@ public class PlayerController : MonoBehaviour
         isTouchingEnemy = collision.collider.gameObject.tag == "Enemy";
     }
 
-    
-    void GroundSlam()
-    {
-        if (Input.GetKeyDown("x") && isFalling && !isGrounded && !isWallSliding && canGroundSlam && !isGroundSlamming)
-        {
-            StartGroundSlam();
-            
-           
-        } else if (isGroundSlamming && !canGroundSlam && isGrounded)
-        {
-            canGroundSlam = true;
-            isGroundSlamming = false;
-            Instantiate(groundSlamEffect, transform.position, Quaternion.identity);
-            rb.velocity = new Vector2(rb.velocity.x, 0);
-        } else if (isFalling && !isGrounded && !isWallSliding && !isGroundSlamming)
-        {
-            canGroundSlam = true;
-        }
-    }
-
-    void StartGroundSlam()
-    {
-        rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - groundSlamSpeed);
-        isGroundSlamming = true;
-        canGroundSlam = false;
-    }
 }
