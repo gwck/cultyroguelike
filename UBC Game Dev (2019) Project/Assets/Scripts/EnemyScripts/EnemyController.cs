@@ -11,7 +11,6 @@ public class EnemyController : MonoBehaviour
     private bool isGrounded;
     private bool isTouchingWall;
     private bool isFollowing;
-    private bool enemyDead = false;
     private bool isInRange;
 
     private int followCooldown;
@@ -23,7 +22,6 @@ public class EnemyController : MonoBehaviour
     public float groundCheckRadius;
     public float wallCheckDistance;
 
-    public ParticleSystem effect;
     private BoxCollider2D bc;
     private PlayerController playerController;
     private Transform playerMovement;
@@ -34,23 +32,14 @@ public class EnemyController : MonoBehaviour
 
     public LayerMask whatIsGround;
 
-    public TimeManager timeManager;
-
     public GameObject bloodSplash;
 
-    public EnemyStats stats = new EnemyStats();
-
-    [System.Serializable]
-    public class EnemyStats
-    {
-        public int enemyDamage;
-        public int health;
-    }
-
+    private EnemyStats stats;
     
     // Start is called before the first frame update
     void Start()
     {
+        stats = gameObject.GetComponent<EnemyStats>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
@@ -65,8 +54,6 @@ public class EnemyController : MonoBehaviour
         {
             playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         }
-
-        KillEnemy();
         UpdateAnimations();
         OntheGround();
         CanFollowPlayer();
@@ -187,38 +174,19 @@ public class EnemyController : MonoBehaviour
         if (_player != null)
         {
             _player.DamagePlayer(stats.enemyDamage);
+            _player.forwardVelocity = _player.forwardVelocity - stats.enemyDamage;
+
+            var _playerController = _player.GetComponent<PlayerController>();
+            _playerController.knockbackCount = _playerController.knockbackLength;
+
+            if (_player.transform.position.x < transform.position.x)
+            {
+                _playerController.knockFromRight = true;
+            } else
+            {
+                _playerController.knockFromRight = false;
+            }
         }
-    }
-
-    public void KillEnemy()
-    {
-        if (Input.GetKeyDown("t"))
-        {
-            stats.health = 0;
-        }
-
-        if (stats.health <= 0 && !enemyDead)
-        {
-           // Instantiate(bloodSplash, transform.position, Quaternion.identity);
-            Instantiate(effect, transform.position, Quaternion.identity);
-            timeManager.SlowMo();
-            GetComponent<MeshRenderer>().enabled = false;
-            GetComponent<BoxCollider2D>().enabled = false;
-            StartCoroutine(GhostEffect());
-            enemyDead = true;
-        }
-    }
-
-    public IEnumerator GhostEffect()
-    {
-        Ghost playerGhost = GameObject.FindGameObjectWithTag("Player").GetComponent<Ghost>();
-        playerGhost.enabled = true;
-
-        yield return new WaitForSeconds(2f);
-
-        playerGhost.enabled = false;
-        Destroy(gameObject);
-
     }
 
 }
