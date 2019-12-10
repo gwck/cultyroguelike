@@ -22,11 +22,15 @@ public class LevelGen : MonoBehaviour
     // Chance that a walker will be deleted after each move.
     [SerializeField] [Range(0, 1)] private float stopChance = 0.1f;
 
+    // Chance that a square of rooms is merged into a large room.
+    [SerializeField] [Range(0, 1)] private float merge2Chance = 0.5f;
+    [SerializeField] [Range(0, 1)] private float merge4Chance = 0.5f;
+
     // Minimum number of rooms allowed.
     [SerializeField] private int roomMin = 10;
 
     // Mximum number of rooms allowed.
-    [SerializeField] private int roomCap = 25;
+    [SerializeField] private int maxRooms = 25;
 
     // Number of walkers to start with. This can exceed maximum walkers.
     [SerializeField] private int initialWalkers = 1;
@@ -92,12 +96,17 @@ public class LevelGen : MonoBehaviour
         }
     }
 
+    bool IsInGrid(int x, int y, int[,] grid)
+    {
+        return x >= 0 && y >= 0 && x < grid.GetLength(0) && y < grid.GetLength(1);
+    }
+
     // Run the random walk algorithm and return an array containing the results.
     // 0 in the array is an empty space, 1 is a filled space.
     int[,] Walk()
     {
-        int[,] rooms = new int[roomCap * 4, roomCap * 4];
-        int center = roomCap * 2;
+        int[,] map = new int[maxRooms * 4, maxRooms * 4];
+        int center = maxRooms * 2;
 
         // Instantiate the lists.
         List<Walker> walkers = new List<Walker>();
@@ -106,7 +115,7 @@ public class LevelGen : MonoBehaviour
 
         // Color the origin point for the initial walkers, for testing purposes.
         //baseMap.SetTile(new Vector3Int(0, 0, 0), tileB);
-        rooms[center, center] = 1;
+        map[center, center] = 1;
         int roomCount = 1;
 
         // Create the initial walkers with random directions.
@@ -123,16 +132,16 @@ public class LevelGen : MonoBehaviour
         }
         
         // Each loop call represents each walker taking a step.
-        while (roomCount < roomCap && walkers.Count > 0)
+        while (roomCount < maxRooms && walkers.Count > 0)
         {
             foreach (Walker walker in walkers)
             {
                 MoveWalker(walker);
 
                 // Update the grid.
-                if (rooms[walker.X, walker.Y] != 1)
+                if (map[walker.X, walker.Y] != 1)
                 {
-                    rooms[walker.X, walker.Y] = 1;
+                    map[walker.X, walker.Y] = 1;
                     roomCount++;
 
                     // Add the output to the tilemap.
@@ -175,7 +184,7 @@ public class LevelGen : MonoBehaviour
             toRemove.Clear();
         }
 
-        return rooms;
+        return map;
     }
 
     // move a walker one space
@@ -189,7 +198,8 @@ public class LevelGen : MonoBehaviour
             {
                 walker.direction = (Random.Range(-1f, 1f) > horizontalSkew) ? Walker.Direction.LEFT : Walker.Direction.RIGHT;
             }
-        } else
+        }
+        else
         {
             if (Random.Range(0f, 1f) < verticalTurnChance)
             {
@@ -197,23 +207,90 @@ public class LevelGen : MonoBehaviour
             }
         }
 
-        // move the walker based on its direction
-        switch(walker.direction)
+        // Move the walker based on its direction.
+        switch (walker.direction)
         {
-            case Walker.Direction.RIGHT:    walker.X++; break;
-            case Walker.Direction.LEFT:     walker.X--; break;
-            case Walker.Direction.UP:       walker.Y++; break;
-            case Walker.Direction.DOWN:     walker.Y--; break;
+            case Walker.Direction.RIGHT: walker.X++; break;
+            case Walker.Direction.LEFT: walker.X--; break;
+            case Walker.Direction.UP: walker.Y++; break;
+            case Walker.Direction.DOWN: walker.Y--; break;
         }
     }
+
+    // Generate a room map based on stacked rows of rooms.
+    int[,] Rows()
+    {
+        int mapWidth = (int)Mathf.Sqrt((float)maxRooms) + 1;
+        int[,] map = new int[mapWidth, mapWidth];
+        for (int y = 0; y < map.GetLength(1); y++)
+        {
+            for (int x = 0; x < map.GetLength(0); x++)
+            {
+                map[x, y] = 1;
+            }
+
+        }
+
+        return map;
+    }
+
+    // Merges squares of two rooms into a single large room, represented by a 2 at the left of that room.
+    int[,] Merge2(int[,] map)
+    {
+        for (int y = 0; y < map.GetLength(1); y++)
+        {
+            for (int x = 0; x < map.GetLength(0); x++)
+            {
+                if (map[x, y] == 1 &&
+                    IsInGrid(x + 1, y, map) && map[x + 1, y] == 1)
+                {
+                    if (Random.Range(0f, 1f) < merge2Chance)
+                    {
+                        map[x, y] = 2;
+                        map[x + 1, y] = 0;
+                    }
+                }
+            }
+        }
+        return map;
+    }
+
+    // Merges squares of four rooms into a single large room, represented by a 4 at the top-left of that room.
+    int[,] Merge4(int[,] map)
+    {
+        for (int y = 0; y < map.GetLength(1); y++)
+        {
+            for (int x = 0; x < map.GetLength(0); x++)
+            {
+                if (map[x, y] == 1 &&
+                    IsInGrid(x + 1, y, map) && map[x + 1, y] == 1 &&
+                    IsInGrid(x, y + 1, map) && map[x, y + 1] == 1 &&
+                    IsInGrid(x + 1, y + 1, map) && map[x + 1, y + 1] == 1)
+                {
+                    if (Random.Range(0f, 1f) < merge4Chance)
+                    {
+                        map[x, y] = 4;
+                        map[x + 1, y] = 0;
+                        map[x, y + 1] = 0;
+                        map[x + 1, y + 1] = 0;
+                    }
+                }
+            }
+        }
+        return map;
+    }
+
+
+    [SerializeField] private int roomWidth = 6;
+    [SerializeField] private int roomHeight = 4;
 
     void Generate()
     {
         baseMap.ClearAllTiles();
         // Run the algorithm.
         int[,] map = Walk();
-        int roomWidth = 24;
-        int roomHeight = 16;
+        map = Merge4(map);
+        map = Merge2(map);
 
         // Place a rectangle to represent each room.
         for (int y = 0; y < map.GetLength(1); y++)
@@ -222,7 +299,15 @@ public class LevelGen : MonoBehaviour
             {
                 if (map[x, y] == 1)
                 {
-                    Rectangle(tileA, (x - roomCap * 2) * roomWidth, (y - roomCap * 2) * roomHeight, roomWidth, roomHeight, false);
+                    Rectangle(tileA, (x - map.GetLength(0) / 2) * roomWidth, (y - map.GetLength(1) / 2) * roomHeight, roomWidth, roomHeight, false);
+                }
+                else if (map[x, y] == 2)
+                {
+                    Rectangle(tileB, (x - map.GetLength(0) / 2) * roomWidth, (y - map.GetLength(1) / 2) * roomHeight, roomWidth * 2, roomHeight, false);
+                }
+                else if (map[x, y] == 4)
+                {
+                    Rectangle(tileB, (x - map.GetLength(0) / 2) * roomWidth, (y - map.GetLength(1) / 2) * roomHeight, roomWidth * 2, roomHeight * 2, false);
                 }
             }
         }
