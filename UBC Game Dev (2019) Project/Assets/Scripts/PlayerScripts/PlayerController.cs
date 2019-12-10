@@ -319,7 +319,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
             if (!knockFromRight)
-            {
+            { 
                 if (isRunning)
                 {
                     if (isFacingRight)
