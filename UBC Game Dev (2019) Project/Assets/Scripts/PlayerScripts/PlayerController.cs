@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private bool isFacingRight = true;
     private bool isRunning;
     private bool isJumping;
+    private bool isDamaged;
     private bool isGroundSlamming;
     private bool isFalling;
     private bool isGrounded;
@@ -79,6 +80,7 @@ public class PlayerController : MonoBehaviour
 
     public PlayerStats playerStats = new PlayerStats();
 
+
     [System.Serializable]
     public class PlayerStats
     {
@@ -90,6 +92,8 @@ public class PlayerController : MonoBehaviour
             get { return _curHealth; }
             set { _curHealth = Mathf.Clamp(value, 0, maxHealth); } //clamps the value between specified min and max values
         }
+
+
 
         //Sets current health equal to max health
         public void Init()
@@ -123,6 +127,7 @@ public class PlayerController : MonoBehaviour
         UpdateAnimations();
         CheckIfCanJump();
         CheckIfWallSliding();
+        CheckIfDamaged();
     }
 
     private void FixedUpdate()
@@ -140,6 +145,7 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("isRunning", isRunning);
         anim.SetBool("isJumping", isJumping);
         anim.SetBool("isWallSliding", isWallSliding);
+        anim.SetBool("isDamaged", isDamaged);
 
     }
 
@@ -240,26 +246,7 @@ public class PlayerController : MonoBehaviour
     //EFFECTS: Applies the input to the direction player wanted to go
     private void ApplyMovement()
     {
-        //ask the group
-        /*if (isGrounded)
-        {
-            rb.velocity = new Vector2(movementInputdirection * movementSpeed, rb.velocity.y);
-        }
-        else if (!isGrounded && !isWallSliding && movementInputdirection != 0)
-        {
-            Vector2 forceToAdd = new Vector2(movementForceInAir * movementInputdirection, 0);
-            rb.AddForce(forceToAdd);
-
-            if (Mathf.Abs(rb.velocity.x) > movementSpeed)
-            {
-                rb.velocity = new Vector2(movementSpeed * movementInputdirection, rb.velocity.y);
-
-            }
-            if (!isGrounded && !isWallSliding && movementInputdirection == 0) //velocity decreases if there is no input direction
-            {
-                rb.velocity = new Vector2(rb.velocity.x * airDragMultiplier, rb.velocity.y);
-            }
-        }*/
+     
 
         if (knockbackCount <= 0)
         {
@@ -294,6 +281,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+
             //actualknockback = knockback;
             if (knockFromRight)
             {
@@ -400,16 +388,36 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public void DamagePlayer(int damage)
+    private void CheckIfDamaged()
     {
+        //anim. accesses the parameters we set up in the animator
+        //so here we use SetBool to acces the boolean and set it to a specific value!
+        anim.SetBool("isDamaged", isDamaged); //sets the value in animator to the value of our
+                                              //isDamaged variable!
+    }
+
+    private void setDamageFalse() //This turns the Damage animation off. just made this function so that I could put in inside of an "invoke".
+    {
+        isDamaged = false;
+    }
+
+     public void DamagePlayer(int damage)
+    {
+
         playerStats.curHealth -= damage;
+        isDamaged = true;
+        
+        Invoke("setDamageFalse", 0.10f);
+        
 
         if (playerStats.curHealth <= 0)
         {
             GameMaster.KillPlayer(this);
         }
-
     }
+
+    
+
 
     public void PlayerFalling()
     {
@@ -468,7 +476,7 @@ public class PlayerController : MonoBehaviour
     
     void GroundSlam()
     {
-        if (Input.GetKeyDown("x") && isFalling && !isGrounded && !isWallSliding && canGroundSlam && !isGroundSlamming)
+        if (Input.GetButtonDown("Slam") && isFalling && !isGrounded && !isWallSliding && canGroundSlam && !isGroundSlamming)
         {
             StartGroundSlam();
             
