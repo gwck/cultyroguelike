@@ -102,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
         // whatisGround = which layer the ray will check for!
     }
 
-   
+
     //EFFECTS: If player not moving right while facing right, and vice versa,
     //         then flip the character
     private void CheckMovementDirection()
