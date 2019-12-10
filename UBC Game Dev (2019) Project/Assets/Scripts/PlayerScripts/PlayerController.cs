@@ -263,7 +263,7 @@ public class PlayerController : MonoBehaviour
 
         if (knockbackCount <= 0)
         {
-            actualknockback = knockback;
+            //actualknockback = knockback;
             if (movementInputdirection == 1)
             {
                 if (forwardVelocity < 0)
@@ -294,65 +294,28 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            actualknockback = knockback;
-            /*if (knockFromRight)
-            {
-                if (forwardVelocity != 0)
-                {
-                    actualknockback = actualknockback - forwardVelocity;
-                    if (actualknockback <= maxKnockback)
-                    {
-                        rb.velocity = new Vector2(-actualknockback, actualknockback);
-                    } else
-                    {
-                        rb.velocity = new Vector2(-maxKnockback, maxKnockback);
-                    }
-                } else
-                {
-                    rb.velocity = new Vector2(actualknockback, actualknockback);
-                }
-                //rb.AddForce(transform.right * -knockback);
-            } 
-            if (!knockFromRight)
-            {
-                if (forwardVelocity != 0)
-                {
-                    actualknockback = actualknockback - forwardVelocity;
-                    if (actualknockback >= -maxKnockback)
-                    {
-                        rb.velocity = new Vector2(actualknockback, actualknockback);
-                    }
-                    else
-                    {
-                        rb.velocity = new Vector2(maxKnockback, maxKnockback);
-                    }
-                } else
-                {
-                    rb.velocity = new Vector2(actualknockback, actualknockback);
-                }
-               // rb.AddForce(transform.right * knockback);
-            }*/
+            //actualknockback = knockback;
             if (knockFromRight)
             {
                 if (isRunning)
                 {
                     if (isFacingRight)
                     {
-                        actualknockback = actualknockback - forwardVelocity;
+                       // actualknockback = actualknockback - forwardVelocity;
                     } else
                     {
-                        actualknockback = actualknockback + forwardVelocity;
+                       // actualknockback = actualknockback + forwardVelocity;
                     }
                     if (actualknockback <= minknockback)
                     {
-                        actualknockback = minknockback;
+                       // actualknockback = minknockback;
                     }
-                    rb.velocity = new Vector2(-actualknockback, actualknockback);
+                    rb.velocity = new Vector2(-knockback, knockback);
 
                 }
                 else
                 {
-                    rb.velocity = new Vector2(knockback, knockback);
+                   rb.velocity = new Vector2(-knockback, knockback);
                 }
             }
             if (!knockFromRight)
@@ -361,16 +324,16 @@ public class PlayerController : MonoBehaviour
                 {
                     if (isFacingRight)
                     {
-                        actualknockback = actualknockback - forwardVelocity;
+                       // actualknockback = actualknockback - forwardVelocity;
                     } else
                     {
-                        actualknockback = actualknockback + forwardVelocity;
+                       // actualknockback = actualknockback + forwardVelocity;
                     }
                     if (actualknockback <= minknockback)
                     {
-                        actualknockback = minknockback;
+                       // actualknockback = minknockback;
                     }
-                    rb.velocity = new Vector2(actualknockback, actualknockback);
+                    rb.velocity = new Vector2(knockback, knockback);
                 }
                 else
                 {
