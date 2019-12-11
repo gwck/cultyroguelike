@@ -1,14 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Xml;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class LevelGen : MonoBehaviour
 {
-    [SerializeField] private Tilemap baseMap;
-    [SerializeField] private Tile tileA;
-    [SerializeField] private Tile tileB;
+    [SerializeField] private RoomBuilder roomBuilder;
 
     // Chance for a walker to create another walker at each step.
     [SerializeField] [Range (0,1)] private float branchChance = 0.02f;
@@ -61,42 +58,13 @@ public class LevelGen : MonoBehaviour
         }
     }
 
-    // A simple coordinate array to represent a room for testing purposes.
-    private int[,] room =
-        {   {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-            {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-            {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-            {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-            {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-            {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-            {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-            {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-            {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-            {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}};
-
     // Start is called before the first frame update.
     void Start()
     {
         Generate();
     }
 
-    // Place a rectangle in the tilemap.
-    // If filled is false, only the border is printed.
-    void Rectangle(Tile tile, int xOffset, int yOffset, int width, int height, bool filled)
-    {
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                if (filled || x == 0 || x == width - 1 || y == 0 || y == height - 1)
-                {
-                    baseMap.SetTile(new Vector3Int(x + xOffset, y + yOffset, 0), tile);
-                }
-            }
-        }
-    }
-
-    bool IsInGrid(int x, int y, int[,] grid)
+    public static bool IsInGrid(int x, int y, int[,] grid)
     {
         return x >= 0 && y >= 0 && x < grid.GetLength(0) && y < grid.GetLength(1);
     }
@@ -247,7 +215,7 @@ public class LevelGen : MonoBehaviour
                     if (Random.Range(0f, 1f) < merge2Chance)
                     {
                         map[x, y] = 2;
-                        map[x + 1, y] = 0;
+                        map[x + 1, y] = -1;
                     }
                 }
             }
@@ -270,9 +238,9 @@ public class LevelGen : MonoBehaviour
                     if (Random.Range(0f, 1f) < merge4Chance)
                     {
                         map[x, y] = 4;
-                        map[x + 1, y] = 0;
-                        map[x, y + 1] = 0;
-                        map[x + 1, y + 1] = 0;
+                        map[x + 1, y] = -1;
+                        map[x, y + 1] = -1;
+                        map[x + 1, y + 1] = -1;
                     }
                 }
             }
@@ -280,35 +248,20 @@ public class LevelGen : MonoBehaviour
         return map;
     }
 
-
-    [SerializeField] private int roomWidth = 6;
-    [SerializeField] private int roomHeight = 4;
-
     void Generate()
     {
-        baseMap.ClearAllTiles();
+        roomBuilder.ClearAllTiles();
         // Run the algorithm.
         int[,] map = Walk();
-        map = Merge4(map);
-        map = Merge2(map);
+        //map = Merge4(map);
+        //map = Merge2(map);
 
         // Place a rectangle to represent each room.
         for (int y = 0; y < map.GetLength(1); y++)
         {
             for (int x = 0; x < map.GetLength(0); x++)
             {
-                if (map[x, y] == 1)
-                {
-                    Rectangle(tileA, (x - map.GetLength(0) / 2) * roomWidth, (y - map.GetLength(1) / 2) * roomHeight, roomWidth, roomHeight, false);
-                }
-                else if (map[x, y] == 2)
-                {
-                    Rectangle(tileB, (x - map.GetLength(0) / 2) * roomWidth, (y - map.GetLength(1) / 2) * roomHeight, roomWidth * 2, roomHeight, false);
-                }
-                else if (map[x, y] == 4)
-                {
-                    Rectangle(tileB, (x - map.GetLength(0) / 2) * roomWidth, (y - map.GetLength(1) / 2) * roomHeight, roomWidth * 2, roomHeight * 2, false);
-                }
+                roomBuilder.BuildRoom(x, y, map);
             }
         }
     }
