@@ -1,0 +1,9 @@
+size:	1
+always:	left right
+maybe:	bottom top
+1 1 1 d d 1 1 1
+1 0 0 0 0 0 0 1
+1 0 0 0 0 0 0 1
+0 0 0 t t 0 0 0
+0 0 0 0 0 0 0 0
+1 1 1 d d 1 1 1

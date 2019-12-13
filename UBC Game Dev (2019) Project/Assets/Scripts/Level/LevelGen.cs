@@ -253,8 +253,8 @@ public class LevelGen : MonoBehaviour
         roomBuilder.ClearAllTiles();
         // Run the algorithm.
         int[,] map = Walk();
-        //map = Merge4(map);
-        //map = Merge2(map);
+        map = Merge4(map);
+        map = Merge2(map);
 
         // Place a rectangle to represent each room.
         for (int y = 0; y < map.GetLength(1); y++)

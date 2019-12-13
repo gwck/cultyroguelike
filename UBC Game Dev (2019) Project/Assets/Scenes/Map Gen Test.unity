@@ -157,8 +157,8 @@ MonoBehaviour:
   stopChance: 0.1
   merge2Chance: 0.5
   merge4Chance: 1
-  roomMin: 15
-  maxRooms: 25
+  roomMin: 10
+  maxRooms: 15
   initialWalkers: 2
   walkerCap: 4
   verticalSkew: 0
@@ -171,7 +171,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 751006113}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.470363, y: -0.33406338, z: -54.4018}
+  m_LocalPosition: {x: 3.470363, y: -0.3340634, z: -54.4018}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -192,8 +192,7 @@ MonoBehaviour:
   baseMap: {fileID: 1412077913}
   tileA: {fileID: 11400000, guid: acce62169a4fde74293a4920d914c699, type: 2}
   tileB: {fileID: 11400000, guid: 752c0154dbba83744b08bdc7e879116e, type: 2}
-  roomWidth: 6
-  roomHeight: 4
+  presets: {fileID: 4900000, guid: 9c8cda202d4b3cc489118a63242d174c, type: 3}
 --- !u!1 &1310730147
 GameObject:
   m_ObjectHideFlags: 0

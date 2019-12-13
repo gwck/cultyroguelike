@@ -8,9 +8,22 @@ public class RoomBuilder : MonoBehaviour
     [SerializeField] private Tilemap baseMap;
     [SerializeField] private Tile tileA;
     [SerializeField] private Tile tileB;
+    [SerializeField] private TextAsset presets;
 
-    [SerializeField] [Range (3, 32)] private int roomWidth = 6;
-    [SerializeField] [Range (3, 32)] private int roomHeight = 4;
+    List<int[,]> Presets1;
+
+    private const int RWIDTH = 8;
+    private const int RHEIGHT = 6;
+
+    struct DoorSet
+    {
+        public bool bottom, top, left, right, rbottom, rtop, uleft, uright;
+    }
+    void Start()
+    {
+        Presets1 = new List<int[,]>();
+        ReadPresets();
+    }
 
     // Clears all tiles in all tilemaps.
     public void ClearAllTiles()
@@ -21,7 +34,6 @@ public class RoomBuilder : MonoBehaviour
     // Determines the size of the room, then builds it.
     public void BuildRoom(int x, int y, int [,] map)
     {
-
         switch(map[x,y])
         {
             case 1: BuildRoom1(x, y, map); break;
@@ -32,81 +44,211 @@ public class RoomBuilder : MonoBehaviour
     // Builds a 1x1 room.
     void BuildRoom1(int x, int y, int [,] map)
     {
-        Tile[,] room = Border(tileA, new Tile[roomWidth, roomHeight]);
+        Tile[,] room = Border(tileA, new Tile[RWIDTH, RHEIGHT]);
+        DoorSet ds = Doors(x, y, map);
 
-        // Left door.
-        if (LevelGen.IsInGrid(x - 1, y, map) && map[x - 1, y] != 0)
+        if (ds.left)
         {
             room[0, 1] = null;
             room[0, 2] = null;
         }
 
-        // Right door.
-        if (LevelGen.IsInGrid(x + 1, y, map) && map[x + 1, y] != 0)
+        if (ds.right)
         {
-            room[room.GetLength(0) - 1, 1] = null;
-            room[room.GetLength(0) - 1, 2] = null;
+            room[7, 1] = null;
+            room[7, 2] = null;
         }
 
-        // Roof hole.
-        if (LevelGen.IsInGrid(x, y - 1, map) && map[x, y - 1] != 0)
+        if (ds.bottom)
         {
-            room[room.GetLength(0) / 2, 0] = null;
+            room[3, 0] = null;
+            room[4, 0] = null;
         }
 
-        // Floor hole.
-        if (LevelGen.IsInGrid(x, y + 1, map) && map[x, y + 1] != 0)
+        if (ds.top)
         {
-            room[room.GetLength(0) / 2, room.GetLength(1) - 1] = null;
+            room[3, 5] = null;
+            room[4, 5] = null;
         }
 
-        PlaceRoom((x - map.GetLength(0) / 2) * roomWidth, (y - map.GetLength(1) / 2) * roomHeight, room);
+        PlaceRoom((x - map.GetLength(0) / 2) * RWIDTH, (y - map.GetLength(1) / 2) * RHEIGHT, room);
     }
 
     // Builds a 2x1 room.
     void BuildRoom2(int x, int y, int [,] map)
     {
-        Tile[,] room = Border(tileA, new Tile[roomWidth * 2, roomHeight]);
+        Tile[,] room = Border(tileA, new Tile[RWIDTH * 2, RHEIGHT]);
+        DoorSet ds = Doors(x, y, map);
 
-        // Left door.
-        if (LevelGen.IsInGrid(x - 1, y, map) && map[x - 1, y] != 0)
+        if (ds.left)
         {
             room[0, 1] = null;
             room[0, 2] = null;
         }
 
-        // Right door.
-        if (LevelGen.IsInGrid(x + 2, y, map) && map[x + 2, y] != 0)
+        if (ds.right)
         {
-            room[room.GetLength(0) - 1, 1] = null;
-            room[room.GetLength(0) - 1, 2] = null;
+            room[15, 1] = null;
+            room[15, 2] = null;
         }
 
-        PlaceRoom((x - map.GetLength(0) / 2) * roomWidth, (y - map.GetLength(1) / 2) * roomHeight, room);
+        if (ds.bottom)
+        {
+            room[3, 0] = null;
+            room[4, 0] = null;
+        }
+
+        if (ds.top)
+        {
+            room[3, 5] = null;
+            room[4, 5] = null;
+        }
+
+        if (ds.rbottom)
+        {
+            room[11, 0] = null;
+            room[12, 0] = null;
+        }
+
+        if (ds.rtop)
+        {
+            room[11, 5] = null;
+            room[12, 5] = null;
+        }
+
+        PlaceRoom((x - map.GetLength(0) / 2) * RWIDTH, (y - map.GetLength(1) / 2) * RHEIGHT, room);
     }
 
     // Builds a 2x2 room.
     void BuildRoom4(int x, int y, int [,] map)
     {
-        Tile[,] room = Border(tileA, new Tile[roomWidth * 2, roomHeight * 2]);
-        
-        // Bottom left door.
-        if (LevelGen.IsInGrid(x - 1, y, map) && map[x - 1, y] != 0)
+        Tile[,] room = Border(tileA, new Tile[RWIDTH * 2, RHEIGHT * 2]);
+        DoorSet ds = Doors(x, y, map);
+
+        if (ds.left)
         {
             room[0, 1] = null;
             room[0, 2] = null;
         }
 
-        // Bottom right door.
-        if (LevelGen.IsInGrid(x + 2, y, map) && map[x + 2, y] != 0)
+        if (ds.right)
         {
-            room[room.GetLength(0) - 1, 1] = null;
-            room[room.GetLength(0) - 1, 2] = null;
+            room[15, 1] = null;
+            room[15, 2] = null;
         }
 
-        PlaceRoom((x - map.GetLength(0) / 2) * roomWidth, (y - map.GetLength(1) / 2) * roomHeight, room);
+        if (ds.bottom)
+        {
+            room[3, 0] = null;
+            room[4, 0] = null;
+        }
+
+        if (ds.top)
+        {
+            room[3, 11] = null;
+            room[4, 11] = null;
+        }
+
+        if (ds.uleft)
+        {
+            room[0, 7] = null;
+            room[0, 8] = null;
+        }
+
+        if (ds.uright)
+        {
+            room[15, 7] = null;
+            room[15, 8] = null;
+        }
+
+        if (ds.rbottom)
+        {
+            room[11, 0] = null;
+            room[12, 0] = null;
+        }
+
+        if (ds.rtop)
+        {
+            room[11, 11] = null;
+            room[12, 11] = null;
+        }
+
+        PlaceRoom((x - map.GetLength(0) / 2) * RWIDTH, (y - map.GetLength(1) / 2) * RHEIGHT, room);
     }
 
+    bool RoomCheck(int x, int y, int [,] map)
+    {
+        return LevelGen.IsInGrid(x, y, map) && map[x, y] != 0;
+    }
+
+    // Create a struct to represent the doors in a given room.
+    DoorSet Doors(int x, int y, int [,] map)
+    {
+        DoorSet ds = new DoorSet();
+
+        ds.bottom = false;
+        ds.top = false;
+        ds.left = false;
+        ds.right = false;
+        ds.rbottom = false;
+        ds.rtop = false;
+        ds.uleft = false;
+        ds.uright = false;
+
+        // Check the possible doors for each room type and store them in the struct.
+        // Recall that in the tilemap, y increases upwards and x rightwards.
+        switch(map[x,y])
+        {
+            case 1:
+                ds.bottom = RoomCheck(x, y - 1, map);
+                ds.top = RoomCheck(x, y + 1, map);
+                ds.left = RoomCheck(x - 1, y, map);
+                ds.right = RoomCheck(x + 1, y, map);
+                break;
+            case 2:
+                ds.bottom = RoomCheck(x, y - 1, map);
+                ds.top = RoomCheck(x, y + 1, map);
+                ds.rbottom = RoomCheck(x + 1, y - 1, map);
+                ds.rtop = RoomCheck(x + 1, y + 1, map);
+                ds.left = RoomCheck(x - 1, y, map);
+                ds.right = RoomCheck(x + 2, y, map);
+                break;
+            case 4:
+                ds.bottom = RoomCheck(x, y - 1, map);
+                ds.top = RoomCheck(x, y + 2, map);
+                ds.rbottom = RoomCheck(x + 1, y - 1, map);
+                ds.rtop = RoomCheck(x + 1, y + 2, map);
+                ds.left = RoomCheck(x - 1, y, map);
+                ds.right = RoomCheck(x + 2, y, map);
+                ds.uleft = RoomCheck(x - 1, y + 1, map);
+                ds.uright = RoomCheck(x + 2, y + 1, map);
+                break;
+        }
+
+        return ds;
+    }
+
+    void ReadPresets()
+    {
+        try
+        {
+            string raw = presets.text;
+            string[] lines = raw.Split('\r');
+            if (lines[0].Split(' ')[1].Trim() == "1")
+            {
+
+            }
+            foreach (string line in lines)
+            {
+                Debug.Log(line);
+            }
+        } catch (System.Exception)
+        {
+            Debug.Log("Read failed.");
+        }
+    }
+
+    // Places a room in the tilemaps.
     void PlaceRoom(int xOffset, int yOffset, Tile[,] room)
     {
         for (int y = 0; y < room.GetLength(1); y++)
@@ -118,8 +260,7 @@ public class RoomBuilder : MonoBehaviour
         }
     }
 
-    // Place a rectangle in the tilemap.
-    // If filled is false, only the border is printed.
+    // Make a border of the specified tile around the room.
     Tile[,] Border(Tile tile, Tile[,] room)
     {
         for (int i = 0; i < room.GetLength(0); i++)
