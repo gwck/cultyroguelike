@@ -3,7 +3,17 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Enemy
+  - GameMaster
+  - GM
+  - Blood
+  - PlayerCamera
+  - PlayerCamera
+  - PlayerCamera
+  - PlayerCamera
+  - PlayerCamera
+  - PlayerCamera
   layers:
   - Default
   - TransparentFX
@@ -13,11 +23,11 @@ TagManager:
   - UI
   - 
   - 
+  - EnemyLayer
+  - PlayerLayer
   - Ground
-  - 
-  - 
-  - 
-  - 
+  - Enemy
+  - PostProcessing
   - 
   - 
   - 
@@ -40,4 +50,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: PlayerLayer
+    uniqueID: 3504560429
     locked: 0

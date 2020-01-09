@@ -103,12 +103,34 @@ Tilemap:
       m_ObjectToInstantiate: {fileID: 0}
       m_TileFlags: 1
       m_ColliderType: 1
+  - first: {x: -1, y: 1, z: 0}
+    second:
+      m_TileIndex: 2
+      m_TileSpriteIndex: 2
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_ObjectToInstantiate: {fileID: 0}
+      m_TileFlags: 1
+      m_ColliderType: 1
+  - first: {x: 0, y: 1, z: 0}
+    second:
+      m_TileIndex: 3
+      m_TileSpriteIndex: 3
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_ObjectToInstantiate: {fileID: 0}
+      m_TileFlags: 1
+      m_ColliderType: 1
   m_AnimatedTiles: {}
   m_TileAssetArray:
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: 851d2eb18a712704c813a39ffd15190c, type: 2}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: 2b98181a7c8b0c9478fbd32287f8533b, type: 2}
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: acce62169a4fde74293a4920d914c699, type: 2}
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: 752c0154dbba83744b08bdc7e879116e, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 1
     m_Data: {fileID: 7151546765499934161, guid: 519093227e27a964daef481de2c500b5,
@@ -116,8 +138,14 @@ Tilemap:
   - m_RefCount: 1
     m_Data: {fileID: -8644877247829381059, guid: 519093227e27a964daef481de2c500b5,
       type: 3}
+  - m_RefCount: 1
+    m_Data: {fileID: 5865935373905670686, guid: ada93b1d2cb23344ebb908a1a457beb7,
+      type: 3}
+  - m_RefCount: 1
+    m_Data: {fileID: 8154688249601666828, guid: ada93b1d2cb23344ebb908a1a457beb7,
+      type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 2
+  - m_RefCount: 4
     m_Data:
       e00: 1
       e01: 0
@@ -136,12 +164,12 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 2
+  - m_RefCount: 4
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: -1, y: 0, z: 0}
-  m_Size: {x: 2, y: 1, z: 1}
+  m_Size: {x: 2, y: 2, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
