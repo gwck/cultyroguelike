@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 720704478071402559}
   - component: {fileID: 2934141313194963737}
   m_Layer: 10
-  m_Name: Wall1_1
+  m_Name: Stone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,8 +67,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1442690373
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 8154688249601666828, guid: ada93b1d2cb23344ebb908a1a457beb7,
     type: 3}

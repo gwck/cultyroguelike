@@ -9,8 +9,8 @@ public class GenerateObject : MonoBehaviour
     void Start()
     {
         int rand = Random.Range(0, objs.Length);
-        var obj = Instantiate(objs[rand], transform.position, Quaternion.identity);
-        //obj.transform.parent = transform.parent;
-        //Destroy(gameObject);
+        var obj = Instantiate(objs[rand], transform.position, Quaternion.identity, transform.parent);
+
+        Destroy(gameObject);
     }
 }

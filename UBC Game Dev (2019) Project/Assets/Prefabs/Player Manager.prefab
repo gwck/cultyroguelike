@@ -4920,8 +4920,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -790406867
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: 6455500916743056780, guid: 880331be10cd9b04fbb97312e3df77b9,
     type: 3}
@@ -5013,7 +5013,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d389a33140b298e498fbcb543a0be1b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountOfJumps: 1
+  amountOfJumps: 2
   fallBoundary: -90
   knockFromRight: 0
   forwardVelocity: 0
@@ -5021,7 +5021,7 @@ MonoBehaviour:
   maxSpeed: 20
   timeZeroToMax: 0.4
   timeMaxToZero: 0.3
-  jumpVelocity: 18
+  jumpVelocity: 25
   groundCheckRadius: 0.4
   wallCheckDistance: 0.8
   wallSlideSpeed: 10
@@ -5195,31 +5195,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player Camera
       objectReference: {fileID: 0}
-    - target: {fileID: 9213422557602984365, guid: 3387c671ff5b74f4f9543e01b684dfe6,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9213422557602984365, guid: 3387c671ff5b74f4f9543e01b684dfe6,
-        type: 3}
-      propertyPath: m_Layer
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 9213422558208800979, guid: 3387c671ff5b74f4f9543e01b684dfe6,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 10.693954
-      objectReference: {fileID: 0}
-    - target: {fileID: 9213422558208800979, guid: 3387c671ff5b74f4f9543e01b684dfe6,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 40.27287
-      objectReference: {fileID: 0}
-    - target: {fileID: 9213422558208800979, guid: 3387c671ff5b74f4f9543e01b684dfe6,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -129.98956
-      objectReference: {fileID: 0}
     - target: {fileID: 9213422557011496261, guid: 3387c671ff5b74f4f9543e01b684dfe6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5285,11 +5260,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 9213422557222275526, guid: 3387c671ff5b74f4f9543e01b684dfe6,
-        type: 3}
-      propertyPath: m_Follow
-      value: 
-      objectReference: {fileID: 6552898926234347353}
     - target: {fileID: 9213422556523159329, guid: 3387c671ff5b74f4f9543e01b684dfe6,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -5305,6 +5275,36 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -129.98956
       objectReference: {fileID: 0}
+    - target: {fileID: 9213422558208800979, guid: 3387c671ff5b74f4f9543e01b684dfe6,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 10.693954
+      objectReference: {fileID: 0}
+    - target: {fileID: 9213422558208800979, guid: 3387c671ff5b74f4f9543e01b684dfe6,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 40.27287
+      objectReference: {fileID: 0}
+    - target: {fileID: 9213422558208800979, guid: 3387c671ff5b74f4f9543e01b684dfe6,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -129.98956
+      objectReference: {fileID: 0}
+    - target: {fileID: 9213422557602984365, guid: 3387c671ff5b74f4f9543e01b684dfe6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9213422557602984365, guid: 3387c671ff5b74f4f9543e01b684dfe6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 9213422557222275526, guid: 3387c671ff5b74f4f9543e01b684dfe6,
+        type: 3}
+      propertyPath: m_Follow
+      value: 
+      objectReference: {fileID: 6552898926234347353}
     - target: {fileID: 9213422557602984530, guid: 3387c671ff5b74f4f9543e01b684dfe6,
         type: 3}
       propertyPath: m_BackGroundColor.r
