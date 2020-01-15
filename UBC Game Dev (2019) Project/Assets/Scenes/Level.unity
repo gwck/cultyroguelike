@@ -215,6 +215,7 @@ MonoBehaviour:
   - {fileID: 918348973240306816, guid: 7e2645800044d2245a34c105583ad8ea, type: 3}
   segment:
   - {fileID: 246395381234889594, guid: 67677b3b47ee64e438b1d7b03695a806, type: 3}
+  - {fileID: 4939232072173705703, guid: 3ff3cb3c5dc04154d9f65b386f9c619a, type: 3}
   stair:
   - {fileID: 9218607280976137060, guid: baa1260468900f94e871f162ab7f3a77, type: 3}
   end:

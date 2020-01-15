@@ -5013,7 +5013,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d389a33140b298e498fbcb543a0be1b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountOfJumps: 2
+  amountOfJumps: 1
   fallBoundary: -90
   knockFromRight: 0
   forwardVelocity: 0
@@ -5021,7 +5021,7 @@ MonoBehaviour:
   maxSpeed: 20
   timeZeroToMax: 0.4
   timeMaxToZero: 0.3
-  jumpVelocity: 25
+  jumpVelocity: 26
   groundCheckRadius: 0.4
   wallCheckDistance: 0.8
   wallSlideSpeed: 10
