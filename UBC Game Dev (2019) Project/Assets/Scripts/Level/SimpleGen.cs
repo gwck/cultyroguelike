@@ -54,23 +54,6 @@ public class SimpleGen : MonoBehaviour
         while (!done) Step();
     }
 
-    private void Update()
-    {
-        /**
-        // stop generating if done
-        if (done) return;
-
-        // generate one space at a time
-        timer += Time.deltaTime;
-
-        // check if the time has passed
-        if (timer > interval)
-        {
-            Step();
-            timer = 0;
-        }*/
-    }
-
     void Step()
     {
         // the position of the next room to be generated
@@ -79,13 +62,16 @@ public class SimpleGen : MonoBehaviour
         if (room == 0) // place the first room in the row
         {
             newPos = PlaceStart();
-        } else if (room == rooms) // place the last room in the row
+        }
+        else if (room == rooms) // place the last room in the row
         {
             newPos = PlaceEnd();
-        } else if (room == stairPos) // place a staircase
+        }
+        else if (room == stairPos) // place a staircase
         {
             newPos = PlaceStair();
-        } else // place a normal room segment
+        }
+        else // place a normal room segment
         {
             newPos = PlaceSegment();
         }
@@ -100,10 +86,11 @@ public class SimpleGen : MonoBehaviour
         // if above the previous staircase, place an open segment
         if (room == stairOffset)
         {
-            Instantiate(open[Random.Range(0, open.Length)], transform.position, Quaternion.identity);
-        } else
+            Instantiate(open[Random.Range(0, open.Length)], transform.position, Quaternion.identity, transform.parent);
+        }
+        else
         {
-            Instantiate(segment[Random.Range(0, segment.Length)], transform.position, Quaternion.identity);
+            Instantiate(segment[Random.Range(0, segment.Length)], transform.position, Quaternion.identity, transform.parent);
         }
         // move right
         room++;
@@ -117,14 +104,16 @@ public class SimpleGen : MonoBehaviour
         // if on the top floor, 50% chance of spawning a boss room
         if (floor == 1)
         {
-            Instantiate(spawn[Random.Range(0, spawn.Length)], transform.position, Quaternion.identity);
-        } else if (floor ==  floors && Random.Range(0f, 1f) > 0.5)
+            Instantiate(spawn[Random.Range(0, spawn.Length)], transform.position, Quaternion.identity, transform.parent);
+        }
+        else if (floor == floors && Random.Range(0f, 1f) > 0.5)
         {
-            Instantiate(boss[Random.Range(0, boss.Length)], transform.position, Quaternion.identity);
+            Instantiate(boss[Random.Range(0, boss.Length)], transform.position, Quaternion.identity, transform.parent);
             bossRoomPlaced = true;
-        } else
+        }
+        else
         {
-            Instantiate(end[Random.Range(0, end.Length)], transform.position, Quaternion.identity);
+            Instantiate(end[Random.Range(0, end.Length)], transform.position, Quaternion.identity, transform.parent);
         }
         // move right
         room++;
@@ -133,17 +122,22 @@ public class SimpleGen : MonoBehaviour
 
     Vector2 PlaceEnd()
     {
+        GameObject obj;
         // place an end room
         // if on the top floor, place a boss room if one hasn't been placed at the other end
         if (floor == floors && !bossRoomPlaced)
         {
-            Instantiate(boss[Random.Range(0, boss.Length)], transform.position, Quaternion.Euler(new Vector3(0, 180, 0)));
+            obj = Instantiate(boss[Random.Range(0, boss.Length)], transform.position, Quaternion.identity, transform.parent);
             bossRoomPlaced = true;
         }
         else
         {
-            Instantiate(end[Random.Range(0, end.Length)], transform.position, Quaternion.Euler(new Vector3(0, 180, 0)));
+            obj = Instantiate(end[Random.Range(0, end.Length)], transform.position, Quaternion.identity, transform.parent);
         }
+        // flip the room horizontally
+        obj.transform.localScale = new Vector2(-1, obj.transform.localScale.y);
+        obj.transform.Find("Background").Rotate(new Vector2(0f,180f));
+
 
         // reset the room counter
         room = 0;
@@ -154,13 +148,17 @@ public class SimpleGen : MonoBehaviour
 
         // move to the next floor
         floor++;
-        if (floor > floors) {
+        if (floor > floors)
+        {
             // end the level generation if there are no more floors to generate
             done = true;
-        } else if (floor == floors) {
+        }
+        else if (floor == floors)
+        {
             // no stair on the top floor
             stairPos = -1;
-        } else
+        }
+        else
         {
             // choose the location of the next stair
             stairPos = Random.Range(1, rooms - 1);
@@ -170,20 +168,21 @@ public class SimpleGen : MonoBehaviour
                 {
                     // choose the location of the next stair
                     stairPos = Random.Range(1, rooms - 1);
-                } else
+                }
+                else
                 {
                     break;
                 }
             }
         }
         // move to the first room of the next floor, based on the location of the staircase
-        return new Vector2(stairPoint.transform.position.x -  (stairOffset * width), stairPoint.transform.position.y + height);
+        return new Vector2(stairPoint.transform.position.x - (stairOffset * width), stairPoint.transform.position.y + height);
     }
 
     Vector2 PlaceStair()
     {
         // place a stair room
-        Instantiate(stair[Random.Range(0, stair.Length)], transform.position, Quaternion.identity);
+        Instantiate(stair[Random.Range(0, stair.Length)], transform.position, Quaternion.identity, transform.parent);
         // note the location of the stair room
         stairPoint.transform.position = new Vector2(transform.position.x, transform.position.y);
         // move right
