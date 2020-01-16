@@ -74,6 +74,8 @@ public class PlayerMovement : MonoBehaviour
                                               //isRunning variable!
     }
 
+   
+
     //EFFECTS: Checks if object is wall sliding
     private void CheckifWallSliding()
     {
