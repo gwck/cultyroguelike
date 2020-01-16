@@ -1,4 +1,5 @@
 ﻿
+using System.Collections;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
@@ -21,41 +22,38 @@ public class EnemyController : MonoBehaviour
     public float groundCheckRadius;
     public float wallCheckDistance;
 
-
     private BoxCollider2D bc;
-    private Transform player;
+    private PlayerController playerController;
+    private Transform playerMovement;
+
 
     public Transform groundCheck;
     public Transform wallCheck;
 
     public LayerMask whatIsGround;
 
-    public EnemyStats stats = new EnemyStats();
+    public GameObject bloodSplash;
 
-    [System.Serializable]
-    public class EnemyStats
-    {
-        public int enemyDamage;
-    }
-
+    private EnemyStats stats;
     
     // Start is called before the first frame update
     void Start()
     {
+        stats = gameObject.GetComponent<EnemyStats>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         bc = GetComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (player == null)
+        if (playerMovement == null)
         {
-            player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+            playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         }
-
         UpdateAnimations();
         OntheGround();
         CanFollowPlayer();
@@ -66,9 +64,9 @@ public class EnemyController : MonoBehaviour
         if (followCooldown > 0) followCooldown--;
         Debug.Log(followCooldown);
 
-        if (player == null)
+        if (playerMovement == null)
         {
-            player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+            playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         } 
         
         CheckSurroundings();
@@ -114,7 +112,7 @@ public class EnemyController : MonoBehaviour
     //Checks to see if enemy is close enough to chase player!
     private void CanFollowPlayer()
     {
-        float distanceToTarget = Vector3.Distance(transform.position, player.position);
+        float distanceToTarget = Vector3.Distance(transform.position, playerMovement.position);
         Debug.Log(distanceToTarget);
         if (distanceToTarget <= chaseRange)
         {
@@ -158,7 +156,7 @@ public class EnemyController : MonoBehaviour
     //Starts chasing the target
     private void ChasePlayerHorizontally()
     {
-        if (player.position.x > transform.position.x)
+        if (playerMovement.position.x > transform.position.x)
         {
             rb.velocity = new Vector2(movementSpeed * chaseSpeed, rb.velocity.y);
 
@@ -176,8 +174,19 @@ public class EnemyController : MonoBehaviour
         if (_player != null)
         {
             _player.DamagePlayer(stats.enemyDamage);
+            _player.forwardVelocity = _player.forwardVelocity - stats.enemyDamage;
+
+            var _playerController = _player.GetComponent<PlayerController>();
+            _playerController.knockbackCount = _playerController.knockbackLength;
+
+            if (_player.transform.position.x < transform.position.x)
+            {
+                _playerController.knockFromRight = true;
+            } else
+            {
+                _playerController.knockFromRight = false;
+            }
         }
     }
-
 
 }
