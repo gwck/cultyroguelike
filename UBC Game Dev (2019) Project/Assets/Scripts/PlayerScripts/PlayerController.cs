@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     private bool isJumping;
     private bool isGroundSlamming;
     private bool isFalling;
+    private bool isDamaged;
     private bool isGrounded;
     private bool isTouchingWall;
     private bool isWallSliding;
@@ -123,7 +124,9 @@ public class PlayerController : MonoBehaviour
         UpdateAnimations();
         CheckIfCanJump();
         CheckIfWallSliding();
+        CheckIfDamaged();
     }
+
 
     private void FixedUpdate()
     {
@@ -400,15 +403,30 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public void DamagePlayer(int damage)
+    private void CheckIfDamaged()
     {
-        playerStats.curHealth -= damage;
+        //anim. accesses the parameters we set up in the animator
+        //so here we use SetBool to acces the boolean and set it to a specific value!
+        anim.SetBool("isDamaged", isDamaged); //sets the value in animator to the value of our
+                                              //isDamaged variable!
+    }
+
+    private void setDamageFalse() //This turns the Damage animation off. just made this function so that I could put in inside of an "invoke".
+    {
+        isDamaged = false;
+    }
+    public void DamagePlayer(int damage) //When the player is damaged
+    {
+
+        playerStats.curHealth -= damage; //damage is subtracted from the health
+        isDamaged = true; //damage animation is turned on
+        Invoke("setDamageFalse", 0.10f); //damage animation is turned off on a .10 second delay
+
 
         if (playerStats.curHealth <= 0)
         {
             GameMaster.KillPlayer(this);
         }
-
     }
 
     public void PlayerFalling()
