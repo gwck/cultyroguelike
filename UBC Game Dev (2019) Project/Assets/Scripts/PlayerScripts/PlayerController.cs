@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
     private bool isFacingRight = true;
     private bool isRunning;
     private bool isJumping;
+    [SerializeField]
+    public bool isSecondJumping;
     private bool isGroundSlamming;
     private bool isFalling;
     private bool isDamaged;
@@ -80,6 +82,8 @@ public class PlayerController : MonoBehaviour
 
     public PlayerStats playerStats = new PlayerStats();
 
+    public GameObject secondJumpEffect;
+
     [System.Serializable]
     public class PlayerStats
     {
@@ -142,6 +146,7 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("isFalling", isFalling);
         anim.SetBool("isRunning", isRunning);
         anim.SetBool("isJumping", isJumping);
+        anim.SetBool("isSecondJumping", isSecondJumping);
         anim.SetBool("isWallSliding", isWallSliding);
 
     }
@@ -196,6 +201,7 @@ public class PlayerController : MonoBehaviour
         {
             amountofJumpsLeft = amountOfJumps;
             isJumping = false;
+            isSecondJumping = false;
         }
 
         if (amountofJumpsLeft <= 0)
@@ -380,11 +386,25 @@ public class PlayerController : MonoBehaviour
     {
         if (canJump)
         {
-            isJumping = true;
-            anim.SetBool("isJumping", isJumping);
-            rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
-            CreateDust();
-            amountofJumpsLeft--;
+            if (amountofJumpsLeft > 1)
+            {
+                isJumping = true;
+                anim.SetBool("isJumping", isJumping);
+                rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
+                CreateDust();
+                amountofJumpsLeft--;
+            } else
+            {
+                isSecondJumping = true;
+                GameObject secondJump = Instantiate(secondJumpEffect, new Vector3(transform.position.x, transform.position.y - 1, transform.position.z), transform.rotation);
+                secondJump.GetComponent<JumpAnimation>().playerController = this;
+                anim.SetBool("isSecondJumping", isSecondJumping);
+                rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
+                amountofJumpsLeft--;
+                Destroy(secondJump, 0.5f);
+
+            }
+
 
         }
     }
