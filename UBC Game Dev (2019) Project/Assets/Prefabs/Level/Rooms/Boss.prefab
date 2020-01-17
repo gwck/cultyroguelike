@@ -43,6 +43,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5307516211416343824}
     m_Modifications:
+    - target: {fileID: 7149380343336645050, guid: d096aef8b7b80204689c946ee6d4b0e7,
+        type: 3}
+      propertyPath: m_Name
+      value: Ceiling
+      objectReference: {fileID: 0}
     - target: {fileID: 2631599930666746294, guid: d096aef8b7b80204689c946ee6d4b0e7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -98,11 +103,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7149380343336645050, guid: d096aef8b7b80204689c946ee6d4b0e7,
-        type: 3}
-      propertyPath: m_Name
-      value: Ceiling
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d096aef8b7b80204689c946ee6d4b0e7, type: 3}
 --- !u!4 &3013996249325845964 stripped
@@ -118,15 +118,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5307516211416343824}
     m_Modifications:
+    - target: {fileID: 76053395011824524, guid: 3b297ed1094a3474cb01d2500dc3fb8c,
+        type: 3}
+      propertyPath: m_Name
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: 9081211287457973455, guid: 3b297ed1094a3474cb01d2500dc3fb8c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.134
+      value: -6.25
       objectReference: {fileID: 0}
     - target: {fileID: 9081211287457973455, guid: 3b297ed1094a3474cb01d2500dc3fb8c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.107
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9081211287457973455, guid: 3b297ed1094a3474cb01d2500dc3fb8c,
         type: 3}
@@ -173,10 +178,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 76053395011824524, guid: 3b297ed1094a3474cb01d2500dc3fb8c,
+    - target: {fileID: 9081211287457973455, guid: 3b297ed1094a3474cb01d2500dc3fb8c,
         type: 3}
-      propertyPath: m_Name
-      value: Wall
+      propertyPath: m_LocalScale.x
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 9081211287457973455, guid: 3b297ed1094a3474cb01d2500dc3fb8c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b297ed1094a3474cb01d2500dc3fb8c, type: 3}
@@ -193,6 +203,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5307516211416343824}
     m_Modifications:
+    - target: {fileID: 8761709981058600259, guid: 41f97f254f35deb43bb9c0002cedcc44,
+        type: 3}
+      propertyPath: m_Name
+      value: Background
+      objectReference: {fileID: 0}
     - target: {fileID: 4178057343934010112, guid: 41f97f254f35deb43bb9c0002cedcc44,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -248,11 +263,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8761709981058600259, guid: 41f97f254f35deb43bb9c0002cedcc44,
-        type: 3}
-      propertyPath: m_Name
-      value: Background
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 41f97f254f35deb43bb9c0002cedcc44, type: 3}
 --- !u!4 &8420153554673408964 stripped
@@ -268,6 +278,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5307516211416343824}
     m_Modifications:
+    - target: {fileID: 1199826997992269567, guid: db0cacec5f9702d4e974ce38d4e3ea13,
+        type: 3}
+      propertyPath: m_Name
+      value: Woodfloor
+      objectReference: {fileID: 0}
     - target: {fileID: 7714551829612496464, guid: db0cacec5f9702d4e974ce38d4e3ea13,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -322,11 +337,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1199826997992269567, guid: db0cacec5f9702d4e974ce38d4e3ea13,
-        type: 3}
-      propertyPath: m_Name
-      value: Woodfloor
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db0cacec5f9702d4e974ce38d4e3ea13, type: 3}
@@ -429,6 +439,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5307516211416343824}
     m_Modifications:
+    - target: {fileID: 9138443324842116512, guid: 0a5b7110f6d9ebd4786d182189581085,
+        type: 3}
+      propertyPath: m_Name
+      value: Exit Door
+      objectReference: {fileID: 0}
     - target: {fileID: 9138443324842116515, guid: 0a5b7110f6d9ebd4786d182189581085,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -483,11 +498,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9138443324842116512, guid: 0a5b7110f6d9ebd4786d182189581085,
-        type: 3}
-      propertyPath: m_Name
-      value: Exit Door
       objectReference: {fileID: 0}
     - target: {fileID: 7151356425467623464, guid: 0a5b7110f6d9ebd4786d182189581085,
         type: 3}
