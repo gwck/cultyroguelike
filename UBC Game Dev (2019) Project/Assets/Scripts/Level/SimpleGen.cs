@@ -129,6 +129,8 @@ public class SimpleGen : MonoBehaviour
         {
             obj = Instantiate(boss[Random.Range(0, boss.Length)], transform.position, Quaternion.identity, transform.parent);
             bossRoomPlaced = true;
+
+            GameObject.Find("exit").transform.Rotate(new Vector2(0f, 180f));
         }
         else
         {
@@ -136,7 +138,7 @@ public class SimpleGen : MonoBehaviour
         }
         // flip the room horizontally
         obj.transform.localScale = new Vector2(-1, obj.transform.localScale.y);
-        obj.transform.Find("Background").Rotate(new Vector2(0f,180f));
+        obj.transform.Find("Background").Rotate(new Vector2(0f, 180f));
 
 
         // reset the room counter
