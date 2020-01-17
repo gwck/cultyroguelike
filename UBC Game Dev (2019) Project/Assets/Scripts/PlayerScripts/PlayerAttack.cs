@@ -10,7 +10,8 @@ public class PlayerAttack : MonoBehaviour
     public bool isAttacking;
     public Animator anim;
     public int attackDamage;
-
+    public GameObject attackEffect;
+    public Transform attackEffectLocation;
     public Transform attackCheck;
 
     public LayerMask whatIsEnemies;
@@ -46,6 +47,8 @@ public class PlayerAttack : MonoBehaviour
                 enemiesToDamage[i].GetComponent<EnemyStats>().DamageEnemy(attackDamage);
                // enemiesToDamage[i].GetComponent<EnemyShooter>().DamageEnemy(attackDamage); NOTE TO SELF: Put EnemyStats in a NEW script!!!
             }
+            // create the attack effect animation
+            Instantiate(attackEffect, attackEffectLocation.position, transform.rotation, transform);
         }
         if (timeBtwnAttack <= 0)
         {

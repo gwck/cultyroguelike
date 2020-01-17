@@ -401,7 +401,7 @@ public class PlayerController : MonoBehaviour
                 anim.SetBool("isSecondJumping", isSecondJumping);
                 rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
                 amountofJumpsLeft--;
-                Destroy(secondJump, 0.5f);
+                Destroy(secondJump, 0.2f);
 
             }
 

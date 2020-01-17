@@ -54,3 +54,6 @@ TagManager:
   - name: PlayerLayer
     uniqueID: 3504560429
     locked: 0
+  - name: fx
+    uniqueID: 3700956439
+    locked: 0
