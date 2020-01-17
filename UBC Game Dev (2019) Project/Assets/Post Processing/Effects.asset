@@ -24,7 +24,7 @@ MonoBehaviour:
     value: -0.1
   maxLuminance:
     overrideState: 1
-    value: 7.9
+    value: 3.2
   keyValue:
     overrideState: 1
     value: 1
@@ -177,7 +177,7 @@ MonoBehaviour:
     value: 0
   postExposure:
     overrideState: 1
-    value: 1.2
+    value: 0
   contrast:
     overrideState: 1
     value: 0
