@@ -37,7 +37,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void Attack()
     {
-        if (Input.GetKeyDown("c"))
+        if (Input.GetKeyDown(KeyCode.Return))
         {
             isAttacking = true;
             Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackCheck.position, attackRange, whatIsEnemies); //casts a circle that kills all enemies in it

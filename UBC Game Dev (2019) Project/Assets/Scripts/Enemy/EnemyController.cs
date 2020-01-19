@@ -174,6 +174,7 @@ public class EnemyController : MonoBehaviour
         if (_player != null)
         {
             _player.DamagePlayer(stats.enemyDamage);
+            /*
             _player.forwardVelocity = _player.forwardVelocity - stats.enemyDamage;
 
             var _playerController = _player.GetComponent<PlayerController>();
@@ -185,7 +186,8 @@ public class EnemyController : MonoBehaviour
             } else
             {
                 _playerController.knockFromRight = false;
-            }
+            }*/
+
         }
     }
 

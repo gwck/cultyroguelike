@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Animator anim;
+
+    public Text healthBar;
 
 
     private int amountofJumpsLeft;
@@ -129,6 +133,7 @@ public class PlayerController : MonoBehaviour
         CheckIfCanJump();
         CheckIfWallSliding();
         CheckIfDamaged();
+        UpdateHealthBar();
     }
 
     private void FixedUpdate()
@@ -269,7 +274,7 @@ public class PlayerController : MonoBehaviour
             }
         }*/
 
-        if (knockbackCount <= 0)
+        if (true /*knockbackCount <= 0*/)
         {
             //actualknockback = knockback;
             if (movementInputdirection == 1)
@@ -299,7 +304,7 @@ public class PlayerController : MonoBehaviour
                     forwardVelocity = -maxSpeed;
                 }
             }
-        }
+        } /*
         else
         {
             //actualknockback = knockback;
@@ -361,7 +366,7 @@ public class PlayerController : MonoBehaviour
             {
                 rb.velocity = new Vector2(rb.velocity.x, -wallSlideSpeed);
             }
-        }
+        }*/
     }
 
     //EFFECTS: Flips the character sprite
@@ -437,13 +442,23 @@ public class PlayerController : MonoBehaviour
         playerStats.curHealth -= damage;
         isDamaged = true; //damage animation is turned on
         Invoke("setDamageFalse", 0.10f); //damage animation is turned off on a .10 second delay
-
-
+        //UpdateHealthBar();
         if (playerStats.curHealth <= 0)
         {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             GameMaster.KillPlayer(this);
         }
 
+    }
+
+    private void UpdateHealthBar()
+    {
+        string str = "";
+        for (int i = 0; i < playerStats.curHealth; i++)
+        {
+            str += "|";
+        }
+        healthBar.text = str;
     }
 
     public void PlayerFalling()

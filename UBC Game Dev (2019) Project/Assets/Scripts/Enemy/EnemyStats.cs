@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyStats : MonoBehaviour
 {
     private bool enemyDead = false;
-
+    public Animator anim;
     public int enemyDamage;
     public int health;
 
@@ -31,11 +31,14 @@ public class EnemyStats : MonoBehaviour
         {
             // Instantiate(bloodSplash, transform.position, Quaternion.identity);
             Instantiate(effect, transform.position, Quaternion.identity);
+            Destroy(gameObject);
+            /*
             timeManager.SlowMo();
             GetComponent<SpriteRenderer>().enabled = false;
             GetComponent<BoxCollider2D>().enabled = false;
             StartCoroutine(GhostEffect());
             enemyDead = true;
+    */
         }
     }
 
@@ -54,6 +57,7 @@ public class EnemyStats : MonoBehaviour
     public void DamageEnemy(int damage)
     {
         health -= damage;
+        anim.SetTrigger("hit");
         if (health <= 0 && !enemyDead)
         {
             KillEnemy();

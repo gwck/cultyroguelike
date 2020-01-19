@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 8595074567143387481}
   - component: {fileID: 8595074567143387480}
   - component: {fileID: 8595074567143387479}
+  - component: {fileID: 2872783995235406735}
   m_Layer: 0
   m_Name: Enemy2
   m_TagString: Enemy
@@ -199,18 +200,30 @@ MonoBehaviour:
   chaseRange: 8
   groundCheckRadius: 1
   wallCheckDistance: 0.6
-  effect: {fileID: 6619407764865432, guid: 86dc2d9b5a94a304fbad429490a96c65, type: 3}
   groundCheck: {fileID: 8595074567325901188}
   wallCheck: {fileID: 8595074566216258334}
   whatIsGround:
     serializedVersion: 2
     m_Bits: 1280
-  timeManager: {fileID: 0}
-  bloodSplash: {fileID: 7013345751430309722, guid: 488f7bff3ce56ef41811c0785e045d27,
+  bloodSplash: {fileID: 6619407535911479, guid: 86dc2d9b5a94a304fbad429490a96c65,
     type: 3}
-  stats:
-    enemyDamage: 5
-    health: 10
+--- !u!114 &2872783995235406735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8595074567143387478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c8d2da8e46371b4b9faad98018b8517, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 8595074567143387482}
+  enemyDamage: 5
+  health: 10
+  timeManager: {fileID: 0}
+  effect: {fileID: 6619407764865432, guid: 86dc2d9b5a94a304fbad429490a96c65, type: 3}
 --- !u!1 &8595074567325901187
 GameObject:
   m_ObjectHideFlags: 0

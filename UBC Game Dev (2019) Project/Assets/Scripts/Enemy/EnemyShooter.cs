@@ -6,6 +6,7 @@ public class EnemyShooter : MonoBehaviour
 {
     private bool isShooting;
     private bool enemyDead = false;
+    // private bool isFacingRight;
 
     private float shootCooldownTime;
 
@@ -43,8 +44,21 @@ public class EnemyShooter : MonoBehaviour
         {
             playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         }
+        FacePlayer();
         CanSeePlayer();
         Shoot();
+    }
+
+    void FacePlayer()
+    {
+        if (playerMovement.position.x > transform.position.x)
+        {
+            transform.SetPositionAndRotation(transform.position, Quaternion.Euler(0f, 0, 0f));
+        }
+        else
+        {
+            transform.SetPositionAndRotation(transform.position, Quaternion.Euler(0f, 180f, 0f));
+        }
     }
 
     void CanSeePlayer()

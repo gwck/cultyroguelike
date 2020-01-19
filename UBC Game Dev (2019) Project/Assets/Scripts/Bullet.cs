@@ -5,6 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     private float flyTime = 0;
+    [SerializeField] private Animator anim;
 
     public float maxFlyTime = 7;
     public float bulletSpeed = 20f;
@@ -33,7 +34,8 @@ public class Bullet : MonoBehaviour
         if (collisionInfo.tag == "Player")
         {
             collisionInfo.GetComponent<PlayerController>().DamagePlayer(bulletDamage);
-            Destroy(gameObject);
+            rb.velocity = new Vector2(0f, 0f);
+            anim.SetTrigger("hit");
         }
     }
 }
