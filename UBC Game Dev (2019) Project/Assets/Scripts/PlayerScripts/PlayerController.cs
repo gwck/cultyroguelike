@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
         public int maxHealth = 10;
 
         private int _curHealth;
-        public int curHealth
+        public int CurHealth
         {
             get { return _curHealth; }
             set { _curHealth = Mathf.Clamp(value, 0, maxHealth); } //clamps the value between specified min and max values
@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour
         //Sets current health equal to max health
         public void Init()
         {
-            curHealth = maxHealth;
+            CurHealth = maxHealth;
         }
     }
 
@@ -380,13 +380,37 @@ public class PlayerController : MonoBehaviour
     {
         if (canJump)
         {
+<<<<<<< Updated upstream
             isJumping = true;
             anim.SetBool("isJumping", isJumping);
             rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
             CreateDust();
             amountofJumpsLeft--;
+=======
+            if (amountofJumpsLeft > 1)
+            {
+                isJumping = true;
+                anim.SetBool("isJumping", isJumping);
+                rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
+                CreateDust();
+                amountofJumpsLeft--;
+            } else
+            {
+                isSecondJumping = true;
+                GameObject secondJump = Instantiate(secondJumpEffect, new Vector3(transform.position.x, transform.position.y - 1, transform.position.z), transform.rotation);
+                secondJump.GetComponent<JumpAnimation>().playerController = this;
+                anim.SetBool("isSecondJumping", isSecondJumping);
+                rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
+                amountofJumpsLeft--;
+                Destroy(secondJump, 0.2f);
+
+
+            }
+
+>>>>>>> Stashed changes
 
         }
+
     }
 
 
@@ -418,12 +442,12 @@ public class PlayerController : MonoBehaviour
     public void DamagePlayer(int damage) //When the player is damaged
     {
 
-        playerStats.curHealth -= damage; //damage is subtracted from the health
+        playerStats.CurHealth -= damage; //damage is subtracted from the health
         isDamaged = true; //damage animation is turned on
         Invoke("setDamageFalse", 0.10f); //damage animation is turned off on a .10 second delay
 
 
-        if (playerStats.curHealth <= 0)
+        if (playerStats.CurHealth <= 0)
         {
             GameMaster.KillPlayer(this);
         }

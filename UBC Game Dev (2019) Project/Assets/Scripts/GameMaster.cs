@@ -34,6 +34,9 @@ public class GameMaster : MonoBehaviour
         FindPlayer(spawnedPlayer);
 
         //Put respawn effects here?
+
+        
+
     }
     public static void KillPlayer(PlayerController player)
     {

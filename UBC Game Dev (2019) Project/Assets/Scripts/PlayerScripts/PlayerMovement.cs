@@ -210,7 +210,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-    private void isOnWall()
+    private void IsOnWall()
     {
     }
 
