@@ -17,7 +17,9 @@ public class PlayerController : MonoBehaviour
     private bool isRunning;
     private bool isJumping;
     private bool isGroundSlamming;
+    public bool isSecondJumping;
     private bool isFalling;
+    private bool isDamaged;
     private bool isGrounded;
     private bool isTouchingWall;
     private bool isWallSliding;
@@ -79,6 +81,8 @@ public class PlayerController : MonoBehaviour
 
     public PlayerStats playerStats = new PlayerStats();
 
+    public GameObject secondJumpEffect;
+
     [System.Serializable]
     public class PlayerStats
     {
@@ -103,6 +107,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         playerStats.Init();
+        isSecondJumping = false;
         accelRatePerSec = maxSpeed / timeZeroToMax;
         decelRatePerSec = -maxSpeed / timeMaxToZero;
         forwardVelocity = 0f;
@@ -123,6 +128,7 @@ public class PlayerController : MonoBehaviour
         UpdateAnimations();
         CheckIfCanJump();
         CheckIfWallSliding();
+        CheckIfDamaged();
     }
 
     private void FixedUpdate()
@@ -139,6 +145,7 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("isFalling", isFalling);
         anim.SetBool("isRunning", isRunning);
         anim.SetBool("isJumping", isJumping);
+        anim.SetBool("isSecondJumping", isSecondJumping);
         anim.SetBool("isWallSliding", isWallSliding);
 
     }
@@ -193,6 +200,7 @@ public class PlayerController : MonoBehaviour
         {
             amountofJumpsLeft = amountOfJumps;
             isJumping = false;
+            isSecondJumping = false;
         }
 
         if (amountofJumpsLeft <= 0)
@@ -384,6 +392,17 @@ public class PlayerController : MonoBehaviour
             amountofJumpsLeft--;
 
         }
+        else
+        {
+            isSecondJumping = true;
+            GameObject secondJump = Instantiate(secondJumpEffect, new Vector3(transform.position.x, transform.position.y - 1, transform.position.z), transform.rotation);
+            secondJump.GetComponent<JumpAnimation>().playerController = this;
+            anim.SetBool("isSecondJumping", isSecondJumping);
+            rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
+            amountofJumpsLeft--;
+            Destroy(secondJump, 0.2f);
+
+        }
     }
 
 
@@ -400,9 +419,25 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    private void CheckIfDamaged()
+    {
+        //anim. accesses the parameters we set up in the animator
+        //so here we use SetBool to acces the boolean and set it to a specific value!
+        anim.SetBool("isDamaged", isDamaged); //sets the value in animator to the value of our
+                                              //isDamaged variable!
+    }
+
+    private void setDamageFalse() //This turns the Damage animation off. just made this function so that I could put in inside of an "invoke".
+    {
+        isDamaged = false;
+    }
+
     public void DamagePlayer(int damage)
     {
         playerStats.curHealth -= damage;
+        isDamaged = true; //damage animation is turned on
+        Invoke("setDamageFalse", 0.10f); //damage animation is turned off on a .10 second delay
+
 
         if (playerStats.curHealth <= 0)
         {

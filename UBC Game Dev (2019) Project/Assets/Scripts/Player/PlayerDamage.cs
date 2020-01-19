@@ -18,7 +18,6 @@ public class PlayerDamage : MonoBehaviour
     {
         if (Input.GetKeyDown("k"))
         {
-            Debug.Log("took damage");
             TakeDamage();
         }
     }
