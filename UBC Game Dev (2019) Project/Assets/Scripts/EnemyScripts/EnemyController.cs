@@ -113,7 +113,6 @@ public class EnemyController : MonoBehaviour
     private void CanFollowPlayer()
     {
         float distanceToTarget = Vector3.Distance(transform.position, playerMovement.position);
-        Debug.Log(distanceToTarget);
         if (distanceToTarget <= chaseRange)
         {
             isFollowing = true;

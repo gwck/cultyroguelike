@@ -6,6 +6,7 @@ public class EnemyShooter : MonoBehaviour
 {
     private bool isShooting;
     private bool enemyDead = false;
+    private bool isFacingRight;
 
     private float shootCooldownTime;
 
@@ -34,19 +35,30 @@ public class EnemyShooter : MonoBehaviour
     {
         shootCooldownTime = shootMaxCooldownTime + Time.deltaTime;
         playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        isFacingRight = true;
     }
     // Update is called once per frame
     void Update()
     {
+
         shootCooldownTime += Time.deltaTime;
         if (playerMovement == null)
         {
             playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         }
         CanSeePlayer();
+        WhereisPlayer();
         Shoot();
     }
-
+    
+    void WhereisPlayer()
+    {
+        if (playerMovement.position.x < transform.position.x && isFacingRight || playerMovement.position.x > transform.position.x && !isFacingRight)
+        {
+            Flip();
+        }
+    }
+    //Player is in range of enemy attack
     void CanSeePlayer()
     {
         float distanceToTarget = Vector3.Distance(transform.position, playerMovement.position);
@@ -54,6 +66,7 @@ public class EnemyShooter : MonoBehaviour
 
     }
 
+    //Enemy shoots a bullet in direction it faces
     void Shoot()
     {
         if (isShooting && shootCooldownTime > shootMaxCooldownTime)
@@ -64,6 +77,7 @@ public class EnemyShooter : MonoBehaviour
         }
     }
 
+    //Enemy is damaged by the specified amount
     public void DamageEnemy(int damage)
     {
         stats.health -= damage;
@@ -120,5 +134,12 @@ public class EnemyShooter : MonoBehaviour
                 _playerController.knockFromRight = false;
             }
         }
+    }
+
+    private void Flip()
+    {
+        isFacingRight = !isFacingRight;
+        transform.Rotate(0.0f, 180.0f, 0.0f);
+
     }
 }
