@@ -62,7 +62,6 @@ public class EnemyController : MonoBehaviour
     private void FixedUpdate()
     {
         if (followCooldown > 0) followCooldown--;
-        Debug.Log(followCooldown);
 
         if (playerMovement == null)
         {
@@ -113,7 +112,6 @@ public class EnemyController : MonoBehaviour
     private void CanFollowPlayer()
     {
         float distanceToTarget = Vector3.Distance(transform.position, playerMovement.position);
-        Debug.Log(distanceToTarget);
         if (distanceToTarget <= chaseRange)
         {
             isFollowing = true;
@@ -166,14 +164,15 @@ public class EnemyController : MonoBehaviour
             rb.velocity = new Vector2(movementSpeed * -chaseSpeed, rb.velocity.y);
         }
     }
-
+    
     private void OnCollisionEnter2D(Collision2D colliderInfo)
     {
+        return;
         PlayerController _player = colliderInfo.collider.GetComponent<PlayerController>();
 
         if (_player != null)
         {
-            _player.DamagePlayer(stats.enemyDamage);
+            _player.TakeDamage(stats.enemyDamage);
             /*
             _player.forwardVelocity = _player.forwardVelocity - stats.enemyDamage;
 

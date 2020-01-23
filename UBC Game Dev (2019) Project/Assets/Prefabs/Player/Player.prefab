@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 490766133}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.66, y: 0, z: 0}
+  m_LocalPosition: {x: 2, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3460904179580232041}
@@ -4892,14 +4892,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3460904179580232041}
+  - component: {fileID: 3460904179580232082}
   - component: {fileID: 3460904179580232046}
   - component: {fileID: 3460904179580232047}
   - component: {fileID: 3460904179580232044}
   - component: {fileID: 3460904179580232045}
-  - component: {fileID: 3460904179580232082}
-  - component: {fileID: 3460904179580232083}
   - component: {fileID: 3460904179580232080}
-  - component: {fileID: 436111733}
+  - component: {fileID: 8425978296137004877}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -4927,6 +4926,58 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3460904179580232082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3460904179580232081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d389a33140b298e498fbcb543a0be1b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBar: {fileID: 0}
+  groundCheck: {fileID: 3460904179841973099}
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 1024
+  whatIsEnemies:
+    serializedVersion: 2
+    m_Bits: 256
+  fallBoundary: -90
+  timeManager: {fileID: 0}
+  impulseSource: {fileID: 8425978296137004877}
+  ghost: {fileID: 3460904179580232080}
+  startingHealth: 20
+  maxSpeed: 20
+  timeZeroToMax: 0.4
+  timeMaxToZero: 0.3
+  forwardVelocity: 0
+  amountOfJumps: 2
+  jumpVelocity: 27
+  groundCheckRadius: 0.4
+  fallMultiplier: 3
+  lowJumpMultiplier: 12
+  dust: {fileID: 3460904178742051530}
+  secondJumpEffect: {fileID: 8036769558089422073, guid: 8ef39be3765170249a02c6e4a25c52ad,
+    type: 3}
+  attackDamage: 5
+  attackRange: 1.2
+  attackDelay: 1
+  attackEffect: {fileID: 3939138341229242056, guid: e8dd2a7f5e6ec424aac7330c89975d18,
+    type: 3}
+  attackEffectLocation: {fileID: 444575379592100416}
+  attackCheck: {fileID: 490766134}
+  invulnDuration: 0.75
+  knockback: 15
+  minknockback: 5
+  knockFromRight: 0
+  knockbackLength: 0.4
+  knockbackCount: 0
+  groundSlamSpeed: 50
+  groundSlamEffect: {fileID: 0}
 --- !u!212 &3460904179580232046
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5043,59 +5094,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.5517645, y: 2.9210706}
   m_EdgeRadius: 0
---- !u!114 &3460904179580232082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3460904179580232081}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d389a33140b298e498fbcb543a0be1b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthBar: {fileID: 0}
-  groundCheck: {fileID: 3460904179841973099}
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 1024
-  fallBoundary: -90
-  maxSpeed: 20
-  timeZeroToMax: 0.4
-  timeMaxToZero: 0.3
-  forwardVelocity: 0
-  amountOfJumps: 2
-  jumpVelocity: 27
-  groundCheckRadius: 0.4
-  dust: {fileID: 3460904178742051530}
-  groundSlamEffect: {fileID: 0}
-  secondJumpEffect: {fileID: 8036769558089422073, guid: 8ef39be3765170249a02c6e4a25c52ad,
-    type: 3}
-  timeManager: {fileID: 0}
-  ghost: {fileID: 3460904179580232080}
-  knockback: 15
-  minknockback: 5
-  knockFromRight: 0
-  knockbackLength: 0.4
-  knockbackCount: 0
-  groundSlamSpeed: 50
-  playerStats:
-    maxHealth: 20
---- !u!114 &3460904179580232083
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3460904179580232081}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df0669fc66bcf9643a4ed024e0fc99f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fallMultiplier: 3
-  lowJumpMultiplier: 12
 --- !u!114 &3460904179580232080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5111,7 +5109,7 @@ MonoBehaviour:
   ghostDelay: 0.1
   ghost: {fileID: 8396420452507892330, guid: 8699fca2600f66543b4c3827dff36197, type: 3}
   makeGhost: 0
---- !u!114 &436111733
+--- !u!114 &8425978296137004877
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5120,21 +5118,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 3460904179580232081}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7beeb973442c1fd4c86c165c466632ce, type: 3}
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startTimeBtwnAttack: 0.3
-  attackRange: 1.22
-  isAttacking: 0
-  anim: {fileID: 3460904179580232047}
-  attackDamage: 5
-  attackEffect: {fileID: 3939138341229242056, guid: e8dd2a7f5e6ec424aac7330c89975d18,
-    type: 3}
-  attackEffectLocation: {fileID: 444575379592100416}
-  attackCheck: {fileID: 490766134}
-  whatIsEnemies:
-    serializedVersion: 2
-    m_Bits: 2048
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_RawSignal: {fileID: 11400000, guid: d3f7b69f4de611544af90676560ba76b, type: 2}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.1
+      m_DecayTime: 0.05
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 1000
 --- !u!1 &3460904179748201044
 GameObject:
   m_ObjectHideFlags: 0

@@ -120,7 +120,7 @@ public class EnemyShooter : MonoBehaviour
 
         if (_player != null)
         {
-            _player.DamagePlayer(stats.enemyDamage);
+            _player.TakeDamage(stats.enemyDamage);
 
             var _playerController = _player.GetComponent<PlayerController>();
             _playerController.knockbackCount = _playerController.knockbackLength;

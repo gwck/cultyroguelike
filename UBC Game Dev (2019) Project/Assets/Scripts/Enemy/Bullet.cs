@@ -33,7 +33,7 @@ public class Bullet : MonoBehaviour
     {
         if (collisionInfo.tag == "Player")
         {
-            collisionInfo.GetComponent<PlayerController>().DamagePlayer(bulletDamage);
+            collisionInfo.GetComponent<PlayerController>().TakeDamage(bulletDamage);
             rb.velocity = new Vector2(0f, 0f);
             anim.SetTrigger("hit");
         }
