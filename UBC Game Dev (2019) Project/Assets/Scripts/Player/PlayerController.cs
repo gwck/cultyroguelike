@@ -6,87 +6,66 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-    private Rigidbody2D rb;
-    private Animator anim;
+    private Rigidbody2D rb; // the player's rigidbody component
+    private Animator anim; // the player's animator component
+    private BoxCollider2D bc; // the player's box collider
 
-    public Text healthBar;
-
-
-    private int amountofJumpsLeft;
-
-    public int amountOfJumps;
-    public int fallBoundary;
-
-    private bool isFacingRight = true;
-    private bool isRunning;
-    private bool isJumping;
-    private bool isGroundSlamming;
-    public bool isSecondJumping;
-    private bool isFalling;
-    private bool isDamaged;
-    private bool isGrounded;
-    private bool isTouchingWall;
-    private bool isWallSliding;
-    private bool canJump;
-    private bool isTouchingEnemy;
-    private bool canGroundSlam;
-
-    [SerializeField]
-    public bool knockFromRight;
-
-    private float movementInputdirection;
-    private float storedInputdirection;
-    private float accelRatePerSec;
-    private float decelRatePerSec;
-    private float actualknockback;
-
-    [SerializeField]
-    public float forwardVelocity;
-
-    //   public float movementSpeed;
-
-    public float groundSlamSpeed;
-    public float maxSpeed;
-    public float timeZeroToMax;
-    public float timeMaxToZero;
-    public float jumpVelocity;
-    public float groundCheckRadius;
-    public float wallCheckDistance;
-    public float wallSlideSpeed;
-    public float movementForceInAir;
-    public float knockback;
-    public float knockbackLength;
-    public float minknockback;
-
-    [SerializeField]
-    public float knockbackCount = 0;
-
-    //   public float airDragMultiplier;
-    //   public float wallHopForce;
-    //   public float wallJumpForce;
-
-    //   public Vector2 wallHopDirection;
-    //   public Vector2 wallJumpDirection;
-
-    public Transform groundCheck;
-    public Transform wallCheck;
-    public Transform wallCheckChild;
-
-    public ParticleSystem dust;
-    public ParticleSystem groundSlamEffect;
-
-    public BoxCollider2D bc;
-
-    public TimeManager timeManager;
-
-    public Ghost ghost; //reference to ghost script
-
+    [SerializeField] private Text healthBar; // TEMP healthbar text
+    [SerializeField] private Transform groundCheck; // point from which to check if the player is grounded
     public LayerMask whatIsGround;
+    [SerializeField] private int fallBoundary; // player dies if they fall past this y coordinate
 
+    [Header("Movement")]
+    [SerializeField] private float maxSpeed; // maximum speed of the player
+    [SerializeField] private float timeZeroToMax; // time in seconds for the player to reach max speed
+    [SerializeField] private float timeMaxToZero; // time in seconds that it takes to stop from max speed
+    private float movementInputdirection; // direction of player movement input
+    private float storedInputdirection; // direction of the player's last movement input
+    private float accelRatePerSec; // speed at which the player can accelerate
+    private float decelRatePerSec; // speed at which the player can decelerate
+    [HideInInspector] public float forwardVelocity; // the velocity of the player
+
+    [Header("Jumping")]
+    [SerializeField] private int amountOfJumps; // maximum number of jumps a player is allowed
+    [SerializeField] private float jumpVelocity; // velocity applied to the player by a jump
+    [SerializeField] private float groundCheckRadius; // radius of the ground check test
+    private int amountofJumpsLeft; // the number of jumps left in the current series of jumps
+    private bool canJump; // whether the player can jump in this frame
+    private bool isTouchingEnemy; // whether the player is in contact with an enemy (can jump off enemies)
+
+    [Header("Effects")]
+    [SerializeField] private ParticleSystem dust; // effect from jumping
+    [SerializeField] private ParticleSystem groundSlamEffect; // effect from ground slam
+    [SerializeField] private GameObject secondJumpEffect; // prefab the plays the second jump effect
+    [SerializeField] private TimeManager timeManager; // time manager to help with slow motion effects
+    [SerializeField] private Ghost ghost; //reference to ghost script
+
+    [Header("Knockback")]
+    public float knockback; // the distance that the player is knocked back
+    public float minknockback; // minumum value for knockback
+    private float actualknockback;
+    [HideInInspector] public bool knockFromRight; // whether the player has been knocked from the right recently (?)
+    [HideInInspector] public float knockbackLength; // amount of time that knockback should be applied
+    [HideInInspector] public float knockbackCount = 0; // amount of knockback effects that are affecting the player
+
+    // GROUND SLAM
+    [SerializeField] private float groundSlamSpeed; // speed of the ground slam
+    private bool isGroundSlamming; // whether the charcater is currently ground slamming
+    private bool isGrounded; // whether the player is on the ground - affects whether the player can jump
+    private bool canGroundSlam; // whether the player can groundslam in this frame
+
+    // ANIMATION
+    private bool isFacingRight = true; // orientation of the player's sprite
+    private bool isRunning; // controls run animation
+    private bool isJumping; // controls jump animation
+    private bool isSecondJumping; // controls second jump animation
+    private bool isFalling; // controls fall animation
+    private bool isDamaged; // controls damaged animation
+    
+    // PLAYER STATS
+    // may want to change the way this works
+    [Header("Player Stats")]
     public PlayerStats playerStats = new PlayerStats();
-
-    public GameObject secondJumpEffect;
-
     [System.Serializable]
     public class PlayerStats
     {
@@ -106,7 +85,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
     // Start is called before the first frame update
     private void Start()
     {
@@ -117,7 +95,6 @@ public class PlayerController : MonoBehaviour
         forwardVelocity = 0f;
         bc = GetComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
-        wallCheckChild = transform.GetChild(1);
         anim = GetComponent<Animator>();
         amountofJumpsLeft = amountOfJumps;
         actualknockback = knockback;
@@ -125,14 +102,11 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-
         CheckInput();
         CheckIfMoving();
         CheckMovementDirection();
         UpdateAnimations();
         CheckIfCanJump();
-        CheckIfWallSliding();
-        CheckIfDamaged();
         UpdateHealthBar();
     }
 
@@ -144,20 +118,17 @@ public class PlayerController : MonoBehaviour
         CheckSurroundings();
     }
 
-    //EFFECTS: Updates the animation of the character
+    // Updates the animation of the character
     private void UpdateAnimations()
     {
         anim.SetBool("isFalling", isFalling);
         anim.SetBool("isRunning", isRunning);
         anim.SetBool("isJumping", isJumping);
         anim.SetBool("isSecondJumping", isSecondJumping);
-        anim.SetBool("isWallSliding", isWallSliding);
-
+        anim.SetBool("isDamaged", isDamaged);
     }
-
-    //MODIFIES: this
-    //EFFECTS: Checks what user has inputted
-    //         If "Jump" return true and execute jump
+    
+    // Checks user input and tries to jump if user tried to jump
     private void CheckInput()
     {
         movementInputdirection = Input.GetAxisRaw("Horizontal");
@@ -173,27 +144,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //EFFECTS: Checks the surroundings of the object
+    // Checks the surroundings of the player
     private void CheckSurroundings()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
-        isTouchingWall = Physics2D.Raycast(wallCheck.position, transform.right, wallCheckDistance, whatIsGround);
-
-    }
-
-    //EFFECTS: Checks if object is sliding down the wall
-    private void CheckIfWallSliding()
-    {
-        if (isTouchingWall && !isGrounded && rb.velocity.y < 0)
-        {
-            isWallSliding = true;
-
-        }
-        else
-        {
-            isWallSliding = false;
-
-        }
     }
 
     //MODIFIES: this
@@ -201,7 +155,7 @@ public class PlayerController : MonoBehaviour
     private void CheckIfCanJump()
     {
 
-        if (isGrounded && rb.velocity.y <= 0 || isTouchingEnemy && rb.velocity.y <= 0 && !isGrounded) // || isWallSliding)
+        if (isGrounded && rb.velocity.y <= 0 || isTouchingEnemy && rb.velocity.y <= 0 && !isGrounded)
         {
             amountofJumpsLeft = amountOfJumps;
             isJumping = false;
@@ -222,18 +176,11 @@ public class PlayerController : MonoBehaviour
     {
         if (isFacingRight && movementInputdirection < 0)
         {
-            if (!isWallSliding)
-                Flip();
-
+            Flip();
         }
-        else
+        else if (!isFacingRight && movementInputdirection > 0)
         {
-            if (!isFacingRight && movementInputdirection > 0)
-            {
-                if (!isWallSliding)
-                    Flip();
-
-            }
+            Flip();
         }
 
         if (rb.velocity.x != 0)
@@ -246,34 +193,10 @@ public class PlayerController : MonoBehaviour
             isRunning = false;
         }
     }
-
-
-
-    //MODIFIES: GameObject
+    
     //EFFECTS: Applies the input to the direction player wanted to go
     private void ApplyMovement()
     {
-        //ask the group
-        /*if (isGrounded)
-        {
-            rb.velocity = new Vector2(movementInputdirection * movementSpeed, rb.velocity.y);
-        }
-        else if (!isGrounded && !isWallSliding && movementInputdirection != 0)
-        {
-            Vector2 forceToAdd = new Vector2(movementForceInAir * movementInputdirection, 0);
-            rb.AddForce(forceToAdd);
-
-            if (Mathf.Abs(rb.velocity.x) > movementSpeed)
-            {
-                rb.velocity = new Vector2(movementSpeed * movementInputdirection, rb.velocity.y);
-
-            }
-            if (!isGrounded && !isWallSliding && movementInputdirection == 0) //velocity decreases if there is no input direction
-            {
-                rb.velocity = new Vector2(rb.velocity.x * airDragMultiplier, rb.velocity.y);
-            }
-        }*/
-
         if (true /*knockbackCount <= 0*/)
         {
             //actualknockback = knockback;
@@ -304,7 +227,9 @@ public class PlayerController : MonoBehaviour
                     forwardVelocity = -maxSpeed;
                 }
             }
-        } /*
+        } 
+        
+        /*
         else
         {
             //actualknockback = knockback;
@@ -372,13 +297,6 @@ public class PlayerController : MonoBehaviour
     //EFFECTS: Flips the character sprite
     private void Flip()
     {
-        //ask your amigos
-        /*if (!isWallSliding)
-         {
-             facingDirection *= -1;
-             isFacingRight = !isFacingRight;
-             transform.Rotate(0.0f, 180.0f, 0.0f);
-         }*/
         isFacingRight = !isFacingRight;
         transform.Rotate(0.0f, 180.0f, 0.0f);
 
@@ -395,44 +313,27 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
             CreateDust();
             amountofJumpsLeft--;
-
         }
         else
         {
+            // SECOND JUMP, MIGHT NEED ANIMATION WORK
             isSecondJumping = true;
             GameObject secondJump = Instantiate(secondJumpEffect, new Vector3(transform.position.x, transform.position.y - 1, transform.position.z), transform.rotation);
-            secondJump.GetComponent<JumpAnimation>().playerController = this;
             anim.SetBool("isSecondJumping", isSecondJumping);
             rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
             amountofJumpsLeft--;
             Destroy(secondJump, 0.2f);
-
         }
     }
-
-
-    //EFFECTS: Returns true if player is touching the ground
-    // private bool isOnGround() 
-
-    // RaycastHit2D raycast = Physics2D.BoxCast(bc.bounds.center, bc.bounds.size, 1f, Vector2.down, 0.5f, platformsLayerMask);
-    // return raycast.collider != null; 
 
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
-        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
 
     }
 
-    private void CheckIfDamaged()
-    {
-        //anim. accesses the parameters we set up in the animator
-        //so here we use SetBool to acces the boolean and set it to a specific value!
-        anim.SetBool("isDamaged", isDamaged); //sets the value in animator to the value of our
-                                              //isDamaged variable!
-    }
-
-    private void setDamageFalse() //This turns the Damage animation off. just made this function so that I could put in inside of an "invoke".
+    // disables the damage animation 
+    private void SetDamageFalse()
     {
         isDamaged = false;
     }
@@ -441,7 +342,7 @@ public class PlayerController : MonoBehaviour
     {
         playerStats.curHealth -= damage;
         isDamaged = true; //damage animation is turned on
-        Invoke("setDamageFalse", 0.10f); //damage animation is turned off on a .10 second delay
+        Invoke("SetDamageFalse", 0.10f); //damage animation is turned off on a .10 second delay
         //UpdateHealthBar();
         if (playerStats.curHealth <= 0)
         {
@@ -518,7 +419,7 @@ public class PlayerController : MonoBehaviour
     
     void GroundSlam()
     {
-        if (Input.GetKeyDown("x") && isFalling && !isGrounded && !isWallSliding && canGroundSlam && !isGroundSlamming)
+        if (Input.GetKeyDown("x") && isFalling && !isGrounded && canGroundSlam && !isGroundSlamming)
         {
             StartGroundSlam();
             
@@ -529,7 +430,7 @@ public class PlayerController : MonoBehaviour
             isGroundSlamming = false;
             Instantiate(groundSlamEffect, transform.position, Quaternion.identity);
             rb.velocity = new Vector2(rb.velocity.x, 0);
-        } else if (isFalling && !isGrounded && !isWallSliding && !isGroundSlamming)
+        } else if (isFalling && !isGrounded && !isGroundSlamming)
         {
             canGroundSlam = true;
         }

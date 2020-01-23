@@ -5056,38 +5056,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 0}
-  amountOfJumps: 2
-  fallBoundary: -90
-  isSecondJumping: 0
-  knockFromRight: 0
-  forwardVelocity: 0
-  groundSlamSpeed: 50
-  maxSpeed: 20
-  timeZeroToMax: 0.4
-  timeMaxToZero: 0.3
-  jumpVelocity: 27
-  groundCheckRadius: 0.4
-  wallCheckDistance: 0.8
-  wallSlideSpeed: 10
-  movementForceInAir: 0
-  knockback: 15
-  knockbackLength: 0.4
-  minknockback: 5
-  knockbackCount: 0
   groundCheck: {fileID: 3460904179841973099}
-  wallCheck: {fileID: 3460904179748201047}
-  wallCheckChild: {fileID: 0}
-  dust: {fileID: 3460904178742051530}
-  groundSlamEffect: {fileID: 0}
-  bc: {fileID: 0}
-  timeManager: {fileID: 0}
-  ghost: {fileID: 3460904179580232080}
   whatIsGround:
     serializedVersion: 2
     m_Bits: 1024
+  fallBoundary: -90
+  maxSpeed: 20
+  timeZeroToMax: 0.4
+  timeMaxToZero: 0.3
+  forwardVelocity: 0
+  amountOfJumps: 2
+  jumpVelocity: 27
+  groundCheckRadius: 0.4
+  dust: {fileID: 3460904178742051530}
+  groundSlamEffect: {fileID: 0}
+  secondJumpEffect: {fileID: 8036769558089422073, guid: 8ef39be3765170249a02c6e4a25c52ad,
+    type: 3}
+  timeManager: {fileID: 0}
+  ghost: {fileID: 3460904179580232080}
+  knockback: 15
+  minknockback: 5
+  knockFromRight: 0
+  knockbackLength: 0.4
+  knockbackCount: 0
+  groundSlamSpeed: 50
   playerStats:
     maxHealth: 20
-  secondJumpEffect: {fileID: 0}
 --- !u!114 &3460904179580232083
 MonoBehaviour:
   m_ObjectHideFlags: 0
