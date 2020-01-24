@@ -308,22 +308,28 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
+    // knock the player back
+    public void KnockBack()
+    {
+    }
 
     // disables the damage animation 
     private void SetDamageFalse()
     {
         isDamaged = false;
     }
-
-
+    
     // take a set amount of damage
     public void TakeDamage(int damage)
     {
         // don't take damage if currently taking damage
         if (isDamaged) return;
 
+        // decrease the health
         health -= damage;
+
+        // small knockback
+        rb.AddForce(transform.up * rb.mass * 500);
 
         // shake the screen
         impulseSource.GenerateImpulse();
@@ -373,7 +379,6 @@ public class PlayerController : MonoBehaviour
 
         // create the attack effect animation
         Instantiate(attackEffect, attackEffectLocation.position, transform.rotation, transform);
-
 
         // apply the attack delay
         canAttack = false;
