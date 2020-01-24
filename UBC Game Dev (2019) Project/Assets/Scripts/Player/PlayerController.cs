@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask whatIsEnemies; // layers that count as enemies
     [SerializeField] private int fallBoundary; // player dies if they fall past this y coordinate
     [SerializeField] private TimeManager timeManager; // time manager to help with slow motion effects
-    [SerializeField] private CinemachineImpulseSource impulseSource;
+    [SerializeField] private CinemachineImpulseSource impulseSource; // impulse source for screen shake effect
     [SerializeField] private Ghost ghost; //reference to ghost script
 
     [Header("Attributes")]
@@ -363,7 +363,7 @@ public class PlayerController : MonoBehaviour
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(0.02f);
         Time.timeScale = 1f;
-        impulseSource.GenerateImpulse(new Vector3(0, -2, 0));
+        impulseSource.GenerateImpulse();
     }
 
     // attack, unless the attackDelay hasn't yet passed
@@ -393,8 +393,7 @@ public class PlayerController : MonoBehaviour
         // damage each enemy that was hit
         for (int i = 0; i < enemiesToDamage.Length; i++)
         {
-            enemiesToDamage[i].transform.parent.gameObject.GetComponent<EnemyStats>().DamageEnemy(attackDamage);
-            // enemiesToDamage[i].GetComponent<EnemyShooter>().DamageEnemy(attackDamage); NOTE TO SELF: Put EnemyStats in a NEW script!!!
+            enemiesToDamage[i].gameObject.GetComponent<EnemyController>().TakeDamage(attackDamage);
         }
     }
 

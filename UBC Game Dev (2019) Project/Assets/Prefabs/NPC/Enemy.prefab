@@ -162,6 +162,7 @@ GameObject:
   - component: {fileID: 5222675206195777750}
   - component: {fileID: 5222675206195777751}
   - component: {fileID: 2004044153}
+  - component: {fileID: 6562407478475353142}
   m_Layer: 11
   m_Name: Enemy
   m_TagString: Enemy
@@ -199,18 +200,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f15e89579a298f24f9420bf99bb19918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldownTime: 60
-  chaseSpeed: 2
-  movementSpeed: 2
-  chaseRange: 8
-  groundCheckRadius: 1
-  wallCheckDistance: 0.6
   groundCheck: {fileID: 5222675205251515467}
-  wallCheck: {fileID: 5222675205437415237}
+  groundCheckRadius: 1
   whatIsGround:
     serializedVersion: 2
     m_Bits: 1024
+  impulseSource: {fileID: 6562407478475353142}
+  startingHealth: 10
+  movementSpeed: 2
   bloodSplash: {fileID: 0}
+  damageDuration: 0.1
+  contactDamage: 5
+  deathEffect: {fileID: 0}
+  behaviour: 0
+  cooldownTime: 60
+  chaseSpeed: 2
+  chaseRange: 8
 --- !u!212 &5222675206195777747
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -341,5 +346,45 @@ MonoBehaviour:
   anim: {fileID: 5222675206195777751}
   enemyDamage: 5
   health: 10
-  timeManager: {fileID: 0}
   effect: {fileID: 6619407764865432, guid: 86dc2d9b5a94a304fbad429490a96c65, type: 3}
+--- !u!114 &6562407478475353142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5222675206195777748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_RawSignal: {fileID: 11400000, guid: 03ba47de987cdac43af742df6dc92fa6, type: 2}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.2
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 10
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 10
