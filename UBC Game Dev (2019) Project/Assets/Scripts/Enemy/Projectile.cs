@@ -2,22 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Projectile : MonoBehaviour
 {
+    [SerializeField] private float maxFlyTime;
+    [SerializeField] private float speed;
+    [SerializeField] private int damage;
+    private Animator anim;
+    private Rigidbody2D rb;
     private float flyTime = 0;
-    [SerializeField] private Animator anim;
-
-    public float maxFlyTime = 7;
-    public float bulletSpeed = 20f;
-
-    public int bulletDamage = 5;
-
-    public Rigidbody2D rb;
 
     // Start is called before the first frame update
     void Start()
     {
-        rb.velocity = transform.right * bulletSpeed;
+        anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+        rb.velocity = transform.right * speed;
     }
 
     private void Update()
@@ -33,7 +32,7 @@ public class Bullet : MonoBehaviour
     {
         if (collisionInfo.tag == "Player")
         {
-            collisionInfo.GetComponent<PlayerController>().TakeDamage(bulletDamage);
+            collisionInfo.GetComponent<PlayerController>().TakeDamage(damage);
             rb.velocity = new Vector2(0f, 0f);
             anim.SetTrigger("hit");
         }

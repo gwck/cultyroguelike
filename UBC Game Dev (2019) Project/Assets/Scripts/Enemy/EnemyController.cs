@@ -6,57 +6,61 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     private Rigidbody2D rb; // enemy's rigidbody
-    private Animator anim; // enemy's animator
+    protected Animator anim; // enemy's animator
     private BoxCollider2D bc; // enemy's box collider
     private Transform player; // reference to the player object
 
-    [SerializeField] private Transform groundCheck; // point from which to check if the enemy is grounded
-    [SerializeField] private float groundCheckRadius; // radius of ground check
-    [SerializeField] LayerMask whatIsGround; // layers on which the enemy can be grounded
     [SerializeField] private CinemachineImpulseSource impulseSource; // impulse source for screen shake effect
 
     [Header("Attributes")]
     [SerializeField] private int startingHealth; // initial value for health
     private int health; // current health (enemy dies when this reaches 0)
 
-    [Header("Movement")]
-    [SerializeField] private float movementSpeed; // base speed for most movements
-    private bool isGrounded; // whether the enemy is touching the ground
-
     [Header("Animation")]
     private bool facingRight = true; // orientation of the sprite
     [SerializeField] private float damageAnimationDuration; // duration of damage animation
     private bool isDamaged; // controls damage animation
-    [SerializeField] private ParticleSystem deathEffect; // particle effect for enemy death
+    [SerializeField] private GameObject deathEffect; // effect for enemy death
 
     [Header("Combat")]
-    [SerializeField] private int contactDamage; // damage dealt to the player on collision with the enemy
+    public int contactDamage; // damage dealt to the player on collision with the enemy
 
     // options for preset or custom behaviours
-    private enum Behaviour {
-        follow, none, custom
+    private enum Behaviour
+    {
+        follow, patrol, none
     };
     [Header("Behaviour")]
     [SerializeField] private Behaviour behaviour;
+    [SerializeField] private float movementSpeed; // base speed for most movements
+    [SerializeField] private Vector2 viewRange; // distance from which the enemy can "see" the player
+    [SerializeField] private Vector2 viewRangeOffset; // offset for the view range
 
     [Header("Behaviour - Follow")]
-    private int followCooldown;
-    public int cooldownTime;
-    private bool isFollowing;
-    private bool isInRange;
-    public float chaseSpeed;
-    public float chaseRange;
-    [SerializeField] private float patrolRate;
-        
+    [SerializeField] private float followSpeed; // usually faster than base speed, used while the enemy is chasing the player
+    [SerializeField] private float followCooldownDuration; // amount of time after the player is out of range for the enemy to go back to patrolling
+    private float followCooldown; // amount of time since the player left follow range
+    private bool isFollowing; // whether or not the enemy is chasing the player
+
+    [Header("Behaviour - Patrol")]
+    [SerializeField] private float patrolRate; // how often the enemy changes patrol direction
+
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
         health = startingHealth;
         isDamaged = false;
+        isFollowing = false;
         rb = GetComponent<Rigidbody2D>();
         bc = GetComponent<BoxCollider2D>();
         anim = GetComponent<Animator>();
         FindPlayer();
+
+        // start patrolling in a random direction if a patrol-type behaviour is selected
+        if (behaviour == Behaviour.follow | behaviour == Behaviour.patrol)
+        {
+            StartPatrolLoop();
+        }
     }
 
     // Update is called once per frame
@@ -64,30 +68,83 @@ public class EnemyController : MonoBehaviour
     {
         FindPlayer();
         UpdateAnimations();
-        CanFollowPlayer();
     }
 
-    private void FixedUpdate()
-    {       
-        CheckSurroundings();
-
-        switch(behaviour)
+    protected void FixedUpdate()
+    {
+        switch (behaviour)
         {
             case Behaviour.follow: FollowBehaviour(); break;
-            case Behaviour.custom: CustomBehaviour(); break;
+            case Behaviour.patrol: PatrolBehaviour(); break;
             default: break;
         }
+    }
+
+    // determine whether the player is within the enemy's view range
+    protected bool CanSeePlayer()
+    {
+        return (Mathf.Abs(player.position.y - (transform.position.y + viewRangeOffset.y)) < viewRange.x
+            && Mathf.Abs(player.position.x - (transform.position.x + viewRangeOffset.x)) < viewRange.y);
     }
 
     // move the enemy toward the player if the player is within a certain range
     private void FollowBehaviour()
     {
+        // decrement the cooldown timer
+        if (followCooldown > 0) followCooldown -= Time.deltaTime;
 
+        // follow
+        if (followCooldown > 0 || CanSeePlayer())
+        {
+            isFollowing = true;
+            anim.speed = 3;
+
+            // reset the cooldown timer
+            if (CanSeePlayer()) followCooldown = followCooldownDuration;
+
+            // move toward the player
+            Vector2 newPos = Vector2.MoveTowards(transform.position, new Vector2(player.position.x, transform.position.y), followSpeed * Time.deltaTime);
+            transform.position = newPos;
+        }
+        else
+        {
+            isFollowing = false;
+            anim.speed = 1;
+
+            // continue default behaviour
+            PatrolBehaviour();
+        }
     }
 
-    // override this in classes that extend EnemyController to add custom movement
-    private void CustomBehaviour()
+    // move in the facing direction
+    // creates a patrol behaviour when coupled with ChangeDirection
+    private void PatrolBehaviour()
     {
+        if (facingRight)
+        {
+            rb.velocity = new Vector2(movementSpeed, rb.velocity.y);
+        }
+        else
+        {
+            rb.velocity = new Vector2(-movementSpeed, rb.velocity.y);
+        }
+    }
+
+    // swap the direction at a regular interval
+    // used to initiate the patrol behaviour
+    private void ChangeDirection()
+    {
+        if (!isFollowing)
+        {
+            Flip();
+            Invoke("ChangeDirection", patrolRate);
+        }
+    }
+
+    // starts the regular direction switching at a random time, to prevent patrol sync-ups
+    private void StartPatrolLoop()
+    {
+        Invoke("ChangeDirection", Random.Range(0f, patrolRate));
     }
 
     // assign the player variable, if needed
@@ -106,12 +163,6 @@ public class EnemyController : MonoBehaviour
         anim.SetBool("isDamaged", isDamaged);
     }
 
-    // check if on the ground
-    private void CheckSurroundings()
-    {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
-    }
-
     // flip the enemy sprite
     private void Flip()
     {
@@ -119,59 +170,12 @@ public class EnemyController : MonoBehaviour
         transform.Rotate(0.0f, 180.0f, 0.0f);
     }
 
-    //Checks to see if enemy is close enough to chase player!
-    private void CanFollowPlayer()
+    // turn to face the player
+    protected void FacePlayer()
     {
-        float distanceToTarget = Vector3.Distance(transform.position, player.position);
-        if (distanceToTarget <= chaseRange)
-        {
-            isFollowing = true;
-            isInRange = true;
-        } else
-        {
-            if (followCooldown > 0)
-            {
-                isFollowing = true;
-            } else
-            {
-                if (isInRange) followCooldown = cooldownTime;
-                isFollowing = false;
-            }
-            isInRange = false;
-        }
-    }
-
-    private void ChangeDirection()
-    {
-        if (!isFollowing)
+        if (player.position.x > transform.position.x ^ facingRight)
         {
             Flip();
-            Invoke("ChangeDirection", patrolRate);
-        }
-    }
-
-    private void Patrol()
-    {
-            if (facingRight)
-            {
-                rb.velocity = new Vector2(movementSpeed * 1, rb.velocity.y);
-            }
-            else
-            {
-                rb.velocity = new Vector2(movementSpeed * -1, rb.velocity.y);
-            }        
-    }
-
-
-    //Starts chasing the target
-    private void ChasePlayerHorizontally()
-    {
-        if (player.position.x > transform.position.x)
-        {
-            rb.velocity = new Vector2(movementSpeed * chaseSpeed, rb.velocity.y);
-        } else
-        {
-            rb.velocity = new Vector2(movementSpeed * -chaseSpeed, rb.velocity.y);
         }
     }
 
@@ -189,26 +193,32 @@ public class EnemyController : MonoBehaviour
         health -= damage;
 
         // small knockback
-        rb.AddForce(transform.up * rb.mass * 500);
+        rb.AddForce(transform.up * rb.mass * 100);
 
-        // shake the screen
-        impulseSource.GenerateImpulse();
+
+        // damage animation
+        anim.SetTrigger("hit");
 
         isDamaged = true; //damage animation is turned on
         Invoke("SetDamageFalse", damageAnimationDuration); //damage animation is turned off on a delay
 
         if (health <= 0) Die();
+
+        // shake the screen
+        impulseSource.GenerateImpulse();
     }
 
     // handle enemy death
     // should be called when enemy reduced to 0 health
     private void Die()
     {
+        Debug.Log("killed " + transform.name);
+        Instantiate(deathEffect, transform.position, transform.rotation);
         Destroy(gameObject);
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        Gizmos.DrawWireCube((Vector2)transform.position + viewRangeOffset, viewRange);
     }
 }

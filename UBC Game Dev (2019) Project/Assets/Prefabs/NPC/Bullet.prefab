@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2551831120823326130}
   - component: {fileID: 5724060728295194283}
   - component: {fileID: 4196603649349022578}
-  m_Layer: 11
+  m_Layer: 8
   m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 973654528600976231}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.99999994, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -145,11 +145,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdd4e881eeca2a444bfa303f3cc0241c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 5724060728295194283}
   maxFlyTime: 4
-  bulletSpeed: 6
-  bulletDamage: 5
-  rb: {fileID: 853447577409548545}
+  speed: 15
+  damage: 2
 --- !u!95 &5724060728295194283
 Animator:
   serializedVersion: 3

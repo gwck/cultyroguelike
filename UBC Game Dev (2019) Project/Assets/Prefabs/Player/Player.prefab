@@ -4955,7 +4955,7 @@ MonoBehaviour:
   timeZeroToMax: 0.4
   timeMaxToZero: 0.3
   forwardVelocity: 0
-  amountOfJumps: 2
+  amountOfJumps: 3
   jumpVelocity: 27
   groundCheckRadius: 0.4
   fallMultiplier: 3
@@ -4964,7 +4964,7 @@ MonoBehaviour:
   secondJumpEffect: {fileID: 8036769558089422073, guid: 8ef39be3765170249a02c6e4a25c52ad,
     type: 3}
   attackDamage: 5
-  attackRange: 1.2
+  attackRange: 1.5
   attackDelay: 1
   attackEffect: {fileID: 3939138341229242056, guid: e8dd2a7f5e6ec424aac7330c89975d18,
     type: 3}

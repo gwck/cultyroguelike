@@ -30,6 +30,63 @@ Transform:
   m_Father: {fileID: 5092516536627802645}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1349738564095988737
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2936595932399103836}
+  - component: {fileID: 4754306723056590591}
+  m_Layer: 8
+  m_Name: Hitbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2936595932399103836
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1349738564095988737}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5092516536627802645}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &4754306723056590591
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1349738564095988737}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 1.0496659}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.7967362, y: 1.8989029}
+  m_EdgeRadius: 0
 --- !u!1 &5092516536627802643
 GameObject:
   m_ObjectHideFlags: 0
@@ -42,9 +99,9 @@ GameObject:
   - component: {fileID: 5092516536627802644}
   - component: {fileID: 5092516536627802646}
   - component: {fileID: 5092516536627802640}
-  - component: {fileID: 5222675206531076221}
-  - component: {fileID: 1032500138}
   - component: {fileID: 178791824616238197}
+  - component: {fileID: 185528968371810183}
+  - component: {fileID: 8178281802492422850}
   m_Layer: 11
   m_Name: EnemyShooter
   m_TagString: Enemy
@@ -64,6 +121,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 296342068}
+  - {fileID: 2936595932399103836}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -161,45 +219,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &5222675206531076221
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5092516536627802643}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9ed4a7fcdc1599478863fcf6abd11d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shootRange: 20
-  shootMaxCooldownTime: 3
-  firePoint: {fileID: 296342068}
-  timeManager: {fileID: 0}
-  bulletPrefab: {fileID: 973654528600976231, guid: d7c753c6056a3b44785e80a6d8e0388b,
-    type: 3}
-  effect: {fileID: 6619407764865432, guid: 86dc2d9b5a94a304fbad429490a96c65, type: 3}
-  stats:
-    enemyDamage: 5
-    health: 10
---- !u!114 &1032500138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5092516536627802643}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c8d2da8e46371b4b9faad98018b8517, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anim: {fileID: 5092516536627802640}
-  enemyDamage: 3
-  health: 10
-  timeManager: {fileID: 0}
-  effect: {fileID: 6619407764865432, guid: 86dc2d9b5a94a304fbad429490a96c65, type: 3}
 --- !u!50 &178791824616238197
 Rigidbody2D:
   serializedVersion: 4
@@ -221,3 +240,73 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &185528968371810183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5092516536627802643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b52231b1bdb3f04fae78b5ab63f9188, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  impulseSource: {fileID: 8178281802492422850}
+  startingHealth: 15
+  damageAnimationDuration: 0
+  deathEffect: {fileID: 6619407535911479, guid: 86dc2d9b5a94a304fbad429490a96c65,
+    type: 3}
+  contactDamage: 0
+  behaviour: 2
+  movementSpeed: 0
+  viewRange: {x: 40, y: 15}
+  viewRangeOffset: {x: 0, y: 2}
+  followSpeed: 0
+  followCooldownDuration: 0
+  patrolRate: 0
+  fireRate: 2
+  firePoint: {fileID: 296342068}
+  projectile: {fileID: 973654528600976231, guid: d7c753c6056a3b44785e80a6d8e0388b,
+    type: 3}
+--- !u!114 &8178281802492422850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5092516536627802643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_RawSignal: {fileID: 11400000, guid: 03ba47de987cdac43af742df6dc92fa6, type: 2}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.2
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 1000

@@ -157,7 +157,7 @@ public class PlayerController : MonoBehaviour
     private void CheckIfCanJump()
     {
 
-        if (isGrounded && rb.velocity.y <= 0 || isTouchingEnemy && rb.velocity.y <= 0 && !isGrounded)
+        if (isGrounded && rb.velocity.y <= 0)
         {
             amountofJumpsLeft = amountOfJumps;
             isJumping = false;
@@ -288,24 +288,30 @@ public class PlayerController : MonoBehaviour
     // Jumps and decrements amountofJumpsLeft if canJump is true
     private void Jump()
     {
-        if (canJump)
+        if (!canJump)
+            return;
+
+        isJumping = true;
+        rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
+
+        // first jump in the series
+        if (amountofJumpsLeft == amountOfJumps)
         {
-            isJumping = true;
             anim.SetBool("isJumping", isJumping);
-            rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
             CreateDust();
-            amountofJumpsLeft--;
+
         }
+        // second (or third, etc..) jump
         else
         {
-            // SECOND JUMP, MIGHT NEED ANIMATION WORK
+            // MIGHT NEED ANIMATION WORK
             isSecondJumping = true;
             GameObject secondJump = Instantiate(secondJumpEffect, new Vector3(transform.position.x, transform.position.y - 1, transform.position.z), transform.rotation);
             anim.SetBool("isSecondJumping", isSecondJumping);
-            rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
-            amountofJumpsLeft--;
             Destroy(secondJump, 0.2f);
         }
+
+        amountofJumpsLeft--;
     }
 
     // knock the player back
@@ -318,7 +324,7 @@ public class PlayerController : MonoBehaviour
     {
         isDamaged = false;
     }
-    
+
     // take a set amount of damage
     public void TakeDamage(int damage)
     {
@@ -393,7 +399,7 @@ public class PlayerController : MonoBehaviour
         // damage each enemy that was hit
         for (int i = 0; i < enemiesToDamage.Length; i++)
         {
-            enemiesToDamage[i].gameObject.GetComponent<EnemyController>().TakeDamage(attackDamage);
+            enemiesToDamage[i].transform.parent.GetComponent<EnemyController>().TakeDamage(attackDamage);
         }
     }
 
@@ -424,10 +430,9 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerStay2D(Collider2D collision)
     {
         if ((1 << collision.gameObject.layer & whatIsEnemies.value) == 0) return;
-        Debug.Log("collided with enemy");
 
         // get the parent, since the hitbox is a child of the enemy
-        TakeDamage(collision.transform.parent.gameObject.GetComponent<EnemyStats>().enemyDamage);
+        TakeDamage(collision.transform.parent.gameObject.GetComponent<EnemyController>().contactDamage);
     }
 
     void GroundSlam()
