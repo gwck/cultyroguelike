@@ -112,6 +112,8 @@ MonoBehaviour:
   deathEffect: {fileID: 6619407535911479, guid: 86dc2d9b5a94a304fbad429490a96c65,
     type: 3}
   contactDamage: 4
+  knockbackForce: {x: 30, y: 10}
+  stunDuration: 0.5
   behaviour: 0
   movementSpeed: 3
   viewRange: {x: 15, y: 10}

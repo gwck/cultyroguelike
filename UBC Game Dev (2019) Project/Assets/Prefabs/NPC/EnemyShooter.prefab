@@ -231,7 +231,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 2
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -257,7 +257,9 @@ MonoBehaviour:
   damageAnimationDuration: 0
   deathEffect: {fileID: 6619407535911479, guid: 86dc2d9b5a94a304fbad429490a96c65,
     type: 3}
-  contactDamage: 0
+  contactDamage: 1
+  knockbackForce: {x: 10, y: 5}
+  stunDuration: 0.5
   behaviour: 2
   movementSpeed: 0
   viewRange: {x: 40, y: 15}

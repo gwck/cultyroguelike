@@ -24,6 +24,7 @@ public class EnemyController : MonoBehaviour
 
     [Header("Combat")]
     public int contactDamage; // damage dealt to the player on collision with the enemy
+    private bool isStunned; // stun prevents movement from being applied; currently used for knockback
 
     // options for preset or custom behaviours
     private enum Behaviour
@@ -51,6 +52,7 @@ public class EnemyController : MonoBehaviour
         health = startingHealth;
         isDamaged = false;
         isFollowing = false;
+        isStunned = false;
         rb = GetComponent<Rigidbody2D>();
         bc = GetComponent<BoxCollider2D>();
         anim = GetComponent<Animator>();
@@ -72,6 +74,8 @@ public class EnemyController : MonoBehaviour
 
     protected void FixedUpdate()
     {
+        if (isStunned) return;
+
         switch (behaviour)
         {
             case Behaviour.follow: FollowBehaviour(); break;
@@ -177,6 +181,20 @@ public class EnemyController : MonoBehaviour
         {
             Flip();
         }
+    }
+
+    // disables stun lock
+    private void SetStunFalse()
+    {
+        isStunned = false;
+    }
+    
+    // apply knockback force and a stun effect, which prevents any action, for the duration
+    public void TakeKnockback(Vector2 force, float duration)
+    {
+        isStunned = true;
+        rb.AddForce(force, ForceMode2D.Impulse);
+        Invoke("SetStunFalse", duration);
     }
 
     // disables the damage animation 

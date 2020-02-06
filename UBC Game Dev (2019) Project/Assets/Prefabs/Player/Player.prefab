@@ -4958,8 +4958,8 @@ MonoBehaviour:
   amountOfJumps: 3
   jumpVelocity: 27
   groundCheckRadius: 0.4
-  fallMultiplier: 3
-  lowJumpMultiplier: 12
+  fallMultiplier: 2
+  lowJumpMultiplier: 4
   dust: {fileID: 3460904178742051530}
   secondJumpEffect: {fileID: 8036769558089422073, guid: 8ef39be3765170249a02c6e4a25c52ad,
     type: 3}
@@ -4970,12 +4970,9 @@ MonoBehaviour:
     type: 3}
   attackEffectLocation: {fileID: 444575379592100416}
   attackCheck: {fileID: 490766134}
+  knockbackForce: {x: 10, y: 5}
+  stunDuration: 0.5
   invulnDuration: 0.75
-  knockback: 15
-  minknockback: 5
-  knockFromRight: 0
-  knockbackLength: 0.4
-  knockbackCount: 0
   groundSlamSpeed: 50
   groundSlamEffect: {fileID: 0}
 --- !u!212 &3460904179580232046
@@ -5062,7 +5059,7 @@ Rigidbody2D:
   m_Mass: 4
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 6
+  m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: 482a531688ca1254e9a3cf34bea0b64d, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1

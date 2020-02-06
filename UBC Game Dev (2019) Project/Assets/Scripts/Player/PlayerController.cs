@@ -53,16 +53,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject attackEffect; // visual effect of an attack
     [SerializeField] private Transform attackEffectLocation; // starting point for the attack effect
     [SerializeField] private Transform attackCheck; // starting point from which the attack's range is measured
+    [SerializeField] private Vector2 knockbackForce; // force to be applied to enemies that are hit with attacks
+    [SerializeField] private float stunDuration; // amount of time stun effect that accompanies knockback lasts
     [SerializeField] private float invulnDuration; // time during which the player can't be damaged again once they've been hit
     private bool canAttack; // whether or not the player can attack this frame, depending on attackDelay
-
-    [Header("Knockback")]
-    public float knockback; // the distance that the player is knocked back
-    public float minknockback; // minumum value for knockback
-    private float actualknockback;
-    [HideInInspector] public bool knockFromRight; // whether the player has been knocked from the right recently (?)
-    [HideInInspector] public float knockbackLength; // amount of time that knockback should be applied
-    [HideInInspector] public float knockbackCount = 0; // amount of knockback effects that are affecting the player
 
     [Header("Ground Slam")]
     [SerializeField] private float groundSlamSpeed; // speed of the ground slam
@@ -94,24 +88,26 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         amountofJumpsLeft = amountOfJumps;
-        actualknockback = knockback;
     }
 
     private void Update()
     {
         CheckInput();
+
+        CheckIfFalling();
+        CheckSurroundings();
         CheckMovementDirection();
-        UpdateAnimations();
         CheckIfCanJump();
+
+        UpdateAnimations();
         UpdateHealthBar();
     }
 
     private void FixedUpdate()
     {
+
         GroundSlam();
-        PlayerFalling();
         ApplyMovement();
-        CheckSurroundings();
     }
 
     // Updates the animation of the character
@@ -267,7 +263,7 @@ public class PlayerController : MonoBehaviour
     }
 
     // applies the falling animation
-    public void PlayerFalling()
+    public void CheckIfFalling()
     {
         if (!isGrounded && rb.velocity.y < 0 && !isTouchingEnemy)
         {
@@ -314,11 +310,6 @@ public class PlayerController : MonoBehaviour
         amountofJumpsLeft--;
     }
 
-    // knock the player back
-    public void KnockBack()
-    {
-    }
-
     // disables the damage animation 
     private void SetDamageFalse()
     {
@@ -333,9 +324,6 @@ public class PlayerController : MonoBehaviour
 
         // decrease the health
         health -= damage;
-
-        // small knockback
-        rb.AddForce(transform.up * rb.mass * 500);
 
         // shake the screen
         impulseSource.GenerateImpulse();
@@ -399,7 +387,17 @@ public class PlayerController : MonoBehaviour
         // damage each enemy that was hit
         for (int i = 0; i < enemiesToDamage.Length; i++)
         {
-            enemiesToDamage[i].transform.parent.GetComponent<EnemyController>().TakeDamage(attackDamage);
+            EnemyController controller = enemiesToDamage[i].transform.parent.GetComponent<EnemyController>();
+            controller.TakeDamage(attackDamage);
+
+            if (isFacingRight)
+            {
+                controller.TakeKnockback(knockbackForce, stunDuration);
+            }
+            else
+            {
+                controller.TakeKnockback(knockbackForce * new Vector2(-1, 1), stunDuration);
+            }
         }
     }
 
@@ -432,7 +430,9 @@ public class PlayerController : MonoBehaviour
         if ((1 << collision.gameObject.layer & whatIsEnemies.value) == 0) return;
 
         // get the parent, since the hitbox is a child of the enemy
-        TakeDamage(collision.transform.parent.gameObject.GetComponent<EnemyController>().contactDamage);
+        EnemyController controller = collision.transform.parent.gameObject.GetComponent<EnemyController>();
+        
+        TakeDamage(controller.contactDamage);
     }
 
     void GroundSlam()
