@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int fallBoundary; // player dies if they fall past this y coordinate
 
     [Header("Movement")]
-    [SerializeField] private float maxSpeed; // maximum speed of the player
+    public float maxSpeed; // maximum speed of the player
     [SerializeField] private float timeZeroToMax; // time in seconds for the player to reach max speed
     [SerializeField] private float timeMaxToZero; // time in seconds that it takes to stop from max speed
     private float movementInputdirection; // direction of player movement input
@@ -293,6 +293,12 @@ public class PlayerController : MonoBehaviour
             }
         }*/
     }
+
+    //EFFECTS: Increases the player's movement speed
+    //public void IncreaseMovement(float movementSpeed)
+    //{
+    //    maxSpeed = (maxSpeed * movementSpeed);
+    //}
 
     //EFFECTS: Flips the character sprite
     private void Flip()
