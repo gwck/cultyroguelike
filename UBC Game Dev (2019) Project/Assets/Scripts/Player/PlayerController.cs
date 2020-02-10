@@ -47,14 +47,9 @@ public class PlayerController : MonoBehaviour
     private bool isTouchingEnemy; // whether the player is in contact with an enemy (can jump off enemies)
 
     [Header("Combat")]
-    [SerializeField] private int attackDamage; // damage of the attack
-    [SerializeField] private float attackRange; // radius of the attack's effects from the attackCheck point
-    [SerializeField] private float attackDelay; // amount of time after an attack before the player can attack again
-    [SerializeField] private GameObject attackEffect; // visual effect of an attack
+    [SerializeField] private Weapon weapon;
     [SerializeField] private Transform attackEffectLocation; // starting point for the attack effect
     [SerializeField] private Transform attackCheck; // starting point from which the attack's range is measured
-    [SerializeField] private Vector2 knockbackForce; // force to be applied to enemies that are hit with attacks
-    [SerializeField] private float stunDuration; // amount of time stun effect that accompanies knockback lasts
     [SerializeField] private float invulnDuration; // time during which the player can't be damaged again once they've been hit
     private bool canAttack; // whether or not the player can attack this frame, depending on attackDelay
 
@@ -65,6 +60,15 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded; // whether the player is on the ground - affects whether the player can jump
     private bool canGroundSlam; // whether the player can groundslam in this frame
 
+    [Header("Multipliers")]
+    public float incomingDamageMultiplier = 1;
+    public float speedMultiplier = 1;
+    public float jumpVelocityMultiplier = 1;
+    public float attackDelayMultiplier = 1;
+    public float attackRangeMultiplier = 1;
+    public float weaponDamageMultiplier = 1;
+    public float knockbackForceMultiplier = 1;
+
     // ANIMATION
     private bool isFacingRight = true; // orientation of the player's sprite
     private bool isRunning; // controls run animation
@@ -73,6 +77,7 @@ public class PlayerController : MonoBehaviour
     private bool isFalling; // controls fall animation
     private bool isDamaged; // controls damaged animation as well as the time before the player can be damaged again
     private bool isAttacking; // controls attack animation
+    private bool isInvuln; // controls invunerability during attack animation
 
     // Start is called before the first frame update
     private void Start()
@@ -80,6 +85,7 @@ public class PlayerController : MonoBehaviour
         health = startingHealth;
         canAttack = true;
         isDamaged = false;
+        isInvuln = false;
         isSecondJumping = false;
         accelRatePerSec = maxSpeed / timeZeroToMax;
         decelRatePerSec = -maxSpeed / timeMaxToZero;
@@ -197,6 +203,8 @@ public class PlayerController : MonoBehaviour
     // Applies the input to the direction player wanted to go
     private void ApplyMovement()
     {
+        float adjustedMaxSpeed = maxSpeed * speedMultiplier;
+
         // apply rightward movement
         if (movementInputdirection == 1)
         {
@@ -206,9 +214,9 @@ public class PlayerController : MonoBehaviour
             }
             forwardVelocity += accelRatePerSec * Time.unscaledDeltaTime;
             rb.velocity = new Vector2(forwardVelocity, rb.velocity.y);
-            if (forwardVelocity >= maxSpeed)
+            if (forwardVelocity >= adjustedMaxSpeed)
             {
-                forwardVelocity = maxSpeed;
+                forwardVelocity = adjustedMaxSpeed;
             }
         }
         // apply leftward movement
@@ -220,9 +228,9 @@ public class PlayerController : MonoBehaviour
             }
             forwardVelocity += -accelRatePerSec * Time.unscaledDeltaTime;
             rb.velocity = new Vector2(forwardVelocity, rb.velocity.y);
-            if (forwardVelocity <= -maxSpeed)
+            if (forwardVelocity <= -adjustedMaxSpeed)
             {
-                forwardVelocity = -maxSpeed;
+                forwardVelocity = -adjustedMaxSpeed;
             }
         }
         // no movement input, apply deceleration
@@ -288,7 +296,7 @@ public class PlayerController : MonoBehaviour
             return;
 
         isJumping = true;
-        rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
+        rb.velocity = new Vector2(rb.velocity.x, jumpVelocity * jumpVelocityMultiplier);
 
         // first jump in the series
         if (amountofJumpsLeft == amountOfJumps)
@@ -320,10 +328,10 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(int damage)
     {
         // don't take damage if currently taking damage
-        if (isDamaged) return;
+        if (isDamaged || isInvuln) return;
 
         // decrease the health
-        health -= damage;
+        health -= (int) (damage * incomingDamageMultiplier);
 
         // shake the screen
         impulseSource.GenerateImpulse();
@@ -352,6 +360,11 @@ public class PlayerController : MonoBehaviour
         canAttack = true;
     }
 
+    private void EndInvuln()
+    {
+        isInvuln = false;
+    }
+
     IEnumerator AttackEffect()
     {
         Time.timeScale = 0f;
@@ -372,14 +385,18 @@ public class PlayerController : MonoBehaviour
         Invoke("SetAttackingFalse", 0.10f);
 
         // create the attack effect animation
-        Instantiate(attackEffect, attackEffectLocation.position, transform.rotation, transform);
+        Instantiate(weapon.effect, attackEffectLocation.position, transform.rotation, transform);
 
         // apply the attack delay
         canAttack = false;
-        Invoke("AllowAttack", attackDelay);
+        Invoke("AllowAttack", weapon.delay * attackDelayMultiplier);
+
+        // apply the temporary invulnerability during the attack animation
+        isInvuln = true;
+        Invoke("EndInvuln", weapon.invulnDuration);
 
         // find enemies hit by the attack
-        Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackCheck.position, attackRange, whatIsEnemies);
+        Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackCheck.position, weapon.range * attackRangeMultiplier, whatIsEnemies);
 
         // create the attack screenshake and pause effects if the attack hit
         if (enemiesToDamage.Length > 0) StartCoroutine("AttackEffect");
@@ -388,16 +405,7 @@ public class PlayerController : MonoBehaviour
         for (int i = 0; i < enemiesToDamage.Length; i++)
         {
             EnemyController controller = enemiesToDamage[i].transform.parent.GetComponent<EnemyController>();
-            controller.TakeDamage(attackDamage);
-
-            if (isFacingRight)
-            {
-                controller.TakeKnockback(knockbackForce, stunDuration);
-            }
-            else
-            {
-                controller.TakeKnockback(knockbackForce * new Vector2(-1, 1), stunDuration);
-            }
+            weapon.Hit(controller, isFacingRight);
         }
     }
 
@@ -474,7 +482,7 @@ public class PlayerController : MonoBehaviour
     {
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(attackCheck.position, attackRange);
+        Gizmos.DrawWireSphere(attackCheck.position, weapon.range);
 
     }
 }
