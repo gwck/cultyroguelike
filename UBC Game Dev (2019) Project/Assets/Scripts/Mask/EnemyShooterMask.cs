@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpeedBuff : MonoBehaviour
+public class EnemyShooterMask : MonoBehaviour
 {
-    private float speedBuffEnhancer = 2;
-
-    [SerializeField] private float speedBuffTime = 5;
-
-
     private Transform playerPosition;
 
     private PlayerController playerController;
@@ -30,29 +24,19 @@ public class SpeedBuff : MonoBehaviour
         }
     }
 
-    //EFFECTS: Applies the speed buff on the player
-    IEnumerator ApplySpeedBuff()
-    {
-        float previousSpeed = playerController.maxSpeed;
-        playerController.maxSpeed *= speedBuffEnhancer;
-        yield return new WaitForSeconds(speedBuffTime);
-        playerController.maxSpeed = previousSpeed;
-        Destroy(gameObject);
-    }
 
-
-
-
-
-    //EFFECTS: Buffs the player's speed when colliding with the speed buff
+    //EFFECTS: Gives the player the mask's effect when colliding with the mask
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            StartCoroutine(ApplySpeedBuff());
+            Debug.Log("collided with player");
+            //StartCoroutine();
             gameObject.GetComponent<SpriteRenderer>().enabled = false;
             gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            Destroy(gameObject);
         }
     }
-}
 
+
+}

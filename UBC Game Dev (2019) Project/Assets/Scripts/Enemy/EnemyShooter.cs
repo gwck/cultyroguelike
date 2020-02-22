@@ -20,6 +20,8 @@ public class EnemyShooter : MonoBehaviour
 
     public GameObject bulletPrefab;
 
+    public GameObject maskDrop;
+
     public ParticleSystem effect;
 
     public EnemyStats stats = new EnemyStats();
@@ -97,9 +99,15 @@ public class EnemyShooter : MonoBehaviour
             timeManager.SlowMo();
             GetComponent<SpriteRenderer>().enabled = false;
             GetComponent<BoxCollider2D>().enabled = false;
-            StartCoroutine(GhostEffect());
             enemyDead = true;
+            StartCoroutine(GhostEffect());
         }
+    }
+
+    void OnDestroy() //called, when enemy will be destroyed
+    {
+        Instantiate(maskDrop, firePoint.position, maskDrop.transform.rotation); //the enemy shooter mask is dropped
+        //transform.position + new Vector3(0, 1)
     }
 
     public IEnumerator GhostEffect()
