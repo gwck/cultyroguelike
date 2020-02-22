@@ -25,9 +25,9 @@ public class Weapon : MonoBehaviour
     // apply damage and any additional effects to the enemy
     public void Hit(EnemyController enemy, bool isFacingRight)
     {
-        enemy.TakeDamage((int) (damage * player.weaponDamageMultiplier));
+        enemy.TakeDamage((int) player.visage.ModifyWeaponDamage(damage));
 
-        Vector2 adjustedKnockback = knockbackForce * (isFacingRight ? Vector2.one : new Vector2(-1, 1)) * player.knockbackForceMultiplier;
+        Vector2 adjustedKnockback = player.visage.ModifyKnockbackForce(knockbackForce) * (isFacingRight ? Vector2.one : new Vector2(-1, 1));
         enemy.TakeKnockback(adjustedKnockback, stunDuration);
     }
 }

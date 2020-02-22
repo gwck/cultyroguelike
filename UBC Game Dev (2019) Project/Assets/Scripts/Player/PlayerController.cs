@@ -16,7 +16,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask whatIsGround; // layers that count as ground
     [SerializeField] private LayerMask whatIsEnemies; // layers that count as enemies
     [SerializeField] private int fallBoundary; // player dies if they fall past this y coordinate
-    [SerializeField] private TimeManager timeManager; // time manager to help with slow motion effects
     [SerializeField] private CinemachineImpulseSource impulseSource; // impulse source for screen shake effect
     [SerializeField] private Ghost ghost; //reference to ghost script
 
@@ -47,11 +46,15 @@ public class PlayerController : MonoBehaviour
     private bool isTouchingEnemy; // whether the player is in contact with an enemy (can jump off enemies)
 
     [Header("Combat")]
-    [SerializeField] private Weapon weapon;
     [SerializeField] private Transform attackEffectLocation; // starting point for the attack effect
     [SerializeField] private Transform attackCheck; // starting point from which the attack's range is measured
     [SerializeField] private float invulnDuration; // time during which the player can't be damaged again once they've been hit
     private bool canAttack; // whether or not the player can attack this frame, depending on attackDelay
+
+    [Header("Items")]
+    public Visage visage;
+    public Serum serum;
+    public Weapon weapon;
 
     [Header("Ground Slam")]
     [SerializeField] private float groundSlamSpeed; // speed of the ground slam
@@ -146,6 +149,11 @@ public class PlayerController : MonoBehaviour
         {
             Attack();
         }
+
+        if (Input.GetKeyDown(KeyCode.Quote))
+        {
+            serum.Activate();
+        }
     }
 
     // Checks the surroundings of the player
@@ -203,7 +211,7 @@ public class PlayerController : MonoBehaviour
     // Applies the input to the direction player wanted to go
     private void ApplyMovement()
     {
-        float adjustedMaxSpeed = maxSpeed * speedMultiplier;
+        float adjustedMaxSpeed = visage.ModifySpeed(maxSpeed);
 
         // apply rightward movement
         if (movementInputdirection == 1)
@@ -296,7 +304,7 @@ public class PlayerController : MonoBehaviour
             return;
 
         isJumping = true;
-        rb.velocity = new Vector2(rb.velocity.x, jumpVelocity * jumpVelocityMultiplier);
+        rb.velocity = new Vector2(rb.velocity.x, visage.ModifyJumpVelocity(jumpVelocity));
 
         // first jump in the series
         if (amountofJumpsLeft == amountOfJumps)
@@ -331,7 +339,7 @@ public class PlayerController : MonoBehaviour
         if (isDamaged || isInvuln) return;
 
         // decrease the health
-        health -= (int) (damage * incomingDamageMultiplier);
+        health -= (int) (visage.ModifyDamageReceived(damage));
 
         // shake the screen
         impulseSource.GenerateImpulse();
@@ -389,14 +397,14 @@ public class PlayerController : MonoBehaviour
 
         // apply the attack delay
         canAttack = false;
-        Invoke("AllowAttack", weapon.delay * attackDelayMultiplier);
+        Invoke("AllowAttack", visage.ModifyAttackDelay(weapon.delay));
 
         // apply the temporary invulnerability during the attack animation
         isInvuln = true;
         Invoke("EndInvuln", weapon.invulnDuration);
 
         // find enemies hit by the attack
-        Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackCheck.position, weapon.range * attackRangeMultiplier, whatIsEnemies);
+        Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackCheck.position, visage.ModifyAttackRange(weapon.range), whatIsEnemies);
 
         // create the attack screenshake and pause effects if the attack hit
         if (enemiesToDamage.Length > 0) StartCoroutine("AttackEffect");
@@ -420,7 +428,6 @@ public class PlayerController : MonoBehaviour
         }
         healthBar.text = str;
     }
-
 
     void CreateDust()
     {
