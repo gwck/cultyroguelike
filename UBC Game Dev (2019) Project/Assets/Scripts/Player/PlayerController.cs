@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform groundCheck; // point from which to check if the player is grounded
     [SerializeField] private LayerMask whatIsGround; // layers that count as ground
     [SerializeField] private LayerMask whatIsEnemies; // layers that count as enemies
+    [SerializeField] private LayerMask whatIsItems; // layers that count as items
     [SerializeField] private int fallBoundary; // player dies if they fall past this y coordinate
     [SerializeField] private CinemachineImpulseSource impulseSource; // impulse source for screen shake effect
     [SerializeField] private Ghost ghost; //reference to ghost script
@@ -339,7 +340,7 @@ public class PlayerController : MonoBehaviour
         if (isDamaged || isInvuln) return;
 
         // decrease the health
-        health -= (int) (visage.ModifyDamageReceived(damage));
+        health -= (int)(visage.ModifyDamageReceived(damage));
 
         // shake the screen
         impulseSource.GenerateImpulse();
@@ -442,12 +443,46 @@ public class PlayerController : MonoBehaviour
     // handle collision with enemy hitboxes
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if ((1 << collision.gameObject.layer & whatIsEnemies.value) == 0) return;
+        // collide with enemy
+        if ((1 << collision.gameObject.layer & whatIsEnemies.value) != 0)
+        {
+            // get the parent, since the hitbox is a child of the enemy
+            EnemyController controller = collision.transform.parent.gameObject.GetComponent<EnemyController>();
+            TakeDamage(controller.contactDamage);
+        }
 
-        // get the parent, since the hitbox is a child of the enemy
-        EnemyController controller = collision.transform.parent.gameObject.GetComponent<EnemyController>();
-        
-        TakeDamage(controller.contactDamage);
+        // collide with item
+        if ((1 << collision.gameObject.layer & whatIsItems.value) != 0)
+        {
+            PickupItem(collision.gameObject);
+        }
+    }
+
+    // picks up an item, childs it to the player and deletes the old item
+    void PickupItem(GameObject item)
+    {
+        switch(item.tag)
+        {
+            case "Visage":
+                Visage oldVisage = visage;
+                visage = item.GetComponent<Visage>();
+                if (oldVisage != visage) Destroy(oldVisage.gameObject);
+                break;
+            case "Serum":
+                Serum oldSerum = serum;
+                serum = item.GetComponent<Serum>();
+                if (oldSerum != serum) Destroy(oldSerum.gameObject);
+                break;
+            case "Weapon":
+                Weapon oldWeapon = weapon;
+                weapon = item.GetComponent<Weapon>();
+                if (oldWeapon != visage) Destroy(oldWeapon.gameObject);
+                break;
+        }
+
+        item.transform.parent = transform;
+        item.GetComponent<Collider2D>().enabled = false;
+        item.GetComponent<SpriteRenderer>().enabled = false;
     }
 
     void GroundSlam()

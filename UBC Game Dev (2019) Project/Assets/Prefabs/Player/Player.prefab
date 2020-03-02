@@ -4949,6 +4949,9 @@ MonoBehaviour:
   whatIsEnemies:
     serializedVersion: 2
     m_Bits: 256
+  whatIsItems:
+    serializedVersion: 2
+    m_Bits: 8192
   fallBoundary: -90
   impulseSource: {fileID: 8425978296137004877}
   ghost: {fileID: 3460904179580232080}
@@ -5393,11 +5396,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3460904179580232041}
     m_Modifications:
-    - target: {fileID: 1413222265557081542, guid: 109417e5d0bba7d4b98b8c7a7ab81702,
-        type: 3}
-      propertyPath: m_Name
-      value: DefaultSerum
-      objectReference: {fileID: 0}
     - target: {fileID: 6183463176182154624, guid: 109417e5d0bba7d4b98b8c7a7ab81702,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5452,6 +5450,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1413222265557081542, guid: 109417e5d0bba7d4b98b8c7a7ab81702,
+        type: 3}
+      propertyPath: m_Name
+      value: DefaultSerum
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 109417e5d0bba7d4b98b8c7a7ab81702, type: 3}
