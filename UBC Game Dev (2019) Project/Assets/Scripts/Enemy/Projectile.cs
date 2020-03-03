@@ -33,6 +33,10 @@ public class Projectile : MonoBehaviour
         if (collisionInfo.tag == "Player")
         {
             collisionInfo.GetComponent<PlayerController>().TakeDamage(damage);
+        }
+
+        if (collisionInfo.tag != "Enemy" && collisionInfo.tag != "EnemyHitbox")
+        {
             rb.velocity = new Vector2(0f, 0f);
             anim.SetTrigger("hit");
         }

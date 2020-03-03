@@ -649,6 +649,16 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1850915232479748795, guid: 962eca3f1f7e61d4d848a1483fbdc6be,
+        type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1850915232479748795, guid: 962eca3f1f7e61d4d848a1483fbdc6be,
+        type: 3}
+      propertyPath: m_ReferencePixelsPerUnit
+      value: 256
+      objectReference: {fileID: 0}
     - target: {fileID: 8015998374191775338, guid: 962eca3f1f7e61d4d848a1483fbdc6be,
         type: 3}
       propertyPath: startingHealth
@@ -657,11 +667,6 @@ PrefabInstance:
     - target: {fileID: 1525506246851624136, guid: 962eca3f1f7e61d4d848a1483fbdc6be,
         type: 3}
       propertyPath: orthographic size
-      value: 8.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1701197568569816343, guid: 962eca3f1f7e61d4d848a1483fbdc6be,
-        type: 3}
-      propertyPath: m_Lens.OrthographicSize
       value: 8.5
       objectReference: {fileID: 0}
     - target: {fileID: 4301013560612464130, guid: 962eca3f1f7e61d4d848a1483fbdc6be,
@@ -673,6 +678,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1701197568569816343, guid: 962eca3f1f7e61d4d848a1483fbdc6be,
+        type: 3}
+      propertyPath: m_Lens.OrthographicSize
+      value: 8.5
       objectReference: {fileID: 0}
     - target: {fileID: 6678830897493212370, guid: 962eca3f1f7e61d4d848a1483fbdc6be,
         type: 3}

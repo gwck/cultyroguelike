@@ -17,6 +17,7 @@ TagManager:
   - Visage
   - Serum
   - Weapon
+  - RaisedArea
   layers:
   - Default
   - TransparentFX

@@ -5282,6 +5282,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 950197474175429928, guid: 4132bb2dd27a8dd49b785bbbe53b3ba2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1868221769648516935, guid: 4132bb2dd27a8dd49b785bbbe53b3ba2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4132bb2dd27a8dd49b785bbbe53b3ba2, type: 3}
 --- !u!4 &1721536454192875737 stripped
@@ -5367,6 +5377,16 @@ PrefabInstance:
     - target: {fileID: 6728158450514365514, guid: 0452cdaf407fe14419df3793a7250212,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1094132546852386120, guid: 0452cdaf407fe14419df3793a7250212,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -639490253319648029, guid: 0452cdaf407fe14419df3793a7250212,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -5455,6 +5475,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DefaultSerum
+      objectReference: {fileID: 0}
+    - target: {fileID: 4439982880994578601, guid: 109417e5d0bba7d4b98b8c7a7ab81702,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663202649000144302, guid: 109417e5d0bba7d4b98b8c7a7ab81702,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 109417e5d0bba7d4b98b8c7a7ab81702, type: 3}
