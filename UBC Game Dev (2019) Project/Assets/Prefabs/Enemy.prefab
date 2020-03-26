@@ -129,6 +129,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< Updated upstream:UBC Game Dev (2019) Project/Assets/Prefabs/Enemy.prefab
+=======
+--- !u!114 &5222675206195777744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5222675206195777748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f15e89579a298f24f9420bf99bb19918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  impulseSource: {fileID: 6562407478475353142}
+  startingHealth: 10
+  damageAnimationDuration: 0
+  deathEffect: {fileID: 6619407535911479, guid: 86dc2d9b5a94a304fbad429490a96c65,
+    type: 3}
+  contactDamage: 4
+  behaviour: 0
+  movementSpeed: 3
+  viewRange: {x: 15, y: 10}
+  viewRangeOffset: {x: 0, y: 2}
+  followSpeed: 12
+  followCooldownDuration: 0.5
+  patrolRate: 3
+>>>>>>> Stashed changes:UBC Game Dev (2019) Project/Assets/Prefabs/NPC/Enemy.prefab
 --- !u!212 &5222675206195777747
 SpriteRenderer:
   m_ObjectHideFlags: 0
