@@ -11,6 +11,8 @@ public class Visage : MonoBehaviour
     [SerializeField] private float attackRangeMultiplier = 1;
     [SerializeField] private float weaponDamageMultiplier = 1;
     [SerializeField] private float knockbackForceMultiplier = 1;
+    public float duration = 3f;
+    [HideInInspector] public float time = 0f;
 
     public float ModifyDamageReceived(float damage)
     {

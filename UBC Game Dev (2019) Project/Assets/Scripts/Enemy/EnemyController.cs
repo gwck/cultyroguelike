@@ -25,6 +25,8 @@ public class EnemyController : MonoBehaviour
     [Header("Combat")]
     public int contactDamage; // damage dealt to the player on collision with the enemy
     private bool isStunned; // stun prevents movement from being applied; currently used for knockback
+    [SerializeField] private GameObject drop; // the item dropped by the enemy on death
+    [SerializeField] private float dropChance; // the chance that the item is dropped
 
     // options for preset or custom behaviours
     private enum Behaviour
@@ -232,11 +234,13 @@ public class EnemyController : MonoBehaviour
     {
         Debug.Log("killed " + transform.name);
         Instantiate(deathEffect, transform.position, transform.rotation);
+        if (Random.Range(0f, 1f) < dropChance) Instantiate(drop, transform.position, transform.rotation);
         Destroy(gameObject);
     }
 
-    private void OnDrawGizmosSelected()
+    void OnDrawGizmosSelected()
     {
+        Gizmos.color = Color.red;
         Gizmos.DrawWireCube((Vector2)transform.position + viewRangeOffset, viewRange);
     }
 }

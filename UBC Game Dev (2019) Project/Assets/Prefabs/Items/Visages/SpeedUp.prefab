@@ -7,6 +7,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6976090750718198586, guid: 4132bb2dd27a8dd49b785bbbe53b3ba2,
+        type: 3}
+      propertyPath: m_Name
+      value: SpeedUp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6726821473342622591, guid: 4132bb2dd27a8dd49b785bbbe53b3ba2,
+        type: 3}
+      propertyPath: speedMultiplier
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -1868221769648516935, guid: 4132bb2dd27a8dd49b785bbbe53b3ba2,
         type: 3}
       propertyPath: m_Color.r
@@ -21,11 +31,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.b
       value: 0.19215684
-      objectReference: {fileID: 0}
-    - target: {fileID: 6976090750718198586, guid: 4132bb2dd27a8dd49b785bbbe53b3ba2,
-        type: 3}
-      propertyPath: m_Name
-      value: SpeedUp
       objectReference: {fileID: 0}
     - target: {fileID: 1827626398572234459, guid: 4132bb2dd27a8dd49b785bbbe53b3ba2,
         type: 3}
@@ -82,10 +87,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6726821473342622591, guid: 4132bb2dd27a8dd49b785bbbe53b3ba2,
+    - target: {fileID: 1203249951992135923, guid: 4132bb2dd27a8dd49b785bbbe53b3ba2,
         type: 3}
-      propertyPath: speedMultiplier
-      value: 2
+      propertyPath: m_Color.g
+      value: 0.2420578
+      objectReference: {fileID: 0}
+    - target: {fileID: 1203249951992135923, guid: 4132bb2dd27a8dd49b785bbbe53b3ba2,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.10196078
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4132bb2dd27a8dd49b785bbbe53b3ba2, type: 3}

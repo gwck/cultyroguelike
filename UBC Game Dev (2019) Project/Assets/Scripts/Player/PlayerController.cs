@@ -53,9 +53,12 @@ public class PlayerController : MonoBehaviour
     private bool canAttack; // whether or not the player can attack this frame, depending on attackDelay
 
     [Header("Items")]
+    /** IGNORED FOR CURRENT ITEM SYSTEM
     public Visage visage;
-    public Serum serum;
+    public Serum serum; **/
     public Weapon weapon;
+    public List<Visage> items;
+    [SerializeField] private Transform itemLocation;
 
     [Header("Ground Slam")]
     [SerializeField] private float groundSlamSpeed; // speed of the ground slam
@@ -103,19 +106,18 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         CheckInput();
-
         CheckIfFalling();
         CheckSurroundings();
         CheckMovementDirection();
         CheckIfCanJump();
 
         UpdateAnimations();
+        UpdateItems();
         UpdateHealthBar();
     }
 
     private void FixedUpdate()
     {
-
         GroundSlam();
         ApplyMovement();
     }
@@ -153,7 +155,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Quote))
         {
-            serum.Activate();
+            // super attack
         }
     }
 
@@ -212,7 +214,11 @@ public class PlayerController : MonoBehaviour
     // Applies the input to the direction player wanted to go
     private void ApplyMovement()
     {
-        float adjustedMaxSpeed = visage.ModifySpeed(maxSpeed);
+        float adjustedMaxSpeed = maxSpeed;
+        foreach(Visage item in items)
+        {
+            adjustedMaxSpeed = item.ModifySpeed(adjustedMaxSpeed);
+        }
 
         // apply rightward movement
         if (movementInputdirection == 1)
@@ -305,7 +311,15 @@ public class PlayerController : MonoBehaviour
             return;
 
         isJumping = true;
-        rb.velocity = new Vector2(rb.velocity.x, visage.ModifyJumpVelocity(jumpVelocity));
+
+        // apply item modifiers
+        float adjustedJumpVelocity = jumpVelocity;
+        foreach (Visage item in items)
+        {
+            adjustedJumpVelocity = item.ModifyJumpVelocity(adjustedJumpVelocity);
+        }
+
+        rb.velocity = new Vector2(rb.velocity.x, adjustedJumpVelocity);
 
         // first jump in the series
         if (amountofJumpsLeft == amountOfJumps)
@@ -340,7 +354,12 @@ public class PlayerController : MonoBehaviour
         if (isDamaged || isInvuln) return;
 
         // decrease the health
-        health -= (int)(visage.ModifyDamageReceived(damage));
+        float modifiedDamage = damage;
+        foreach(Visage item in items)
+        {
+            modifiedDamage = item.ModifyDamageReceived(modifiedDamage);
+        }
+        health -= (int)modifiedDamage;
 
         // shake the screen
         impulseSource.GenerateImpulse();
@@ -398,14 +417,25 @@ public class PlayerController : MonoBehaviour
 
         // apply the attack delay
         canAttack = false;
-        Invoke("AllowAttack", visage.ModifyAttackDelay(weapon.delay));
+
+        float adjustedDelay = weapon.delay;
+        foreach(Visage item in items)
+        {
+            adjustedDelay = item.ModifyAttackDelay(adjustedDelay);
+        }
+        Invoke("AllowAttack", adjustedDelay);
 
         // apply the temporary invulnerability during the attack animation
         isInvuln = true;
         Invoke("EndInvuln", weapon.invulnDuration);
 
         // find enemies hit by the attack
-        Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackCheck.position, visage.ModifyAttackRange(weapon.range), whatIsEnemies);
+        float adjustedRange = weapon.range;
+        foreach(Visage item in items)
+        {
+            adjustedRange = item.ModifyAttackRange(adjustedRange);
+        }
+        Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackCheck.position, adjustedRange, whatIsEnemies);
 
         // create the attack screenshake and pause effects if the attack hit
         if (enemiesToDamage.Length > 0) StartCoroutine("AttackEffect");
@@ -461,28 +491,36 @@ public class PlayerController : MonoBehaviour
     // picks up an item, childs it to the player and deletes the old item
     void PickupItem(GameObject item)
     {
-        switch(item.tag)
+        if(item.tag == "Visage")
         {
-            case "Visage":
-                Visage oldVisage = visage;
-                visage = item.GetComponent<Visage>();
-                if (oldVisage != visage) Destroy(oldVisage.gameObject);
-                break;
-            case "Serum":
-                Serum oldSerum = serum;
-                serum = item.GetComponent<Serum>();
-                if (oldSerum != serum) Destroy(oldSerum.gameObject);
-                break;
-            case "Weapon":
-                Weapon oldWeapon = weapon;
-                weapon = item.GetComponent<Weapon>();
-                if (oldWeapon != visage) Destroy(oldWeapon.gameObject);
-                break;
+            items.Add(item.GetComponent<Visage>());
         }
 
         item.transform.parent = transform;
         item.GetComponent<Collider2D>().enabled = false;
-        item.GetComponent<SpriteRenderer>().enabled = false;
+        item.GetComponent<Animator>().enabled = false;
+        item.transform.localScale /= 3;
+        item.transform.position = itemLocation.position;
+    }
+
+    void UpdateItems()
+    {
+        foreach(Visage item in items)
+        {
+            item.time += Time.deltaTime;
+
+            if (item.time > item.duration)
+            {
+                items.Remove(item);
+                Destroy(item.gameObject);
+            }
+        }
+
+        float spacing = 0.5f;
+        for (int i = 0; i < items.Count; i++)
+        {
+            items[i].transform.position = itemLocation.position + new Vector3(spacing * -items.Count / 2 + spacing * i, 0, 0);
+        }
     }
 
     void GroundSlam()

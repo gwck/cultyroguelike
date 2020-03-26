@@ -120,7 +120,7 @@ PrefabInstance:
     - target: {fileID: 7549329623346917368, guid: e78bd74f8d3012245b04c25a8950e2fd,
         type: 3}
       propertyPath: m_Name
-      value: MaybeGenerator (Lamp)
+      value: Lamp or Slime
       objectReference: {fileID: 0}
     - target: {fileID: 5815074859493447811, guid: e78bd74f8d3012245b04c25a8950e2fd,
         type: 3}
@@ -181,12 +181,12 @@ PrefabInstance:
         type: 3}
       propertyPath: obj
       value: 
-      objectReference: {fileID: 1265970374026164561, guid: 73bc16440c1e0494d92e7139a8284821,
+      objectReference: {fileID: 7885492671855971630, guid: e5aff155fb4bbba49a7b2d910ae71c92,
         type: 3}
     - target: {fileID: 2502744404337090950, guid: e78bd74f8d3012245b04c25a8950e2fd,
         type: 3}
       propertyPath: chance
-      value: 0.3
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e78bd74f8d3012245b04c25a8950e2fd, type: 3}

@@ -25,9 +25,20 @@ public class Weapon : MonoBehaviour
     // apply damage and any additional effects to the enemy
     public void Hit(EnemyController enemy, bool isFacingRight)
     {
-        enemy.TakeDamage((int) player.visage.ModifyWeaponDamage(damage));
+        float adjustedDamage = damage;
+        foreach(Visage item in player.items)
+        {
+            adjustedDamage = item.ModifyWeaponDamage(adjustedDamage);
+        }
+        enemy.TakeDamage((int)adjustedDamage);
 
-        Vector2 adjustedKnockback = player.visage.ModifyKnockbackForce(knockbackForce) * (isFacingRight ? Vector2.one : new Vector2(-1, 1));
+        Vector2 adjustedKnockback = knockbackForce;
+        foreach(Visage item in player.items)
+        {
+            adjustedKnockback = item.ModifyKnockbackForce(adjustedKnockback);
+        }
+        adjustedKnockback *= (isFacingRight ? Vector2.one : new Vector2(-1, 1));
+
         enemy.TakeKnockback(adjustedKnockback, stunDuration);
     }
 }
