@@ -11,8 +11,20 @@ public class Visage : MonoBehaviour
     [SerializeField] private float attackRangeMultiplier = 1;
     [SerializeField] private float weaponDamageMultiplier = 1;
     [SerializeField] private float knockbackForceMultiplier = 1;
-    public float duration = 3f;
+    public string text = "Item";
+    public float duration = 10f;
     [HideInInspector] public float time = 0f;
+
+    private void Start()
+    {
+        // allow the item to drop for half a second before it can be picked up
+        Invoke("EnableCollider", 0.5f);
+    }
+
+    private void EnableCollider()
+    {
+        GetComponent<Collider2D>().enabled = true;
+    }
 
     public float ModifyDamageReceived(float damage)
     {

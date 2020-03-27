@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private BoxCollider2D bc; // the player's box collider
 
     [SerializeField] private Text healthBar; // TEMP healthbar text
+    [SerializeField] private Text itemText; // text displayed when item collected
     [SerializeField] private Transform groundCheck; // point from which to check if the player is grounded
     [SerializeField] private LayerMask whatIsGround; // layers that count as ground
     [SerializeField] private LayerMask whatIsEnemies; // layers that count as enemies
@@ -488,34 +489,75 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void FadeItemText()
+    {
+        itemText.text = "";
+    }
+
     // picks up an item, childs it to the player and deletes the old item
     void PickupItem(GameObject item)
     {
-        if(item.tag == "Visage")
+        if (item.tag == "Visage")
         {
-            items.Add(item.GetComponent<Visage>());
+            Visage visage = item.GetComponent<Visage>();
+            items.Add(visage);
+            itemText.text = visage.text;
+            Invoke("FadeItemText", 2f);
         }
-
-        item.transform.parent = transform;
+        item.transform.parent = transform.parent;
         item.GetComponent<Collider2D>().enabled = false;
-        item.GetComponent<Animator>().enabled = false;
-        item.transform.localScale /= 3;
         item.transform.position = itemLocation.position;
+        item.transform.localScale /= 2;
     }
 
     void UpdateItems()
     {
+        List<Visage> itemsToRemove = new List<Visage>();
+
         foreach(Visage item in items)
         {
+            // increase item time
             item.time += Time.deltaTime;
 
+            // mark timed out items to be removed
             if (item.time > item.duration)
             {
-                items.Remove(item);
-                Destroy(item.gameObject);
+                itemsToRemove.Add(item);
+            }
+
+            // item flashes if its timer is almost done
+            float timeRemaining = item.duration - item.time;
+            if (timeRemaining < 1f)
+            {
+                if (timeRemaining % 0.2f > 0.1f)
+                {
+                    item.GetComponent<SpriteRenderer>().enabled = false;
+                }
+                else
+                {
+                    item.GetComponent<SpriteRenderer>().enabled = true;
+                }
+            }
+            else if (timeRemaining < 3f)
+            {
+                if (timeRemaining % 0.4f > 0.2f)
+                {
+                    item.GetComponent<SpriteRenderer>().enabled = false;
+                } else
+                {
+                    item.GetComponent<SpriteRenderer>().enabled = true;
+                }
             }
         }
 
+        // removed items marked for removal
+        foreach(Visage item in itemsToRemove)
+        {
+            items.Remove(item);
+            Destroy(item.gameObject);
+        }
+
+        // reposition items
         float spacing = 0.5f;
         for (int i = 0; i < items.Count; i++)
         {

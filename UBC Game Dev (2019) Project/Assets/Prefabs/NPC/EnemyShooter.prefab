@@ -253,13 +253,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   impulseSource: {fileID: 8178281802492422850}
-  startingHealth: 15
+  startingHealth: 13
   damageAnimationDuration: 0
   deathEffect: {fileID: 6619407535911479, guid: 86dc2d9b5a94a304fbad429490a96c65,
     type: 3}
   contactDamage: 1
-  knockbackForce: {x: 10, y: 5}
-  stunDuration: 0.5
+  drop: {fileID: 1071005760046136806, guid: cd0113d010e118f419280d6d6f049882, type: 3}
+  dropChance: 0.5
   behaviour: 2
   movementSpeed: 0
   viewRange: {x: 40, y: 15}

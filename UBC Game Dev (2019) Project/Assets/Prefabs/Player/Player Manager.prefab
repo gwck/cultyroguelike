@@ -1,5 +1,82 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1518012197
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1518012198}
+  - component: {fileID: 1518012200}
+  - component: {fileID: 1518012199}
+  m_Layer: 5
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1518012198
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1518012197}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1850915232479748797}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 1.2, y: 40}
+  m_SizeDelta: {x: 400, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &1518012200
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1518012197}
+  m_CullTransparentMesh: 0
+--- !u!114 &1518012199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1518012197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 7b19c91b30182bb4aa241828ccb52925, type: 3}
+    m_FontSize: 24
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 2
+    m_MaxSize: 40
+    m_Alignment: 1
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 
 --- !u!114 &7707639016939754990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,11 +254,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7707639016303886575}
     m_Modifications:
-    - target: {fileID: 3343324351332021120, guid: 252c090a159511348b1f8b3684ef2676,
-        type: 3}
-      propertyPath: m_Name
-      value: HUD Canvas
-      objectReference: {fileID: 0}
     - target: {fileID: 3343324351332021124, guid: 252c090a159511348b1f8b3684ef2676,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -286,6 +358,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3343324351332021120, guid: 252c090a159511348b1f8b3684ef2676,
+        type: 3}
+      propertyPath: m_Name
+      value: HUD Canvas
       objectReference: {fileID: 0}
     - target: {fileID: 3343324352705303526, guid: 252c090a159511348b1f8b3684ef2676,
         type: 3}
@@ -489,9 +566,9 @@ PrefabInstance:
       objectReference: {fileID: 5351341449321979751}
     - target: {fileID: 3460904179580232082, guid: 7c104736120059f47ab39bbfe375d3b3,
         type: 3}
-      propertyPath: attackDelay
-      value: 0.5
-      objectReference: {fileID: 0}
+      propertyPath: itemText
+      value: 
+      objectReference: {fileID: 1518012199}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c104736120059f47ab39bbfe375d3b3, type: 3}
 --- !u!4 &8015998374191775377 stripped
@@ -507,11 +584,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7707639016303886575}
     m_Modifications:
-    - target: {fileID: 9213422557011496262, guid: 3387c671ff5b74f4f9543e01b684dfe6,
-        type: 3}
-      propertyPath: m_Name
-      value: Player Camera
-      objectReference: {fileID: 0}
     - target: {fileID: 9213422557011496261, guid: 3387c671ff5b74f4f9543e01b684dfe6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -567,6 +639,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9213422557602984365, guid: 3387c671ff5b74f4f9543e01b684dfe6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 9213422558208800979, guid: 3387c671ff5b74f4f9543e01b684dfe6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -575,12 +652,17 @@ PrefabInstance:
     - target: {fileID: 9213422558208800979, guid: 3387c671ff5b74f4f9543e01b684dfe6,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9213422558208800979, guid: 3387c671ff5b74f4f9543e01b684dfe6,
         type: 3}
       propertyPath: m_LocalPosition.z
       value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9213422557011496262, guid: 3387c671ff5b74f4f9543e01b684dfe6,
+        type: 3}
+      propertyPath: m_Name
+      value: Player Camera
       objectReference: {fileID: 0}
     - target: {fileID: 9037834903505959820, guid: 3387c671ff5b74f4f9543e01b684dfe6,
         type: 3}
@@ -591,16 +673,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 9213422557602984365, guid: 3387c671ff5b74f4f9543e01b684dfe6,
-        type: 3}
-      propertyPath: m_Layer
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 9213422557602984530, guid: 3387c671ff5b74f4f9543e01b684dfe6,
-        type: 3}
-      propertyPath: orthographic size
-      value: 8.5
       objectReference: {fileID: 0}
     - target: {fileID: 9037834903505959821, guid: 3387c671ff5b74f4f9543e01b684dfe6,
         type: 3}
