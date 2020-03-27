@@ -51,8 +51,9 @@ public class PlayerController : MonoBehaviour
     // GROUND SLAM
     [SerializeField] private float groundSlamSpeed; // speed of the ground slam
     private bool isGroundSlamming; // whether the charcater is currently ground slamming
-    private bool isGrounded; // whether the player is on the ground - affects whether the player can jump
+    public bool isGrounded; // whether the player is on the ground - affects whether the player can jump
     private bool canGroundSlam; // whether the player can groundslam in this frame
+    
 
     // ANIMATION
     private bool isFacingRight = true; // orientation of the player's sprite
@@ -61,7 +62,15 @@ public class PlayerController : MonoBehaviour
     private bool isSecondJumping; // controls second jump animation
     private bool isFalling; // controls fall animation
     private bool isDamaged; // controls damaged animation
-    
+
+    // AUDIO CLIPS
+    public AudioClip jumpClip;
+    public AudioClip groundSlamClip;
+    public AudioClip playerDamagedClip;
+
+
+
+
     // PLAYER STATS
     // may want to change the way this works
     [Header("Player Stats")]
@@ -199,9 +208,11 @@ public class PlayerController : MonoBehaviour
     {
         if (true /*knockbackCount <= 0*/)
         {
+            
             //actualknockback = knockback;
             if (movementInputdirection == 1)
             {
+                
                 if (forwardVelocity < 0)
                 {
                     forwardVelocity = 0;
@@ -216,6 +227,7 @@ public class PlayerController : MonoBehaviour
 
             if (movementInputdirection == -1)
             {
+                
                 if (forwardVelocity > 0)
                 {
                     forwardVelocity = 0;
@@ -314,6 +326,7 @@ public class PlayerController : MonoBehaviour
     {
         if (canJump)
         {
+            SoundManager.Instance.Play(jumpClip, transform);
             isJumping = true;
             anim.SetBool("isJumping", isJumping);
             rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
@@ -346,6 +359,7 @@ public class PlayerController : MonoBehaviour
 
     public void DamagePlayer(int damage)
     {
+        SoundManager.Instance.Play(playerDamagedClip, transform);
         playerStats.curHealth -= damage;
         isDamaged = true; //damage animation is turned on
         Invoke("SetDamageFalse", 0.10f); //damage animation is turned off on a .10 second delay
@@ -444,6 +458,7 @@ public class PlayerController : MonoBehaviour
 
     void StartGroundSlam()
     {
+        SoundManager.Instance.Play(groundSlamClip, transform);
         rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - groundSlamSpeed);
         isGroundSlamming = true;
         canGroundSlam = false;

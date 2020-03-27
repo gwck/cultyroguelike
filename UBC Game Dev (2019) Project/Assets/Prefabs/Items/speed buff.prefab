@@ -120,3 +120,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7493408a538c351438e5771f3905ea9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedBuffTime: 5
+  clip: {fileID: 8300000, guid: b3befa50715ed804587e1529cb99f32b, type: 3}

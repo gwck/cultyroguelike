@@ -16,6 +16,10 @@ public class PlayerAttack : MonoBehaviour
 
     public LayerMask whatIsEnemies;
 
+    public AudioClip emptySwing;
+    public AudioClip meleeAttack;
+
+
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -39,13 +43,15 @@ public class PlayerAttack : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Return))
         {
+            SoundManager.Instance.Play(emptySwing, transform);
             isAttacking = true;
             Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackCheck.position, attackRange, whatIsEnemies); //casts a circle that kills all enemies in it
             Invoke("setAttackingFalse", 0.10f);
             for (int i = 0; i < enemiesToDamage.Length; i++)
             {
                 enemiesToDamage[i].GetComponent<EnemyStats>().DamageEnemy(attackDamage);
-               // enemiesToDamage[i].GetComponent<EnemyShooter>().DamageEnemy(attackDamage); NOTE TO SELF: Put EnemyStats in a NEW script!!!
+                SoundManager.Instance.Play(meleeAttack, transform);
+                // enemiesToDamage[i].GetComponent<EnemyShooter>().DamageEnemy(attackDamage); NOTE TO SELF: Put EnemyStats in a NEW script!!!
             }
             // create the attack effect animation
             Instantiate(attackEffect, attackEffectLocation.position, transform.rotation, transform);

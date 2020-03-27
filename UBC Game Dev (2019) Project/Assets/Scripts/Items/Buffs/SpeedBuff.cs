@@ -14,6 +14,8 @@ public class SpeedBuff : MonoBehaviour
 
     private PlayerController playerController;
 
+    public AudioClip clip;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,16 +44,18 @@ public class SpeedBuff : MonoBehaviour
 
 
 
-
+    
 
     //EFFECTS: Buffs the player's speed when colliding with the speed buff
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
+            SoundManager.Instance.Play(clip, transform);
             StartCoroutine(ApplySpeedBuff());
             gameObject.GetComponent<SpriteRenderer>().enabled = false;
             gameObject.GetComponent<BoxCollider2D>().enabled = false;
+
         }
     }
 }

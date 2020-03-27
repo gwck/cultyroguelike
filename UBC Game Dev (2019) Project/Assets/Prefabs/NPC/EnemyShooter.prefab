@@ -179,10 +179,13 @@ MonoBehaviour:
   timeManager: {fileID: 0}
   bulletPrefab: {fileID: 973654528600976231, guid: d7c753c6056a3b44785e80a6d8e0388b,
     type: 3}
+  maskDrop: {fileID: 0}
   effect: {fileID: 6619407764865432, guid: 86dc2d9b5a94a304fbad429490a96c65, type: 3}
   stats:
     enemyDamage: 5
     health: 10
+  deathClip: {fileID: 8300000, guid: 81f5583ec57468042a0f21f5a827d28d, type: 3}
+  enemyAttackedClip: {fileID: 8300000, guid: b41b5ce32669271409da5fcdb3eb0271, type: 3}
 --- !u!114 &1032500138
 MonoBehaviour:
   m_ObjectHideFlags: 0

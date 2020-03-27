@@ -33,6 +33,9 @@ public class EnemyShooter : MonoBehaviour
         public int health;
     }
 
+    public AudioClip deathClip;
+    public AudioClip bulletClip;
+
     private void Start()
     {
         shootCooldownTime = shootMaxCooldownTime + Time.deltaTime;
@@ -75,6 +78,7 @@ public class EnemyShooter : MonoBehaviour
         if (isShooting && shootCooldownTime > shootMaxCooldownTime)
         {
             Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            SoundManager.Instance.Play(bulletClip, transform);
             shootCooldownTime = 0;
          
         }
@@ -100,12 +104,14 @@ public class EnemyShooter : MonoBehaviour
             GetComponent<SpriteRenderer>().enabled = false;
             GetComponent<BoxCollider2D>().enabled = false;
             enemyDead = true;
+            
             StartCoroutine(GhostEffect());
         }
     }
 
     void OnDestroy() //called, when enemy will be destroyed
     {
+        SoundManager.Instance.Play(deathClip, transform);
         Instantiate(maskDrop, firePoint.position, maskDrop.transform.rotation); //the enemy shooter mask is dropped
         //transform.position + new Vector3(0, 1)
     }

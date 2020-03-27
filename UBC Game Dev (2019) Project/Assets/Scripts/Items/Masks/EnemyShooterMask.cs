@@ -8,6 +8,8 @@ public class EnemyShooterMask : MonoBehaviour
 
     private PlayerController playerController;
 
+    public AudioClip clip;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +32,9 @@ public class EnemyShooterMask : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            SoundManager.Instance.Play(clip, transform);
             Debug.Log("collided with player");
+            
             //StartCoroutine();
             gameObject.GetComponent<SpriteRenderer>().enabled = false;
             gameObject.GetComponent<BoxCollider2D>().enabled = false;
