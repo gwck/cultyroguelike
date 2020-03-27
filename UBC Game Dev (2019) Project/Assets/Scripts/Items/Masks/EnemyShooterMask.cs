@@ -32,7 +32,7 @@ public class EnemyShooterMask : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            SoundManager.Instance.Play(clip, transform);
+            SoundManager.Instance.Play(clip, playerController.transform);
             Debug.Log("collided with player");
             
             //StartCoroutine();

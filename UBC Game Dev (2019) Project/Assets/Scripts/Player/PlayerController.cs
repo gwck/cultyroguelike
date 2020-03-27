@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour
     // GROUND SLAM
     [SerializeField] private float groundSlamSpeed; // speed of the ground slam
     private bool isGroundSlamming; // whether the charcater is currently ground slamming
-    public bool isGrounded; // whether the player is on the ground - affects whether the player can jump
+    private bool isGrounded; // whether the player is on the ground - affects whether the player can jump
     private bool canGroundSlam; // whether the player can groundslam in this frame
     
 
@@ -67,7 +67,9 @@ public class PlayerController : MonoBehaviour
     public AudioClip jumpClip;
     public AudioClip groundSlamClip;
     public AudioClip playerDamagedClip;
-
+    public AudioClip footstepClip;
+    private bool isPlayingClip = false;
+    AudioSource footstepSource;
 
 
 
@@ -157,6 +159,7 @@ public class PlayerController : MonoBehaviour
     private void CheckSurroundings()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
+
     }
 
     //MODIFIES: this
@@ -196,10 +199,19 @@ public class PlayerController : MonoBehaviour
         {
             ghost.makeGhost = true;
             isRunning = true;
+            if (!isPlayingClip && isGrounded)
+            {
+                
+                isPlayingClip = true;
+                
+                footstepSource = SoundManager.Instance.PlayLoop(footstepClip, transform);
+            }
         } else
         {
             ghost.makeGhost = false;
             isRunning = false;
+            isPlayingClip = false;
+            Destroy(footstepSource);
         }
     }
     
@@ -208,7 +220,9 @@ public class PlayerController : MonoBehaviour
     {
         if (true /*knockbackCount <= 0*/)
         {
+
             
+
             //actualknockback = knockback;
             if (movementInputdirection == 1)
             {

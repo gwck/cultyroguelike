@@ -35,6 +35,7 @@ public class EnemyShooter : MonoBehaviour
 
     public AudioClip deathClip;
     public AudioClip bulletClip;
+    public AudioClip enemyRoarClip;
 
     private void Start()
     {
@@ -68,6 +69,7 @@ public class EnemyShooter : MonoBehaviour
 
     void CanSeePlayer()
     {
+    
         float distanceToTarget = Vector3.Distance(transform.position, playerMovement.position);
         isShooting = distanceToTarget <= shootRange;
 
@@ -79,6 +81,7 @@ public class EnemyShooter : MonoBehaviour
         {
             Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
             SoundManager.Instance.Play(bulletClip, transform);
+            
             shootCooldownTime = 0;
          
         }
