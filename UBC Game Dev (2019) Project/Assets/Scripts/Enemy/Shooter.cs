@@ -29,6 +29,7 @@ public class Shooter : EnemyController
 
         if (fireCooldown > 0 || !CanSeePlayer()) return;
 
+        SoundManager.Instance.Play(attack, transform);
         fireCooldown = fireRate;
         Instantiate(projectile, firePoint.position, firePoint.rotation);
     }

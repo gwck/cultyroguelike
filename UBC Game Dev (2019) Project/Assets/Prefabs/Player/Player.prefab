@@ -4995,7 +4995,7 @@ MonoBehaviour:
   timeZeroToMax: 0.4
   timeMaxToZero: 0.3
   forwardVelocity: 0
-  amountOfJumps: 3
+  amountOfJumps: 1
   jumpVelocity: 27
   groundCheckRadius: 0.4
   fallMultiplier: 2
@@ -5009,8 +5009,6 @@ MonoBehaviour:
   weapon: {fileID: 8306458097643280313}
   items: []
   itemLocation: {fileID: 5338886926336015735}
-  groundSlamSpeed: 50
-  groundSlamEffect: {fileID: 0}
   incomingDamageMultiplier: 1
   speedMultiplier: 1
   jumpVelocityMultiplier: 1
@@ -5018,6 +5016,12 @@ MonoBehaviour:
   attackRangeMultiplier: 1
   weaponDamageMultiplier: 1
   knockbackForceMultiplier: 1
+  theme: {fileID: 8300000, guid: c381cef7f16de8546a44b599e436a380, type: 3}
+  walk: {fileID: 8300000, guid: d8d61cd62000ffa4b9814ee05e61504c, type: 3}
+  jump: {fileID: 8300000, guid: e47d9fa62423dba42b595130db453ab7, type: 3}
+  itemPickup: {fileID: 8300000, guid: b3befa50715ed804587e1529cb99f32b, type: 3}
+  attack: {fileID: 8300000, guid: 3a626f1c4f61e8940a7c76f6e774b6c0, type: 3}
+  takeDamage: {fileID: 8300000, guid: 5f17846a70f702a4d8fcbf471a87b437, type: 3}
 --- !u!212 &3460904179580232046
 SpriteRenderer:
   m_ObjectHideFlags: 0

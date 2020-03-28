@@ -29,6 +29,14 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private GameObject drop; // the item dropped by the enemy on death
     [SerializeField] private float dropChance; // the chance that the item is dropped
 
+    [Header("Sound")]
+    [SerializeField] protected AudioClip move;
+    [SerializeField] protected AudioClip die;
+    [SerializeField] protected AudioClip roar;
+    [SerializeField] protected AudioClip takeDamage;
+    [SerializeField] protected AudioClip attack;
+    private AudioSource moveSource;
+
     // options for preset or custom behaviours
     private enum Behaviour
     {
@@ -90,8 +98,9 @@ public class EnemyController : MonoBehaviour
     // determine whether the player is within the enemy's view range
     protected bool CanSeePlayer()
     {
-        return (Mathf.Abs(player.position.y - (transform.position.y + viewRangeOffset.y)) < viewRange.y
-            && Mathf.Abs(player.position.x - (transform.position.x + viewRangeOffset.x)) < viewRange.x);
+
+        return (Mathf.Abs(player.position.y - (transform.position.y + viewRangeOffset.y)) < viewRange.y / 2
+            && Mathf.Abs(player.position.x - (transform.position.x + viewRangeOffset.x)) < viewRange.x / 2);
     }
 
     // move the enemy toward the player if the player is within a certain range
@@ -103,6 +112,8 @@ public class EnemyController : MonoBehaviour
         // follow
         if (followCooldown > 0 || CanSeePlayer())
         {
+            if (!isFollowing) SoundManager.Instance.Play(attack, transform);
+            if (moveSource == null) moveSource = SoundManager.Instance.PlayLoop(move, transform);
             isFollowing = true;
             anim.speed = 3;
 
@@ -115,6 +126,7 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
+            Destroy(moveSource);
             isFollowing = false;
             anim.speed = 1;
 
@@ -217,6 +229,8 @@ public class EnemyController : MonoBehaviour
         // small knockback
         rb.AddForce(transform.up * rb.mass * 100);
 
+        // play damage sound
+        SoundManager.Instance.Play(takeDamage, transform);
 
         // damage animation
         anim.SetTrigger("hit");
@@ -239,8 +253,11 @@ public class EnemyController : MonoBehaviour
         // death effect
         Instantiate(deathEffect, transform.position, transform.rotation);
 
+        // death sound
+        SoundManager.Instance.Play(die, transform.parent);
+
         // item drop
-        if (Random.Range(0f, 1f) < dropChance) Instantiate(drop, transform.position, Quaternion.identity);
+        if (Random.Range(0f, 1f) < dropChance) Instantiate(drop, transform.position + new Vector3(0, 0.2f, 0), Quaternion.identity);
 
         // score increase
         PlayerController pc = player.GetComponent<PlayerController>();

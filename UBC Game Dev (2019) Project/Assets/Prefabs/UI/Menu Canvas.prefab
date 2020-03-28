@@ -763,6 +763,7 @@ MonoBehaviour:
   pauseMenu: {fileID: 4422634708269009468}
   deathMenu: {fileID: 4422634708915335248}
   victoryMenu: {fileID: 4422634709021705011}
+  menuSound: {fileID: 8300000, guid: 3a626f1c4f61e8940a7c76f6e774b6c0, type: 3}
   scoreText: {fileID: 4422634708349912223}
   deathText: {fileID: 4422634709170890024}
   deathMessages:
@@ -1869,7 +1870,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4422634708915335251
 RectTransform:
   m_ObjectHideFlags: 0

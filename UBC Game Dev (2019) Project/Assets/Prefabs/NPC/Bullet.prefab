@@ -148,6 +148,7 @@ MonoBehaviour:
   maxFlyTime: 4
   speed: 15
   damage: 2
+  splash: {fileID: 8300000, guid: b9ec86d14c6f687489be339ab8d372af, type: 3}
 --- !u!95 &5724060728295194283
 Animator:
   serializedVersion: 3

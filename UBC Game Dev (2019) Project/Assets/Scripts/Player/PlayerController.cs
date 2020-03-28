@@ -48,6 +48,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float lowJumpMultiplier; // gravity multiplier for low jump
     [SerializeField] private ParticleSystem dust; // effect from jumping
     [SerializeField] private GameObject secondJumpEffect; // prefab the plays the second jump effect
+    private bool isGrounded; // whether the player is on the ground - affects whether the player can jump
     private int amountofJumpsLeft; // the number of jumps left in the current series of jumps
     private bool canJump; // whether the player can jump in this frame
     private bool isTouchingEnemy; // whether the player is in contact with an enemy (can jump off enemies)
@@ -66,13 +67,6 @@ public class PlayerController : MonoBehaviour
     public List<Visage> items;
     [SerializeField] private Transform itemLocation;
 
-    [Header("Ground Slam")]
-    [SerializeField] private float groundSlamSpeed; // speed of the ground slam
-    [SerializeField] private ParticleSystem groundSlamEffect; // effect from ground slam
-    private bool isGroundSlamming; // whether the charcater is currently ground slamming
-    private bool isGrounded; // whether the player is on the ground - affects whether the player can jump
-    private bool canGroundSlam; // whether the player can groundslam in this frame
-
     [Header("Multipliers")]
     public float incomingDamageMultiplier = 1;
     public float speedMultiplier = 1;
@@ -81,6 +75,15 @@ public class PlayerController : MonoBehaviour
     public float attackRangeMultiplier = 1;
     public float weaponDamageMultiplier = 1;
     public float knockbackForceMultiplier = 1;
+
+    [Header("Sound")]
+    [SerializeField] private AudioClip theme;
+    [SerializeField] private AudioClip walk;
+    [SerializeField] private AudioClip jump;
+    [SerializeField] private AudioClip itemPickup;
+    [SerializeField] private AudioClip attack;
+    [SerializeField] private AudioClip takeDamage;
+    private AudioSource walkSource;
 
     // ANIMATION
     private bool isFacingRight = true; // orientation of the player's sprite
@@ -107,8 +110,10 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         amountofJumpsLeft = amountOfJumps;
+        SoundManager.Instance.PlayLoop(theme, transform.parent);
     }
 
+    // update based on application
     private void Update()
     {
         CheckInput();
@@ -123,9 +128,9 @@ public class PlayerController : MonoBehaviour
         UpdateScore();
     }
 
+    // update based on in-game time
     private void FixedUpdate()
     {
-        GroundSlam();
         ApplyMovement();
     }
 
@@ -170,10 +175,10 @@ public class PlayerController : MonoBehaviour
     private void CheckSurroundings()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
+        if (!isGrounded && walkSource != null) Destroy(walkSource);
     }
 
-    //MODIFIES: this
-    //EFFECTS: Checks if object can jump with amountofJumpsLeft
+    // checks if the player can jump in the current frame
     private void CheckIfCanJump()
     {
 
@@ -210,11 +215,13 @@ public class PlayerController : MonoBehaviour
         {
             ghost.makeGhost = true;
             isRunning = true;
+            if (walkSource == null && isGrounded) walkSource = SoundManager.Instance.PlayLoop(walk, transform.parent);
         }
         else
         {
             ghost.makeGhost = false;
             isRunning = false;
+            Destroy(walkSource);
         }
     }
 
@@ -319,6 +326,9 @@ public class PlayerController : MonoBehaviour
 
         isJumping = true;
 
+        // create jump sound effect
+        SoundManager.Instance.Play(jump, transform.parent);
+
         // apply item modifiers
         float adjustedJumpVelocity = jumpVelocity;
         foreach (Visage item in items)
@@ -371,6 +381,9 @@ public class PlayerController : MonoBehaviour
         // shake the screen
         impulseSource.GenerateImpulse();
 
+        // play the damage sound
+        SoundManager.Instance.Play(takeDamage, transform.parent);
+
         isDamaged = true; //damage animation is turned on
         Invoke("SetDamageFalse", invulnDuration); //damage animation is turned off on a delay
 
@@ -393,21 +406,25 @@ public class PlayerController : MonoBehaviour
         if (menus != null) menus.Die();
     }
 
+    // invoked to end attack duration
     private void SetAttackingFalse()
     {
         isAttacking = false;
     }
 
+    // invoked to endattack cooldown
     private void AllowAttack()
     {
         canAttack = true;
     }
 
+    // invoked to end invulnerability frames
     private void EndInvuln()
     {
         isInvuln = false;
     }
 
+    // brief pause to make attack more punchy
     IEnumerator AttackEffect()
     {
         Time.timeScale = 0f;
@@ -426,6 +443,9 @@ public class PlayerController : MonoBehaviour
         isAttacking = true;
         // duration of the attack animation
         Invoke("SetAttackingFalse", 0.10f);
+
+        // create attack sound effect
+        SoundManager.Instance.Play(attack, transform.parent);
 
         // create the attack effect animation
         Instantiate(weapon.effect, attackEffectLocation.position, transform.rotation, transform);
@@ -453,7 +473,9 @@ public class PlayerController : MonoBehaviour
         Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackCheck.position, adjustedRange, whatIsEnemies);
 
         // create the attack screenshake and pause effects if the attack hit
-        if (enemiesToDamage.Length > 0) StartCoroutine("AttackEffect");
+        if (enemiesToDamage.Length > 0) {
+            StartCoroutine("AttackEffect");
+        }
 
         // damage each enemy that was hit
         for (int i = 0; i < enemiesToDamage.Length; i++)
@@ -475,16 +497,19 @@ public class PlayerController : MonoBehaviour
         healthBar.text = str;
     }
 
+    // dust effect, currently unused
     void CreateDust()
     {
         dust.Play();
     }
 
+    // collision enter... not sure if necessary
     private void OnCollisionEnter2D(Collision2D collision)
     {
         isTouchingEnemy = collision.collider.gameObject.tag == "Enemy";
     }
 
+    // handles door trigger for level end
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Door door = collision.transform.gameObject.GetComponent<Door>();
@@ -516,6 +541,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // make item's text disappear after a few seconds (lazy implementation)
     void FadeItemText()
     {
         itemText.text = "";
@@ -530,6 +556,7 @@ public class PlayerController : MonoBehaviour
             items.Add(visage);
             itemText.text = visage.text;
             Invoke("FadeItemText", 2f);
+            SoundManager.Instance.Play(itemPickup, transform.parent);
         }
         item.transform.parent = transform.parent;
         item.GetComponent<Collider2D>().enabled = false;
@@ -537,11 +564,13 @@ public class PlayerController : MonoBehaviour
         item.transform.localScale /= 2;
     }
 
+    // accessed when an enemy dies, increases score by a set amount
     public void Score(int amount)
     {
         score += amount;
     }
 
+    // decreases score over time and updates UI
     private void UpdateScore()
     {
         if (Time.timeScale == 0f) return;
@@ -554,6 +583,7 @@ public class PlayerController : MonoBehaviour
         scoreText.text = "Score: " + score;
     }
 
+    // update current item UI, tracks item timers
     void UpdateItems()
     {
         List<Visage> itemsToRemove = new List<Visage>();
@@ -609,34 +639,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void GroundSlam()
-    {
-        if (Input.GetKeyDown("x") && isFalling && !isGrounded && canGroundSlam && !isGroundSlamming)
-        {
-            StartGroundSlam();
-
-
-        }
-        else if (isGroundSlamming && !canGroundSlam && isGrounded)
-        {
-            canGroundSlam = true;
-            isGroundSlamming = false;
-            Instantiate(groundSlamEffect, transform.position, Quaternion.identity);
-            rb.velocity = new Vector2(rb.velocity.x, 0);
-        }
-        else if (isFalling && !isGrounded && !isGroundSlamming)
-        {
-            canGroundSlam = true;
-        }
-    }
-
-    void StartGroundSlam()
-    {
-        rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - groundSlamSpeed);
-        isGroundSlamming = true;
-        canGroundSlam = false;
-    }
-
     // Flips the character sprite
     private void Flip()
     {
@@ -645,6 +647,7 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(0.0f, 180.0f, 0.0f);
     }
 
+    // editor UI
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);

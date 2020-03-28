@@ -3,7 +3,15 @@ guid: f15e89579a298f24f9420bf99bb19918
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - impulseSource: {instanceID: 0}
+  - deathEffect: {instanceID: 0}
+  - drop: {instanceID: 0}
+  - move: {fileID: 8300000, guid: 79dfc4284bf12824682812df47501be5, type: 3}
+  - die: {fileID: 8300000, guid: 81f5583ec57468042a0f21f5a827d28d, type: 3}
+  - roar: {fileID: 8300000, guid: 29ca0e6a17a160844a5dca9b27c7e4e8, type: 3}
+  - takeDamage: {fileID: 8300000, guid: 5f17846a70f702a4d8fcbf471a87b437, type: 3}
+  - attack: {fileID: 8300000, guid: 36f1720db24fd8a4b8ef3287b47cf17b, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

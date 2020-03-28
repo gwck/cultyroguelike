@@ -37,6 +37,7 @@ public class Dripper : EnemyController
         if (fireCooldown > 0 || !CanSeePlayer()) return;
         
         fireCooldown = fireRate;
+        SoundManager.Instance.Play(attack, transform);
 
         for (int i = 0; i < dripCount; i++)
         {

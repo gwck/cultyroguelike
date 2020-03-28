@@ -7,6 +7,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float maxFlyTime;
     [SerializeField] private float speed;
     [SerializeField] private int damage;
+    [SerializeField] private AudioClip splash;
     private Animator anim;
     private Rigidbody2D rb;
     private float flyTime = 0;
@@ -38,6 +39,7 @@ public class Projectile : MonoBehaviour
         if (collisionInfo.tag != "Enemy" && collisionInfo.tag != "EnemyHitbox")
         {
             rb.velocity = new Vector2(0f, 0f);
+            SoundManager.Instance.Play(splash, transform);
             anim.SetTrigger("hit");
         }
     }

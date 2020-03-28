@@ -331,11 +331,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7707639016303886575}
     m_Modifications:
-    - target: {fileID: 3343324351332021120, guid: 252c090a159511348b1f8b3684ef2676,
-        type: 3}
-      propertyPath: m_Name
-      value: HUD Canvas
-      objectReference: {fileID: 0}
     - target: {fileID: 3343324351332021124, guid: 252c090a159511348b1f8b3684ef2676,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -440,6 +435,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3343324351332021120, guid: 252c090a159511348b1f8b3684ef2676,
+        type: 3}
+      propertyPath: m_Name
+      value: HUD Canvas
       objectReference: {fileID: 0}
     - target: {fileID: 3343324352705303526, guid: 252c090a159511348b1f8b3684ef2676,
         type: 3}
@@ -676,11 +676,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7707639016303886575}
     m_Modifications:
-    - target: {fileID: 9213422557011496262, guid: 3387c671ff5b74f4f9543e01b684dfe6,
-        type: 3}
-      propertyPath: m_Name
-      value: Player Camera
-      objectReference: {fileID: 0}
     - target: {fileID: 9213422557011496261, guid: 3387c671ff5b74f4f9543e01b684dfe6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -736,6 +731,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9213422557602984365, guid: 3387c671ff5b74f4f9543e01b684dfe6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 9213422558208800979, guid: 3387c671ff5b74f4f9543e01b684dfe6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -751,6 +751,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -10
       objectReference: {fileID: 0}
+    - target: {fileID: 9213422557011496262, guid: 3387c671ff5b74f4f9543e01b684dfe6,
+        type: 3}
+      propertyPath: m_Name
+      value: Player Camera
+      objectReference: {fileID: 0}
     - target: {fileID: 9037834903505959820, guid: 3387c671ff5b74f4f9543e01b684dfe6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -760,11 +765,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 9213422557602984365, guid: 3387c671ff5b74f4f9543e01b684dfe6,
-        type: 3}
-      propertyPath: m_Layer
-      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 9037834903505959821, guid: 3387c671ff5b74f4f9543e01b684dfe6,
         type: 3}
