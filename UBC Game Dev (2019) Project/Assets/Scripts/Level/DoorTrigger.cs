@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class DoorTrigger : MonoBehaviour
 {
-    [SerializeField] private Animator animator;
+    [SerializeField] private Door door;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerLayer"))
-        animator.SetTrigger("Open");
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            door.Open();
+        }
     }
 }

@@ -18,6 +18,7 @@ TagManager:
   - Serum
   - Weapon
   - RaisedArea
+  - Menu
   layers:
   - Default
   - TransparentFX

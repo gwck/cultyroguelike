@@ -13,6 +13,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private CinemachineImpulseSource impulseSource; // impulse source for screen shake effect
 
     [Header("Attributes")]
+    [SerializeField] private int scoreValue; // amount the score is increased when this enemy is killed
     [SerializeField] private int startingHealth; // initial value for health
     private int health; // current health (enemy dies when this reaches 0)
 
@@ -89,8 +90,8 @@ public class EnemyController : MonoBehaviour
     // determine whether the player is within the enemy's view range
     protected bool CanSeePlayer()
     {
-        return (Mathf.Abs(player.position.y - (transform.position.y + viewRangeOffset.y)) < viewRange.x
-            && Mathf.Abs(player.position.x - (transform.position.x + viewRangeOffset.x)) < viewRange.y);
+        return (Mathf.Abs(player.position.y - (transform.position.y + viewRangeOffset.y)) < viewRange.y
+            && Mathf.Abs(player.position.x - (transform.position.x + viewRangeOffset.x)) < viewRange.x);
     }
 
     // move the enemy toward the player if the player is within a certain range
@@ -164,9 +165,10 @@ public class EnemyController : MonoBehaviour
 
     // update animator parameters
     private void UpdateAnimations()
-    {
+    { 
+        /**
         anim.SetBool("isFollowing", isFollowing);
-        anim.SetBool("isDamaged", isDamaged);
+        anim.SetBool("isDamaged", isDamaged);**/
     }
 
     // flip the enemy sprite
@@ -233,13 +235,23 @@ public class EnemyController : MonoBehaviour
     private void Die()
     {
         Debug.Log("killed " + transform.name);
+
+        // death effect
         Instantiate(deathEffect, transform.position, transform.rotation);
-        if (Random.Range(0f, 1f) < dropChance) Instantiate(drop, transform.position, transform.rotation);
+
+        // item drop
+        if (Random.Range(0f, 1f) < dropChance) Instantiate(drop, transform.position, Quaternion.identity);
+
+        // score increase
+        PlayerController pc = player.GetComponent<PlayerController>();
+        if (pc != null) pc.Score(scoreValue);
+
         Destroy(gameObject);
     }
 
     void OnDrawGizmosSelected()
     {
+        // view range box
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube((Vector2)transform.position + viewRangeOffset, viewRange);
     }

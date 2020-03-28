@@ -4971,6 +4971,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 0}
+  itemText: {fileID: 0}
+  scoreText: {fileID: 0}
   groundCheck: {fileID: 3460904179841973099}
   whatIsGround:
     serializedVersion: 2
@@ -4984,6 +4986,10 @@ MonoBehaviour:
   fallBoundary: -90
   impulseSource: {fileID: 8425978296137004877}
   ghost: {fileID: 3460904179580232080}
+  deathEffect: {fileID: 6619407535911479, guid: 86dc2d9b5a94a304fbad429490a96c65,
+    type: 3}
+  score: 0
+  scoreDropInterval: 0
   startingHealth: 20
   maxSpeed: 20
   timeZeroToMax: 0.4

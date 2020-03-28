@@ -4,9 +4,24 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    public void Win()
+    public bool isExit = false;
+    private Animator anim;
+    [HideInInspector] public bool isOpen = false;
+
+    private void Start()
     {
-        VictoryMenu menu = GameObject.FindObjectOfType<VictoryMenu>();
-        menu.Win();
+        if (!isExit)
+        {
+            Open();
+        }
+
+        anim = GetComponent<Animator>();
+    }
+
+    public void Open()
+    {
+        if (isOpen) return;
+        anim.SetTrigger("Open");
+        isOpen = true;
     }
 }

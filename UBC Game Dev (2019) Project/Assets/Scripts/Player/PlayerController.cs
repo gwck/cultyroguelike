@@ -13,13 +13,18 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private Text healthBar; // TEMP healthbar text
     [SerializeField] private Text itemText; // text displayed when item collected
+    [SerializeField] private Text scoreText; // current score
     [SerializeField] private Transform groundCheck; // point from which to check if the player is grounded
     [SerializeField] private LayerMask whatIsGround; // layers that count as ground
     [SerializeField] private LayerMask whatIsEnemies; // layers that count as enemies
     [SerializeField] private LayerMask whatIsItems; // layers that count as items
     [SerializeField] private int fallBoundary; // player dies if they fall past this y coordinate
     [SerializeField] private CinemachineImpulseSource impulseSource; // impulse source for screen shake effect
-    [SerializeField] private Ghost ghost; //reference to ghost script
+    [SerializeField] private Ghost ghost; //reference to ghost 
+    [SerializeField] private GameObject deathEffect; // effect for death
+    public int score; // modify to change starting score
+    [SerializeField] private float scoreDropInterval; // rate at which the score decreases over time
+    private float scoreDropTimer = 0;
 
     [Header("Attributes")]
     [SerializeField] private int startingHealth; // the health the player starts with
@@ -115,6 +120,7 @@ public class PlayerController : MonoBehaviour
         UpdateAnimations();
         UpdateItems();
         UpdateHealthBar();
+        UpdateScore();
     }
 
     private void FixedUpdate()
@@ -375,8 +381,16 @@ public class PlayerController : MonoBehaviour
     // handle player death
     private void Die()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        // GameMaster.KillPlayer(this); unreachable, currently just reloading the scene when the player dies
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        if (sr != null) sr.enabled = false;
+        Collider2D col = GetComponent<Collider2D>();
+        //if (col != null) col.enabled = false;
+        rb.bodyType = RigidbodyType2D.Kinematic;
+
+        Instantiate(deathEffect, transform.position, transform.rotation);
+
+        InGameMenus menus = GameObject.FindObjectOfType<InGameMenus>();
+        if (menus != null) menus.Die();
     }
 
     private void SetAttackingFalse()
@@ -471,6 +485,19 @@ public class PlayerController : MonoBehaviour
         isTouchingEnemy = collision.collider.gameObject.tag == "Enemy";
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Door door = collision.transform.gameObject.GetComponent<Door>();
+        if (door != null)
+        {
+            if (door.isExit && door.isOpen)
+            {
+                InGameMenus menus = GameObject.FindObjectOfType<InGameMenus>();
+                if (menus != null) menus.Win(score);
+            } 
+        }        
+    }
+
     // handle collision with enemy hitboxes
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -479,7 +506,7 @@ public class PlayerController : MonoBehaviour
         {
             // get the parent, since the hitbox is a child of the enemy
             EnemyController controller = collision.transform.parent.gameObject.GetComponent<EnemyController>();
-            TakeDamage(controller.contactDamage);
+            if (controller != null) TakeDamage(controller.contactDamage);
         }
 
         // collide with item
@@ -508,6 +535,23 @@ public class PlayerController : MonoBehaviour
         item.GetComponent<Collider2D>().enabled = false;
         item.transform.position = itemLocation.position;
         item.transform.localScale /= 2;
+    }
+
+    public void Score(int amount)
+    {
+        score += amount;
+    }
+
+    private void UpdateScore()
+    {
+        if (Time.timeScale == 0f) return;
+        scoreDropTimer += Time.deltaTime;
+        if (scoreDropTimer >= scoreDropInterval)
+        {
+            score--;
+            scoreDropTimer = 0;
+        }
+        scoreText.text = "Score: " + score;
     }
 
     void UpdateItems()
@@ -596,6 +640,7 @@ public class PlayerController : MonoBehaviour
     // Flips the character sprite
     private void Flip()
     {
+        if (Time.timeScale == 0f) return;
         isFacingRight = !isFacingRight;
         transform.Rotate(0.0f, 180.0f, 0.0f);
     }
