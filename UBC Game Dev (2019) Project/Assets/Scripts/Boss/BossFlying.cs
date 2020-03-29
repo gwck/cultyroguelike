@@ -18,6 +18,7 @@ public class BossFlying : MonoBehaviour
     private Rigidbody2D rb;
     public Vector3 tempPosition;
     public Transform boundaryCheck;
+    public Transform flyPoint;
     public LayerMask whatisGround;
 
     private float xpositionToFlyTo; //x position boss will fly to
@@ -32,7 +33,7 @@ public class BossFlying : MonoBehaviour
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         originalxPosition = transform.position.x;
-        xpositionToFlyTo = originalxPosition + 24;
+        xpositionToFlyTo = flyPoint.position.x;
         canFlyAttack = true;
         bossAttack = GetComponent<BossAttack>();
         tempPosition = transform.position;

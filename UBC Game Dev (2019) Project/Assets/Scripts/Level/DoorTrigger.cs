@@ -6,7 +6,12 @@ public class DoorTrigger : MonoBehaviour
 {
     [SerializeField] private Door door;
     [SerializeField] private GameObject boss;
+    [SerializeField] private GameObject label;
 
+    private void Update()
+    {
+        if (boss == null && !label.activeInHierarchy) label.SetActive(true);
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

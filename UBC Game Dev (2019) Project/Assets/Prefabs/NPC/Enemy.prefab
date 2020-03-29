@@ -112,9 +112,9 @@ MonoBehaviour:
   damageAnimationDuration: 0
   deathEffect: {fileID: 6619407535911479, guid: 86dc2d9b5a94a304fbad429490a96c65,
     type: 3}
-  contactDamage: 4
+  contactDamage: 3
   drop: {fileID: 9203572633290684253, guid: b2f978fa4a91b8e439119e03831fd234, type: 3}
-  dropChance: 0.2
+  dropChance: 0.3
   move: {fileID: 8300000, guid: 79dfc4284bf12824682812df47501be5, type: 3}
   die: {fileID: 8300000, guid: 81f5583ec57468042a0f21f5a827d28d, type: 3}
   roar: {fileID: 8300000, guid: 36f1720db24fd8a4b8ef3287b47cf17b, type: 3}
@@ -124,7 +124,7 @@ MonoBehaviour:
   movementSpeed: 3
   viewRange: {x: 20, y: 10}
   viewRangeOffset: {x: 0, y: 5}
-  followSpeed: 12
+  followSpeed: 10
   followCooldownDuration: 0.5
   patrolRate: 3
 --- !u!212 &5222675206195777747
