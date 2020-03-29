@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 7b19c91b30182bb4aa241828ccb52925
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Apex Mk3
+  fontNames:
+  - Apex Mk3
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 33ba493cc2bc9004caf32906810f88df, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

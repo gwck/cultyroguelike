@@ -1,0 +1,715 @@
+fileFormatVersion: 2
+guid: e194dc9bf3d6ba748935da70e45ff6fe
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7494642056204171714
+    second: slam animation 3347 x 2000_0
+  - first:
+      213: -2748899268735892385
+    second: slam animation 3347 x 2000_1
+  - first:
+      213: -1534661322170034472
+    second: slam animation 3347 x 2000_2
+  - first:
+      213: 3086645494291969415
+    second: slam animation 3347 x 2000_3
+  - first:
+      213: -7051014861439021816
+    second: slam animation 3347 x 2000_4
+  - first:
+      213: 7868441969013867177
+    second: slam animation 3347 x 2000_5
+  - first:
+      213: -791393523787451984
+    second: slam animation 3347 x 2000_6
+  - first:
+      213: 7886471740678870510
+    second: slam animation 3347 x 2000_7
+  - first:
+      213: 1657480511248152111
+    second: slam animation 3347 x 2000_8
+  - first:
+      213: -8220614951351511973
+    second: slam animation 3347 x 2000_9
+  - first:
+      213: 8295321399225287410
+    second: slam animation 3347 x 2000_10
+  - first:
+      213: -4682392801604411618
+    second: slam animation 3347 x 2000_11
+  - first:
+      213: -1891497058852068482
+    second: slam animation 3347 x 2000_12
+  - first:
+      213: 2227564111862740826
+    second: slam animation 3347 x 2000_13
+  - first:
+      213: -8015294972319585745
+    second: slam animation 3347 x 2000_14
+  - first:
+      213: 304050675537633317
+    second: slam animation 3347 x 2000_15
+  - first:
+      213: 3432190272663847303
+    second: slam animation 3347 x 2000_16
+  - first:
+      213: 4794648662813791132
+    second: slam animation 3347 x 2000_17
+  - first:
+      213: 2502952841291785087
+    second: slam animation 3347 x 2000_18
+  - first:
+      213: 8659588996633770373
+    second: slam animation 3347 x 2000_19
+  - first:
+      213: 6758899380951195851
+    second: slam animation 3347 x 2000_20
+  - first:
+      213: -5371299651689967031
+    second: slam animation 3347 x 2000_21
+  - first:
+      213: 5495256536278724577
+    second: slam animation 3347 x 2000_22
+  - first:
+      213: 5312105841919645514
+    second: slam animation 3347 x 2000_23
+  - first:
+      213: 511764546702660416
+    second: slam animation 3347 x 2000_24
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_0
+      rect:
+        serializedVersion: 2
+        x: 1446
+        y: 7346
+        width: 468
+        height: 104
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8510545bdeac3854d805746ae49fc628
+      internalID: -7494642056204171714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_1
+      rect:
+        serializedVersion: 2
+        x: 4306
+        y: 7338
+        width: 1464
+        height: 156
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52479645dae15d647a740b5d573cd86b
+      internalID: -2748899268735892385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_2
+      rect:
+        serializedVersion: 2
+        x: 1314
+        y: 5438
+        width: 108
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 533b485af853c444a86c889f9bdee340
+      internalID: -1534661322170034472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_3
+      rect:
+        serializedVersion: 2
+        x: 1927
+        y: 5434
+        width: 135
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 71ab0f0c40a74ea49a25bbe42fea20a6
+      internalID: 3086645494291969415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_4
+      rect:
+        serializedVersion: 2
+        x: 4630
+        y: 5478
+        width: 76
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 98835386d4cd7f148b8a624ede95a504
+      internalID: -7051014861439021816
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_5
+      rect:
+        serializedVersion: 2
+        x: 5362
+        y: 5470
+        width: 68
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 763c9025f0897d24ea68944d9e7c186a
+      internalID: 7868441969013867177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_6
+      rect:
+        serializedVersion: 2
+        x: 5590
+        y: 5426
+        width: 284
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b76b874cb5684f429cc9c90a833f502
+      internalID: -791393523787451984
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_7
+      rect:
+        serializedVersion: 2
+        x: 938
+        y: 5402
+        width: 384
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f010609789bdf2c46b22424e159ae9fc
+      internalID: 7886471740678870510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_8
+      rect:
+        serializedVersion: 2
+        x: 920
+        y: 5338
+        width: 1526
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 319ab069dde2ffe49ac32817f10e21db
+      internalID: 1657480511248152111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_9
+      rect:
+        serializedVersion: 2
+        x: 4222
+        y: 5430
+        width: 248
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 19974c5506334e84ca616357de4d2070
+      internalID: -8220614951351511973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_10
+      rect:
+        serializedVersion: 2
+        x: 4806
+        y: 5436
+        width: 58
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 475790dcdb1d0094c986385fd31cf199
+      internalID: 8295321399225287410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_11
+      rect:
+        serializedVersion: 2
+        x: 5234
+        y: 5442
+        width: 60
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2d02ab2bf7764414891edf69beb602ff
+      internalID: -4682392801604411618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_12
+      rect:
+        serializedVersion: 2
+        x: 5510
+        y: 5448
+        width: 11
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 98438d87eeb7b134a82ce66200bfcf94
+      internalID: -1891497058852068482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_13
+      rect:
+        serializedVersion: 2
+        x: 4874
+        y: 5426
+        width: 15
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2c286cc389654947bec949138b11fc3
+      internalID: 2227564111862740826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_14
+      rect:
+        serializedVersion: 2
+        x: 5475
+        y: 5435
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 81eba9f8f5f9fd841804828c265cb626
+      internalID: -8015294972319585745
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_15
+      rect:
+        serializedVersion: 2
+        x: 4179
+        y: 5282
+        width: 1688
+        height: 319
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d40cfc0690927d14eb005d7bd0f6dbea
+      internalID: 304050675537633317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_16
+      rect:
+        serializedVersion: 2
+        x: 4839
+        y: 5346
+        width: 67
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 21c8d72b60af7784e99e0f5d62236c61
+      internalID: 3432190272663847303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_17
+      rect:
+        serializedVersion: 2
+        x: 5075
+        y: 5363
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c277cbaa4e398ec40ab9a2896af79fd8
+      internalID: 4794648662813791132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_18
+      rect:
+        serializedVersion: 2
+        x: 5118
+        y: 5350
+        width: 58
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e579b2ebd4c6dd408cc9fe8d741b8f7
+      internalID: 2502952841291785087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_19
+      rect:
+        serializedVersion: 2
+        x: 5187
+        y: 5354
+        width: 55
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f8d9a8606c7508b458d67d5bd9f28137
+      internalID: 8659588996633770373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_20
+      rect:
+        serializedVersion: 2
+        x: 5246
+        y: 5359
+        width: 16
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2c1919ca1fd40634c87b3a3934351890
+      internalID: 6758899380951195851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_21
+      rect:
+        serializedVersion: 2
+        x: 5330
+        y: 5366
+        width: 64
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 67a407bdf0d60e347a9287734565d6e3
+      internalID: -5371299651689967031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_22
+      rect:
+        serializedVersion: 2
+        x: 4938
+        y: 5326
+        width: 28
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f315f8971ae3c34f8b3aa8549578989
+      internalID: 5495256536278724577
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_23
+      rect:
+        serializedVersion: 2
+        x: 4979
+        y: 5338
+        width: 55
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4ae0e7d4318cc841a5c0ca74a968d2a
+      internalID: 5312105841919645514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slam animation 3347 x 2000_24
+      rect:
+        serializedVersion: 2
+        x: 5055
+        y: 5347
+        width: 13
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bda8f26a3a0196a4abdefd52039650a2
+      internalID: 511764546702660416
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

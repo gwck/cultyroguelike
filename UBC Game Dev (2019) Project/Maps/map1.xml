@@ -1,0 +1,16 @@
+<map>
+	<head>
+		<title>Test Map</title>
+		<type>0</type>
+	</head>
+	
+	<grid>
+		1 1 1 0 0 1 1 1
+		0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0
+		0 0 1 1 0 0 0 0
+		0 0 1 1 0 0 0 0
+		1 1 1 1 1 1 1 1
+	</grid>
+
+</map>
