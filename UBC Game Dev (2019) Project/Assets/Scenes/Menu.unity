@@ -431,14 +431,14 @@ MonoBehaviour:
   m_FillRect: {fileID: 78990675}
   m_HandleRect: {fileID: 1392522712}
   m_Direction: 0
-  m_MinValue: -80
-  m_MaxValue: 0
+  m_MinValue: 0
+  m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1131851323}
         m_MethodName: SetVolume
         m_Mode: 0
         m_Arguments:
@@ -1436,6 +1436,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 819930100}
+  - component: {fileID: 819930101}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Untagged
@@ -1457,6 +1458,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &819930101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 819930099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79cccd06b01bf2f4a8f3260d158473e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  masterGroup: {fileID: 0}
+  masterMixer: {fileID: 0}
+  musicGroup: {fileID: 0}
+  soundGroup: {fileID: 0}
 --- !u!1 &1131851321
 GameObject:
   m_ObjectHideFlags: 0
@@ -1509,8 +1526,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 793e2977261580743bf8f28962bd6a15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  click: {fileID: 0}
-  theme: {fileID: 0}
+  click: {fileID: 8300000, guid: acbdc6c2d2568e44cb7b4d48277d3be2, type: 3}
+  theme: {fileID: 8300000, guid: c381cef7f16de8546a44b599e436a380, type: 3}
 --- !u!1 &1214837516
 GameObject:
   m_ObjectHideFlags: 0
