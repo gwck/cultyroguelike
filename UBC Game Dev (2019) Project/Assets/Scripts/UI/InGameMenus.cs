@@ -11,6 +11,7 @@ public class InGameMenus : MonoBehaviour
     [SerializeField] private GameObject victoryMenu;
     [SerializeField] private AudioClip menuOpen;
     [SerializeField] private AudioClip menuClose;
+    [SerializeField] private AudioClip click;
     [SerializeField] private Text scoreText;
     [SerializeField] private Text deathText;
     [SerializeField] string[] deathMessages;
@@ -21,6 +22,11 @@ public class InGameMenus : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void ClickSound()
+    {
+        SoundManager.Instance.Play(click, transform);
     }
 
     public void MainMenu()

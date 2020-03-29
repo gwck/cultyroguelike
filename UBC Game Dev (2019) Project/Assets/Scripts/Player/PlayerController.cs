@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CinemachineImpulseSource impulseSource; // impulse source for screen shake effect
     [SerializeField] private Ghost ghost; //reference to ghost 
     [SerializeField] private GameObject deathEffect; // effect for death
+    [SerializeField] private CinemachineVirtualCamera playerCamera;
     public int score; // modify to change starting score
     [SerializeField] private float scoreDropInterval; // rate at which the score decreases over time
     private float scoreDropTimer = 0;
@@ -521,6 +522,12 @@ public class PlayerController : MonoBehaviour
                 if (menus != null) menus.Win(score);
             } 
         }        
+
+        if (collision.gameObject.tag == "BossRoom")
+        {
+            playerCamera.m_Lens.OrthographicSize = 15;
+
+        }
     }
 
     // handle collision with enemy hitboxes
@@ -538,6 +545,15 @@ public class PlayerController : MonoBehaviour
         if ((1 << collision.gameObject.layer & whatIsItems.value) != 0)
         {
             PickupItem(collision.gameObject);
+        }
+    }
+
+    // handle leaving boss loop
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "BossRoom")
+        {
+            playerCamera.m_Lens.OrthographicSize = 8.5f;
         }
     }
 

@@ -19,6 +19,7 @@ TagManager:
   - Weapon
   - RaisedArea
   - Menu
+  - BossRoom
   layers:
   - Default
   - TransparentFX

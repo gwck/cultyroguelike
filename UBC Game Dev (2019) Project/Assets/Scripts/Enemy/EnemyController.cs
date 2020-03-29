@@ -7,7 +7,7 @@ public class EnemyController : MonoBehaviour
 {
     private Rigidbody2D rb; // enemy's rigidbody
     protected Animator anim; // enemy's animator
-    private BoxCollider2D bc; // enemy's box collider
+    private Collider2D bc; // enemy's box collider
     private Transform player; // reference to the player object
 
     [SerializeField] private CinemachineImpulseSource impulseSource; // impulse source for screen shake effect

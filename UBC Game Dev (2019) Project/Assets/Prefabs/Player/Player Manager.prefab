@@ -661,6 +661,11 @@ PrefabInstance:
       propertyPath: scoreDropInterval
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3460904179580232082, guid: 7c104736120059f47ab39bbfe375d3b3,
+        type: 3}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 1701197568569816343}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c104736120059f47ab39bbfe375d3b3, type: 3}
 --- !u!4 &8015998374191775377 stripped
@@ -791,3 +796,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 7707639015591497370}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1701197568569816343 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9037834903505959821, guid: 3387c671ff5b74f4f9543e01b684dfe6,
+    type: 3}
+  m_PrefabInstance: {fileID: 7707639015591497370}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
