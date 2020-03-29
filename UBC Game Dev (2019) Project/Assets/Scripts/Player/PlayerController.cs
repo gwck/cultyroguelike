@@ -397,8 +397,8 @@ public class PlayerController : MonoBehaviour
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         if (sr != null) sr.enabled = false;
         Collider2D col = GetComponent<Collider2D>();
-        //if (col != null) col.enabled = false;
-        rb.bodyType = RigidbodyType2D.Kinematic;
+        if (col != null) col.enabled = false;
+        rb.bodyType = RigidbodyType2D.Static;
 
         Instantiate(deathEffect, transform.position, transform.rotation);
 
