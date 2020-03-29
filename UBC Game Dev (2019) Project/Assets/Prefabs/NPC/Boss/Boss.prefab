@@ -248,7 +248,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2001956653}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.03, y: -2.43, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8384531044483164674}
@@ -573,6 +573,7 @@ MonoBehaviour:
   verticalSpeed: 1
   tempPosition: {x: 0, y: 0, z: 0}
   boundaryCheck: {fileID: 4008331719445404691}
+  flyPoint: {fileID: 0}
   whatisGround:
     serializedVersion: 2
     m_Bits: 1024
@@ -618,8 +619,8 @@ MonoBehaviour:
   sludgePosition: {x: 0, y: 0, z: 0}
   attackCooldown: 10
   slamVelocity: 10
-  bossLightDamage: 1
-  bossHeavyDamage: 4
+  bossLightDamage: 2
+  bossHeavyDamage: 5
   bf: {fileID: 4459617392155254776}
   poisonEggAttack: {fileID: 1046245732639371844}
   cloudBombAttack: {fileID: 8711690824508711016}
@@ -927,7 +928,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   impulseSource: {fileID: 0}
   scoreValue: 1000
-  startingHealth: 50
+  startingHealth: 100
   damageAnimationDuration: 0.5
   deathEffect: {fileID: 6619407535911479, guid: 86dc2d9b5a94a304fbad429490a96c65,
     type: 3}

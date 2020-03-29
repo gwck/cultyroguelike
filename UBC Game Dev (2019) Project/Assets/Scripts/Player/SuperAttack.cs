@@ -42,7 +42,7 @@ public class SuperAttack : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        superAttackbarImage.fillAmount = 0;
+        superAttackbarImage.fillAmount = 1;
         if (globalLight == null) globalLight = GameObject.FindGameObjectWithTag("GlobalLight").GetComponent<Light2D>();
         globalLightOriginalIntensity = globalLight.intensity;
         playerLightOriginalIntensity = playerLight.intensity;
@@ -71,12 +71,12 @@ public class SuperAttack : MonoBehaviour
         if (isPreparingSuperAttack && (globalLight.intensity > minGlobalLightIntensity || playerLight.intensity < minPlayerLightIntensity))
         {
 
-            playerLight.intensity = playerLight.intensity - lightChangeAmount;
+            //playerLight.intensity = playerLight.intensity - lightChangeAmount;
             globalLight.intensity = globalLight.intensity - lightChangeAmount;
         }
         else if (globalLightOriginalIntensity > globalLight.intensity || playerLightOriginalIntensity > playerLight.intensity)
         {
-            playerLight.intensity = playerLight.intensity + lightChangeAmount;
+            //playerLight.intensity = playerLight.intensity + lightChangeAmount;
             globalLight.intensity = globalLight.intensity + lightChangeAmount;
         }
     }
@@ -85,7 +85,7 @@ public class SuperAttack : MonoBehaviour
     public void PreparingSuperAttack()
     {
         //Only charge super attack if player holds down b while not moving and not attacking, otherwise do nothing!
-        if (Input.GetKey(KeyCode.B) && !playerController.isRunning && !playerController.isAttacking && chargeTimePassed < timeToChargeSuperAttack)
+        if (Input.GetKey(KeyCode.E) && !playerController.isAttacking && chargeTimePassed < timeToChargeSuperAttack)
         {
             isPreparingSuperAttack = true;
             chargeTimePassed++;
@@ -133,7 +133,7 @@ public class SuperAttack : MonoBehaviour
         if (!isUsingSuperAttack)
         {
             Debug.Log("charging " + amount);
-            superAttackbarImage.fillAmount += (float) amount / 1000;
+            superAttackbarImage.fillAmount += (float) amount / 500;
         }
     }
 

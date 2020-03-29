@@ -247,3 +247,4 @@ MonoBehaviour:
   movementSpeed: 800
   rotateSpeed: 15000
   rb: {fileID: 5314952646483976089}
+  damage: 3

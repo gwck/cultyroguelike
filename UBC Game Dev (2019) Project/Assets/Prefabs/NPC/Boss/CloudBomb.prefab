@@ -207,7 +207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 036147d2e1a61cb408da488c8b4a61da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eggSpeed: 3
+  eggSpeed: 1
   breakSound: {fileID: 8300000, guid: 2d1237fd851f54b418982498bbfc749b, type: 3}
   eggDamage: 4
   poisonEnemy: {fileID: 8599349158333586426, guid: 6eef37ada566dcc4d91d0681495af53b,

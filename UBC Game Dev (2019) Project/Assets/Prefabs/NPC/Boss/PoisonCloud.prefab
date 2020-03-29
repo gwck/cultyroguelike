@@ -512,7 +512,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPoisoneffect: 0
   poisonDamage: 1
-  poisonEffectLength: 2
+  poisonEffectLength: 3
 --- !u!60 &3178375675293419179
 PolygonCollider2D:
   m_ObjectHideFlags: 0

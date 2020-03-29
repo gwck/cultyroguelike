@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -816,7 +816,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "move\t\t-\tWASD\njump\t\t-\tSPACE\nattack\t-\tENTER\nsuper\t\t-\tB\npause\t\t-\tESC\n"
+  m_text: "move\t\t-\tWASD\njump\t\t-\tSPACE\nattack\t-\tENTER\nsuper\t\t-\tE\npause\t\t-\tESC\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2d90cae9a8b247c459e919c1e1ca089b, type: 2}
   m_sharedMaterial: {fileID: 1419239956863689856, guid: 2d90cae9a8b247c459e919c1e1ca089b,

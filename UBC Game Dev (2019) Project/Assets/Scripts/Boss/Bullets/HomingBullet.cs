@@ -7,6 +7,7 @@ public class HomingBullet : MonoBehaviour
     public float movementSpeed;
     public float rotateSpeed;
     public Rigidbody2D rb;
+    public int damage;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +31,7 @@ public class HomingBullet : MonoBehaviour
     {
         if (collision.transform.gameObject.tag == "Player")
         {
-            collision.transform.gameObject.GetComponent<PlayerController>().TakeDamage(2);
+            collision.transform.gameObject.GetComponent<PlayerController>().TakeDamage(damage);
         }
         Destroy(gameObject);
 

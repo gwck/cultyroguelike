@@ -569,6 +569,11 @@ PrefabInstance:
       propertyPath: flyPoint
       value: 
       objectReference: {fileID: 2112758270184379993}
+    - target: {fileID: 6068580877674024045, guid: bd664615ff536a9418fd373a63a7f87e,
+        type: 3}
+      propertyPath: slamAttackRadius
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd664615ff536a9418fd373a63a7f87e, type: 3}
 --- !u!4 &4586344428294785106 stripped

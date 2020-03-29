@@ -48,7 +48,6 @@ public class BossSlam : MonoBehaviour
                 slammingDown = false;
                 aboutToHitGround = true;
                 isGoingUpToSlam = false;
-                Invoke("IsGrounded", 0.5f);
 
                 anim.SetBool("isGoingUpToSlam", isGoingUpToSlam);
                 anim.SetBool("isSlammingDown", slammingDown);
@@ -67,6 +66,7 @@ public class BossSlam : MonoBehaviour
                 Destroy(slamEffect, 0.5f);
                 if (playerInRange)
                 {
+                    Debug.Log("hit player for " + gameObject.GetComponent<BossAttack>().bossHeavyDamage);
                     playerController.TakeDamage(gameObject.GetComponent<BossAttack>().bossHeavyDamage);
                 }
             }
