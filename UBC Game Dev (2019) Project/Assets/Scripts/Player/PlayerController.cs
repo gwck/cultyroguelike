@@ -11,7 +11,8 @@ public class PlayerController : MonoBehaviour
     private Animator anim; // the player's animator component
     private BoxCollider2D bc; // the player's box collider
 
-    [SerializeField] private Text healthBar; // TEMP healthbar text
+
+
     [SerializeField] private Text itemText; // text displayed when item collected
     [SerializeField] private Text scoreText; // current score
     [SerializeField] private Transform groundCheck; // point from which to check if the player is grounded
@@ -27,9 +28,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float scoreDropInterval; // rate at which the score decreases over time
     private float scoreDropTimer = 0;
 
-    [Header("Attributes")]
+    [Header("Health")]
     [SerializeField] private int startingHealth; // the health the player starts with
     private int health; // player's health
+    [SerializeField] private Image[] healthBar; // heart images
+    [SerializeField] private Color emptyColor;
+    [SerializeField] private Color fullColor;
+    [SerializeField] private float regenCooldown;
+    [SerializeField] private float regenRate;
+    private float regenTime = 0;
 
     [Header("Movement")]
     [SerializeField] private float maxSpeed; // maximum speed of the player
@@ -88,12 +95,12 @@ public class PlayerController : MonoBehaviour
 
     // ANIMATION
     private bool isFacingRight = true; // orientation of the player's sprite
-    private bool isRunning; // controls run animation
+    public bool isRunning; // controls run animation
     private bool isJumping; // controls jump animation
     private bool isSecondJumping; // controls second jump animation
     private bool isFalling; // controls fall animation
     private bool isDamaged; // controls damaged animation as well as the time before the player can be damaged again
-    private bool isAttacking; // controls attack animation
+    public bool isAttacking; // controls attack animation
     private bool isInvuln; // controls invunerability during attack animation
 
     // Start is called before the first frame update
@@ -125,7 +132,7 @@ public class PlayerController : MonoBehaviour
 
         UpdateAnimations();
         UpdateItems();
-        UpdateHealthBar();
+        UpdateHealth();
         UpdateScore();
     }
 
@@ -379,6 +386,8 @@ public class PlayerController : MonoBehaviour
         }
         health -= (int)modifiedDamage;
 
+        regenTime = 0;
+
         // shake the screen
         impulseSource.GenerateImpulse();
 
@@ -487,15 +496,29 @@ public class PlayerController : MonoBehaviour
     }
 
     // basic health bar
-    private void UpdateHealthBar()
+    private void UpdateHealth()
     {
-        // fill the health bar text with a line for each point of health the player has
-        string str = "";
-        for (int i = 0; i < health; i++)
+        regenTime += Time.deltaTime;
+        if (regenTime > regenRate + regenCooldown)
         {
-            str += "|";
+            regenTime = regenCooldown;
+            if (health < startingHealth) health++;
         }
-        healthBar.text = str;
+
+        // fill the health bar text with a line for each point of health the player has
+        for(int i = 0; i < healthBar.Length; i++)
+        {
+            if (i < health)
+            {
+                healthBar[i].color = fullColor;
+            } else if (i < startingHealth)
+            {
+                healthBar[i].color = emptyColor;
+            } else
+            {
+                healthBar[i].color = Color.clear;
+            }
+        }
     }
 
     // dust effect, currently unused
@@ -584,6 +607,8 @@ public class PlayerController : MonoBehaviour
     public void Score(int amount)
     {
         score += amount;
+        SuperAttack sa = GetComponent<SuperAttack>();
+        if (sa != null) sa.FillBar(amount);
     }
 
     // decreases score over time and updates UI

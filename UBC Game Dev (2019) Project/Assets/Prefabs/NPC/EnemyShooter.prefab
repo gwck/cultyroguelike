@@ -258,9 +258,9 @@ MonoBehaviour:
   damageAnimationDuration: 0
   deathEffect: {fileID: 6619407535911479, guid: 86dc2d9b5a94a304fbad429490a96c65,
     type: 3}
-  contactDamage: 1
+  contactDamage: 2
   drop: {fileID: 1071005760046136806, guid: cd0113d010e118f419280d6d6f049882, type: 3}
-  dropChance: 0.5
+  dropChance: 0.3
   move: {fileID: 8300000, guid: 79dfc4284bf12824682812df47501be5, type: 3}
   die: {fileID: 8300000, guid: 81f5583ec57468042a0f21f5a827d28d, type: 3}
   roar: {fileID: 8300000, guid: 29ca0e6a17a160844a5dca9b27c7e4e8, type: 3}
