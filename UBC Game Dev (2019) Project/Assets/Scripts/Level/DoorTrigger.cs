@@ -8,7 +8,17 @@ public class DoorTrigger : MonoBehaviour
     [SerializeField] private GameObject boss;
     [SerializeField] private GameObject label;
 
-    private void Update()
+    private void Start()
+    {
+        Invoke("HideLabel", 1f);
+    }
+
+    void HideLabel()
+    {
+        label.SetActive(false);
+    }
+
+    private void FixedUpdate()
     {
         if (boss == null && !label.activeInHierarchy) label.SetActive(true);
     }
